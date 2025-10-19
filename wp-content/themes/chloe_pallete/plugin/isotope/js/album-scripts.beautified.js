@@ -1,0 +1,60 @@
+jQuery(document).ready(function($) {
+    jQuery("#album_container a.fancybox").each(function() {
+        if ($(this).attr("href") != "#" && $(this).attr("href").indexOf("watch?v=") != -1) {
+            $(this).attr("href", $(this).attr("href").replace(new RegExp("watch\\?v=", "i"), "v/")).addClass("fancy-video");
+        } else {
+            $(this).addClass("fancy-photo");
+        }
+    });
+    jQuery("#album_container a.fancybox.fancy-photo").fancybox({
+        openEffect: "none",
+        closeEffect: "none",
+        prevEffect: "fade",
+        nextEffect: "fade",
+        autoScale: false,
+        transitionIn: "none",
+        transitionOut: "none",
+        title: this.title,
+        padding: 3,
+        href: this.href
+    });
+    jQuery("#album_container a.fancybox.fancy-video").fancybox({
+        openEffect: "none",
+        closeEffect: "none",
+        prevEffect: "fade",
+        nextEffect: "fade",
+        title: this.title,
+        padding: 3,
+        type: "swf",
+        swf: {
+            wmode: "transparent",
+            allowfullscreen: "true"
+        }
+    });
+    var $container_isotope = $("#album_container");
+    $container_isotope.append('<div class="preloader"><i class="fa fa-cog fa-spin"></i></div>');
+    $container_isotope.imagesLoaded(function($images, $proper, $broken) {
+        $container_isotope.isotope({
+            itemSelector: ".album-item",
+            percentPosition: true,
+            masonry: {
+                columnWidth: ".grid-sizer"
+            }
+        });
+        $container_isotope.isotope("layout");
+        $(".album-filter-list a").click(function() {
+            var selector = $(this).attr("data-filter");
+            $container_isotope.isotope({
+                filter: selector
+            });
+            var $parent = $(this).parents(".album-filter-list");
+            $parent.find(".active").removeClass("active");
+            $(".album-filter-list").not($parent).find("li").removeClass("active").first().addClass("active");
+            $(this).parent().addClass("active");
+            return false;
+        });
+        $(".album-filter-list li:first-child a").trigger("click");
+        $container_isotope.find(".preloader i").css("display", "none");
+        $container_isotope.children(".preloader").css("opacity", 0).delay(900).fadeOut();
+    });
+});

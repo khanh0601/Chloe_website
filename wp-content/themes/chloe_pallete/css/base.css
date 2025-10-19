@@ -1,0 +1,102 @@
+.gutter-10{margin-left:-10px;margin-right:-10px;}
+.gutter-10 > [class*='col-']{padding-right:10px;padding-left:10px;}
+.gutter-5{margin-left:-5px;margin-right:-5px;}
+.gutter-5 > [class*='col-']{padding-right:5px;padding-left:5px;}
+.gutter-2{margin-left:-2px;margin-right:-2px;}
+.gutter-2 > [class*='col-']{padding-right:2px;padding-left:2px;}
+.gutter-0{margin-left:0px;margin-right:0px;}
+.gutter-0 > [class*='col-']{padding-right:0px;padding-left:0px;}
+
+
+/* =WordPress Core
+-------------------------------------------------------------- */
+.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+.aligncenter,
+div.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+.alignright {
+    float:right;
+    margin: 5px 0 20px 20px;
+}
+
+.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+
+.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+a img.alignright {
+    float: right;
+    margin: 5px 0 20px 20px;
+}
+
+a img.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+a img.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+
+a img.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.wp-caption {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    max-width: 96%; /* Image does not overflow the content area */
+    padding: 5px 3px 10px;
+    text-align: center;
+}
+
+.wp-caption.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignleft {
+    margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignright {
+    margin: 5px 0 20px 20px;
+}
+
+.wp-caption img {
+    border: 0 none;
+    height: auto;
+    margin: 0;
+    max-width: 98.5%;
+    padding: 0;
+    width: auto;
+}
+
+.wp-caption p.wp-caption-text {
+    font-size: 11px;
+    line-height: 17px;
+    margin: 0;
+    padding: 0 4px 5px;
+}
+/*End core*/
+.editor-content img{max-width: 100%; height: auto;}
+.editor-content img.media-object{max-width: none;}
+.editor-content h4{ font-size: 16px;}
+.editor-content h3{ font-size: 18px;}
+.editor-content h2{  font-size: 20px;}
+.editor-content h2,.editor-content h3,.editor-content h4{
+    font-weight: 700;
+    color:#b15275; 
+}
