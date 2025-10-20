@@ -11,385 +11,378 @@
  */
 
 get_header();
-
-
-$pageID = get_queried_object_id();
-$home_banner = tr_posts_field('home_banner',$pageID);
-$home_banner_content = tr_posts_field('home_banner_content',$pageID);
-$home_banner_video = tr_posts_field('home_banner_video',$pageID);
-$home_banner_video_poster = tr_posts_field('home_banner_video_poster',$pageID);
-$banner_content = tr_posts_field('banner_content',$pageID);
-$banner_link = tr_posts_field('banner_link',$pageID);
-
-$poster="";
-if(!empty($home_banner_video_poster)){
-    $poster = wp_get_attachment_image_src($home_banner_video_poster,'full', false, false)[0];
-}
-
+wp_enqueue_style( 'home-css', get_template_directory_uri() . '/css/home.css');
+wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
 
 ?>
-
-
-<section class="animatedParent animateOnce fp-auto-height-responsive section-home-slide dark <?= !empty($home_banner_video)?"with-video":"" ?>  section-top  disable-lazy-load"  data-anchor="tbs" data-title="<?= __("TBS Group","tbs") ?>" >
-    <?php if(!empty($home_banner_video)) {
-        $bannerVideo = getYoutubeID($home_banner_video);
-    ?>
-        <div class="bg item-video video-background">
-            <div class="plyr__video-embed" id="player" data-poster="<?= $poster ?>">
-              <iframe
-                src="https://www.youtube.com/embed/<?= $bannerVideo ?>?playlist=<?= $bannerVideo ?>&autoplay=1&loop=1&mute=1&controls=0&playsinline=1&iv_load_policy=3&vq=hd720&enablejsapi=1"
-                allowfullscreen
-                allowtransparency
-                allow="autoplay"
-              ></iframe>
+<section class="home_hero">
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="home_hero_img img_full">
+                <img src= "<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
             </div>
-            <script type="text/javascript">
-                jQuery(document).ready(function(){
-                    const player = new Plyr('#player',{
-                      controls: ['play-large','mute'],
-                      //volume: 0,
-                      autoplay: true,
-                      muted: true,
-                      youtube:{
-                        mute:1,
-                        autoplay:1
-                      }
-                    });
-                    if(jQuery("#player").data("poster")!=""){
-                        setTimeout(() => {
-                            player.poster = jQuery("#player").data("poster");
-                        }, 500)
-                    }
-                })
-            </script>
+            <div class="home_hero_des">
+                <div class="home_hero_des_subtitle block_title color_white txt_subtitle">ChloesPalette</div>
+                <div class="home_hero_des_title color_white txt_72">Make your birthday sweeter with a cake full of love!</div>
+                <a href="#" class="home_hero_des_link txt_uppercase">
+                    <div class="home_hero_des_link_txt txt_16">order now</div>
+                    <div class="home_hero_des_link_icon img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
+                    </div>
+                </a>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="home_hero_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
+            </div>
+            <div class="home_hero_des">
+                <div class="home_hero_des_subtitle block_title color_white txt_subtitle">ChloesPalette</div>
+                <div class="home_hero_des_title color_white txt_72">Make your birthday sweeter with a cake full of love!</div>
+                <a href="#" class="home_hero_des_link txt_uppercase">
+                    <div class="home_hero_des_link_txt txt_16">order now</div>
+                    <div class="home_hero_des_link_icon img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
+                    </div>
+                </a>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="home_hero_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
+            </div>
+            <div class="home_hero_des">
+                <div class="home_hero_des_subtitle block_title color_white txt_subtitle">ChloesPalette</div>
+                <div class="home_hero_des_title color_white txt_72">Make your birthday sweeter with a cake full of love!</div>
+                <a href="#" class="home_hero_des_link">
+                    <div class="home_hero_des_link_txt txt_uppercase txt_16">order now</div>
+                    <div class="home_hero_des_link_icon img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
+                    </div>
+                </a>
+            </div>
+          </div>
         </div>
-    <?php } else { ?>
-    <div class="swiper home-slide d-bg-ani" data-swiper-autoplay="2000">
-        <div class="bg"></div>
-      <div class="swiper-wrapper">
-        <?php foreach ($home_banner as $key => $value) {
-            $img = wp_get_attachment_image_src($value["image"],'full', false, false)[0];
-            $img_mobile= $img;
-            if(!empty($value["image_mobile"])){
-                $img_mobile = wp_get_attachment_image_src($value["image_mobile"],'full', false, false)[0];
-            }
-        ?>
-        <?php if(!empty($value["link"])) { ?>
-            <a class="swiper-slide item cover" <?= !empty($value["link"])?"href='".$value["link"]."'":"" ?>>
-        <?php } else{ ?>
-            <div class="swiper-slide item cover">
-        <?php } ?>
-            <picture class="item-thumb">
-              <source media="(min-width:1200px)" srcset="<?= $img ?>">
-              <img class="w-100" src="<?= $img_mobile ?>" alt="<?= __("tbs","tbs") ?>" >
-            </picture>
-        <?php if(!empty($value["link"])) { ?>
-            </a>
-        <?php }else { ?>
-        </div>
-        <?php }?>
-        <?php } ?>
+        <div class="swiper-pagination home_hero_pagination"></div>
       </div>
-
-    </div>
-    <?php } ?>
-    <div class="section-content-wrapper text-center">
-        <div class="container-d">
-            <div class="banner-logo">
-                <img src="<?= get_template_directory_uri() ?>/images/logo.svg" alt="TBS Group" class="img-fluid" />
-            </div>
-            <h2 class="section-title <?= defaultAnimation(1) ?>"><?= $banner_content ?></h2>
-            <?php if(!empty($banner_link)){ ?>
-            <a class="btn fw-bold btn-lg btn-outline" href="<?= $banner_link ?>"><span><?= __("Xem thêm","tbs") ?></span></a>
-            <?php } ?>
-
+    </section>
+    <section class="home_seller">
+      <div class="kl_container home_seller_inner">
+        <div class="home_seller_content">
+          <div class="home_seller_content_subtitle txt_subtitle txt_uppercase block_title">best sellers</div>
+          <div class="home_seller_content_title txt_title">Featured Products</div>
         </div>
-    </div>
-</section>
-
-<?php
-    $sectionTitle = tr_posts_field('about_title',$pageID);
-    $sectionContent = tr_posts_field('about_description',$pageID);
-    $sectionItems = tr_posts_field('about_items',$pageID);
-?>
-<section class=" animatedParent animateOnce fp-auto-height-responsive fp-noscroll section-cover section-subsidiary dark" data-anchor="<?= sanitize_title(__("Công ty đầu tư","tbs")) ?>"  data-title="<?= __("Công ty đầu tư","tbs") ?>">
-    <div class="h-100 d-flex flex-column">
-        <div class="section-content-wrapper div_zindex section-padding text-center" >
-            <div class="container-d">
-                <div class="row justify-content-center">
-                    <div class="col-xl-10">
-                        <div class="section-title"><?= $sectionTitle ?></div>
-                        <div class="section-content fz-20"><?= apply_filters("the_content",$sectionContent) ?></div>
-                        <a class="btn btn-over fw-bold btn-lg btn-detail" href="<?= getPageTemplateUrl("aboutus") ?>"><span><?= __("Xem thêm","tbs") ?></span></a>
-                    </div>
-                </div>
-            </div>
+        <div class="home_seller_category">
+          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500 block_title">All</div>
+          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Chantilly Cake</div>
+          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Vintage Cake</div>
+          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Kid Cake</div>
+          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Wedding Cake</div>
+          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Flower Cake</div>
         </div>
-        <div class="section-slide-wrapper section-padding-lg">
-            <div class="container-d">
-                <div class="section-slide " >
-                      <div class="swiper swiper-default subsidiary-slide scrollable-content " >
-                        <div class="swiper-wrapper">
-                            <?php foreach ($sectionItems as $key => $value) {
-
-                            ?>
-                            <div class="swiper-slide" >
-                                <?php if(!empty($value["link"])) { ?>
-                                <a class="item" href="<?= $value["link"] ?>" target="_blank" rel="noopener">
-                                    <?= wp_get_attachment_image($value["image"], 'full', false, ["class"=>"img-fluid", "alt"=>$value["title"]] ) ?>
-                                </a>
-                                <?php } else { ?>
-                                <div class="item">
-                                    <?= wp_get_attachment_image($value["image"], 'full', false, ["class"=>"img-fluid","alt"=>$value["title"]] ) ?>
-                                </div>
-                                <?php } ?>
-                            </div>
-                            <?php } ?>
-
-                        </div>
-
-                    </div>
-                    <div class="slide-control ">
-                        <div class="swiper-pagination mt-4"></div>
-                    </div>
-
-                </div>
+      </div>
+      <div class="home_seller_silder swiper">
+        <div class="home_seller_silder_wrap swiper-wrapper">
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
             </div>
-        </div>
-    </div>
-
-</section>
-
-<section class=" animatedParent animateOnce fp-auto-height-responsive fp-noscroll section-cover section-activity" data-anchor="<?= sanitize_title(__("Lĩnh vực hoạt động","tbs")) ?>" data-title="<?= __("Lĩnh vực hoạt động","tbs") ?>">
-    <div class="section-content-wrapper  div_zindex section-padding">
-        <div class="container-d">
-            <h2 class="section-title text-center">Lĩnh vực hoạt động</h2>
-            <div class="section-slide-wrapper">
-                <div class="section-slide " >
-                    <div class="swiper swiper-default activity-slide  " >
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide" >
-                                <div class="item" data-count="2">
-                                    <div class="item-thumb fit-ratio">
-                                        <img src="<?= get_template_directory_uri() ?>/images/tmp/img-tbs-industrial.png" alt="TBS Group" class="img-fluid" />
-                                    </div>
-                                    <div class="item-body">
-                                        <div class="logo">
-                                            <img src="<?= get_template_directory_uri() ?>/images/tmp/industrial.png" alt="TBS Group" class="img-fluid" />
-                                        </div>
-                                        <div class="description ellips">Được thành lập từ năm 1989, TBS Group hiện nay là một trong những công ty sản xuất công nghiệp hàng đầu tại Việt Nam với 2 trụ cột chính là: Giày - Túi xách, hệ thống sản xuất trải dài Bắc vào Nam...</div>
-                                        <div class="links">
-                                            <a href="#" >Ngành Giày</a>
-                                            <a href="#" >Ngành Túi xách</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide" >
-                                <div class="item"  data-count="3">
-                                    <div class="item-thumb fit-ratio">
-                                        <img src="<?= get_template_directory_uri() ?>/images/tmp/img-tbs-land.png" alt="TBS Group" class="img-fluid" />
-                                    </div>
-                                    <div class="item-body">
-                                        <div class="logo">
-                                            <img src="<?= get_template_directory_uri() ?>/images/tmp/tbl-land.png" alt="TBS Group" class="img-fluid" />
-                                        </div>
-                                        <div class="description ellips">Được thành lập từ năm 1989, TBS Group hiện nay là một trong những công ty sản xuất công nghiệp hàng đầu tại Việt Nam với 2 trụ cột chính là: Giày - Túi xách, hệ thống sản xuất trải dài Bắc vào Nam...</div>
-                                        <div class="links">
-                                            <a href="#" >Ngành Giày</a>
-                                            <a href="#" >Ngành Túi xách</a>
-                                            <a href="#" >Thương mại & Dịch vụ</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-control ">
-                        <div class="swiper-pagination mt-4"></div>
-                    </div>
-                </div>
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
             </div>
-        </div>
-    </div>
-</section>
-
-<section class=" animatedParent animateOnce fp-auto-height-responsive fp-noscroll section-cover section-sustainable-development" data-anchor="<?= sanitize_title(__("Phát triển bền vững","tbs")) ?>" data-title="<?= __("Phát triển bền vững","tbs") ?>">
-    <div class="section-content-wrapper  div_zindex section-padding">
-        <div class="container-d">
-            <h2 class="section-title text-center">Phát triển bền vững<br>
-                <span class="lg d-block">VÌ CON NGƯỜI – VÌ MÔI TRƯỜNG – VÌ CỘNG ĐỒNG</span>
-            </h2>
-            <div class="section-content">
-                <div class="row gutter-xxl align-items-center">
-                    <div class="col-lg-4">
-                        <h3 class="section-subtitle color-3">SỨC KHỎE & <br>AN TOÀN LAO ĐỘNG</h3>
-                        <div class="description mt-4">
-                            <p>Sức khoẻ và sự an toàn của nhân viên công ty và đối tác là một trong những vấn đề quan trọng và được quan tâm nhất của TBS.</p>
-                            <p><strong>Các hoạt động vì sức khoẻ và an toàn lao động:</strong></p>
-                            <ul>
-                                <li>Cung cấp và duy trì môi trường làm việc khỏe mạnh và an toàn cho nhân viên của công ty.</li>
-                                <li>Bảo vệ sức khỏe và an toàn của nhân viên, nhà thầu, và khách tham quan công ty.</li>
-                            </ul>
-                        </div>
-                        <a class="btn btn-primary mt-4" href="#"><span>xem thêm</span></a>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="section-slide " >
-                            <div class="swiper swiper-default sustainable-development-slide  sustainable-development-items" >
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide" >
-                                        <div class="item-wrapper">
-                                            <div class="item" >
-                                                <div class="item-thumb ">
-                                                    <img src="<?= get_template_directory_uri() ?>/images/tmp/ptbv-suc-khoe.png" alt="TBS Group" class="img-fluid" />
-                                                </div>
-                                                <div class="item-body">
-                                                    <h3 class="title sm">SỨC KHỎE & <br>AN TOÀN LAO ĐỘNG</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide" >
-                                        <div class="item-wrapper">
-                                            <div class="item" >
-                                                <div class="item-thumb">
-                                                    <img src="<?= get_template_directory_uri() ?>/images/tmp/ptbv-moi-truong.png" alt="TBS Group" class="img-fluid" />
-                                                </div>
-                                                <div class="item-body">
-                                                    <h3 class="title sm">SỨC KHỎE & <br>AN TOÀN LAO ĐỘNG</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide" >
-                                        <div class="item-wrapper">
-                                            <div class="item" >
-                                                <div class="item-thumb ">
-                                                    <img src="<?= get_template_directory_uri() ?>/images/tmp/ptbv-moi-truong.png" alt="TBS Group" class="img-fluid" />
-                                                </div>
-                                                <div class="item-body">
-                                                    <h3 class="title sm">SỨC KHỎE & <br>AN TOÀN LAO ĐỘNG</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
                 </div>
+              </div>
             </div>
-        </div>
-    </div>
-</section>
-
-
-<section class=" animatedParent animateOnce fp-auto-height-responsive fp-noscroll section-cover section-awards" data-anchor="<?= sanitize_title(__("Giải thưởng","tbs")) ?>" data-title="<?= __("Giải thưởng","tbs") ?>">
-    <div class="section-content-wrapper  div_zindex">
-        <div class="p-left-xl">
-            <div class="row gutter-0 align-items-center">
-                <div class="col-lg-7">
-                    <div class="section-content-inner section-padding">
-                        <h2 class="section-title">Giải thưởng</h2>
-                        <div class="section-slide " >
-                            <div class="swiper swiper-default awards-slide awards-items  " >
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide" >
-                                        <div class="item">
-                                            <div class="item-thumb">
-                                                <img src="<?= get_template_directory_uri() ?>/images/tmp/gt/gt-1.png" alt="TBS Group" class="img-fluid" />
-                                            </div>
-                                            <div class="item-body">
-                                                <h4 class="title md">TOP THƯƠNG HIỆU MẠNH VIỆT 2024</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide" >
-                                        <div class="item">
-                                            <div class="item-thumb">
-                                                <img src="<?= get_template_directory_uri() ?>/images/tmp/gt/gt-2.png" alt="TBS Group" class="img-fluid" />
-                                            </div>
-                                            <div class="item-body">
-                                                <h4 class="title md">TOP THƯƠNG HIỆU MẠNH VIỆT 2024</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide" >
-                                        <div class="item">
-                                            <div class="item-thumb">
-                                                <img src="<?= get_template_directory_uri() ?>/images/tmp/gt/gt-3.png" alt="TBS Group" class="img-fluid" />
-                                            </div>
-                                            <div class="item-body">
-                                                <h4 class="title md">TOP THƯƠNG HIỆU MẠNH VIỆT 2024</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide" >
-                                        <div class="item">
-                                            <div class="item-thumb">
-                                                <img src="<?= get_template_directory_uri() ?>/images/tmp/gt/gt-4.png" alt="TBS Group" class="img-fluid" />
-                                            </div>
-                                            <div class="item-body">
-                                                <h4 class="title md">TOP THƯƠNG HIỆU MẠNH VIỆT 2024</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide" >
-                                        <div class="item">
-                                            <div class="item-thumb">
-                                                <img src="<?= get_template_directory_uri() ?>/images/tmp/gt/gt-5.png" alt="TBS Group" class="img-fluid" />
-                                            </div>
-                                            <div class="item-body">
-                                                <h4 class="title md">TOP THƯƠNG HIỆU MẠNH VIỆT 2024</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide" >
-                                        <div class="item">
-                                            <div class="item-thumb">
-                                                <img src="<?= get_template_directory_uri() ?>/images/tmp/gt/gt-6.png" alt="TBS Group" class="img-fluid" />
-                                            </div>
-                                            <div class="item-body">
-                                                <h4 class="title md">TOP THƯƠNG HIỆU MẠNH VIỆT 2024</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="slide-control ">
-                                <div class="swiper-pagination mt-4"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="section-image full-h-lg clip-thumb-wrapper">
-                        <div class="item-thumb clip-thumb clip-left">
-                            <img src="<?= get_template_directory_uri() ?>/images/tmp/bg-gt.png" alt="TBS Group" class="img-fluid" />
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
             </div>
-
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
+            </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
+            </div>
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
+            </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
+            </div>
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
+            </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
+            </div>
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
+            </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
+            </div>
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
+            </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
+            </div>
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
+            </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home_seller_silder_item swiper-slide">
+            <div class="home_seller_silder_item_top">
+              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
+              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
+            </div>
+            <div class="home_seller_silder_item_img img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
+            </div>
+            <div class="home_seller_silder_item_info">
+              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
+              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                <span>$160</span> - <span>$170</span>
+              </div>
+              <div class="home_seller_silder_item_info_cart_wrap">
+                <div class="home_seller_silder_item_info_cart img_full">
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-</section>
+        <div class="swiper-pagination home_seller_pagination"></div>
+      </div>
+    </section>
+    <section class="home_cookie">
+      <div class="home_cookie_img_wrap">
+        <div class="home_cookie_img img_abs">
+          <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookie.webp" alt="">
+          <div class="home_cookie_img_block"></div>
+        </div>
+      </div>
+      <div class="kl_container home_cookie_slide_wrap">
+        <div class="home_cookie_slide">
+          <div class="home_cookie_slide_list swiper">
+            <div class="home_cookie_slide_list_wrap swiper-wrapper">
+              <div class="home_cookie_slide_list_item swiper-slide">
+                <div class="home_cookie_slide_list_item_title txt_center color_white txt_70">Cookies and Muffins</div>
+                <div class="home_cookie_slide_list_item_des txt_center color_white txt_18">12 products</div>
+              </div>
+              <div class="home_cookie_slide_list_item swiper-slide">
+                <div class="home_cookie_slide_list_item_title txt_center color_white txt_70">Cookies and Muffins</div>
+                <div class="home_cookie_slide_list_item_des txt_center color_white txt_18">12 products</div>
+              </div>
+              <div class="home_cookie_slide_list_item swiper-slide">
+                <div class="home_cookie_slide_list_item_title txt_center color_white txt_70">Cookies and Muffins</div>
+                <div class="home_cookie_slide_list_item_des txt_center color_white txt_18">12 products</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="home_about">
+      <div class="home_about_content">
+        <div class="home_about_content_subtitle txt_center txt_subtitle block_title">About chloes palette cakes  </div>
+        <div class="home_about_content_title txt_title txt_center">Where every cake becomes a work of art.</div>
+      </div>
+      <div class="home_about_inner">
+        <div class="home_about_item">
+          <div class="home_about_item_des txt_16">
+            <p>“Welcome to Chloes Palette Cakes where each cake is not just a sweet treat, but a story crafted with inspiration, dedication, and love.”</p>
+            <p>At Chloes Palette Cakes, we believe the perfect birthday cake lies in the harmony of delicate flavors, unique aesthetics, and honest emotion. Whether you dream of a pastel minimalist cake or an elaborate themed design, our skilled team brings your vision to life.</p>
+          </div>
+          <div class="home_about_item_border"></div>
+        </div>
+        <div class="home_about_item img_full">
+          <img src="<?php echo get_template_directory_uri(); ?>/images/home_about.webp" alt="">
+        </div>
+        <div class="home_about_item">
+          <div class="home_about_item_des txt_16">
+            <p>“We pour our hearts into every recipe, blending creativity with love to make cakes that are as meaningful as they are beautiful. From birthdays to weddings, each creation is a celebration of happiness, made to bring smiles and sweet memories to every table.</p>
+          </div>
+          <a href="#" class="home_about_item_link ">
+            <div class="home_about_item_link_txt txt_uppercase txt_16">Read more</div>
+            <div class="home_hero_des_link_icon img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
+            </div>
+          </a>
+          <div class="home_about_item_border"></div>
+        </div>
+
+      </div>
+      <div class="home_about_slide swiper">
+        <div class="home_about_slide_wrap swiper-wrapper">
+          <div class="home_about_slide_item swiper-slide">
+            <div class="home_about_slide_item_img img_full"> 
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
+            </div>
+            <div class="home_about_slide_item_info">
+              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
+              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
+              <a href="#" class="home_about_slide_item_info_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
+              </a>
+            </div>
+          </div>
+           <div class="home_about_slide_item swiper-slide">
+            <div class="home_about_slide_item_img img_full"> 
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
+            </div>
+            <div class="home_about_slide_item_info">
+              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
+              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
+              <a href="#" class="home_about_slide_item_info_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
+              </a>
+            </div>
+          </div>
+           <div class="home_about_slide_item swiper-slide">
+            <div class="home_about_slide_item_img img_full"> 
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
+            </div>
+            <div class="home_about_slide_item_info">
+              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
+              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
+              <a href="#" class="home_about_slide_item_info_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
+              </a>
+            </div>
+          </div>
+           <div class="home_about_slide_item swiper-slide">
+            <div class="home_about_slide_item_img img_full"> 
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
+            </div>
+            <div class="home_about_slide_item_info">
+              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
+              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
+              <a href="#" class="home_about_slide_item_info_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
+              </a>
+            </div>
+          </div>
+           <div class="home_about_slide_item swiper-slide">
+            <div class="home_about_slide_item_img img_full"> 
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
+            </div>
+            <div class="home_about_slide_item_info">
+              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
+              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
+              <a href="#" class="home_about_slide_item_info_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
+              </a>
+            </div>
+          </div>
+           <div class="home_about_slide_item swiper-slide">
+            <div class="home_about_slide_item_img img_full"> 
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
+            </div>
+            <div class="home_about_slide_item_info">
+              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
+              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
+              <a href="#" class="home_about_slide_item_info_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 
-
-
-<?php
-
-nmc_get_template_part( 'partials/section-news', [
-    'sId' => "news",
-    'anchor'=>"tin-tuc",
-    'title'=> __("Tin tức","tbs")
-] );
-
-?>
-
-
-<?php get_footer("home"); ?>
+<?php get_footer(); ?>

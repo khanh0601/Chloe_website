@@ -20,13 +20,13 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'tbstm_db');
+define('DB_NAME', 'chloe_pallete');
 
 /** MySQL database username */
-define('DB_USER', 'tbstm_db');
+define('DB_USER', 'root');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'HqytGjHQrt5UTgJGXxXc');
+define('DB_PASSWORD', 'khanhkhanh123');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
@@ -62,7 +62,7 @@ define('NONCE_SALT',       ':-R&NXgqd`Ej_$&ct&R>gDr}(L<pd0_;+;[`z[~0EJc0{DJJP`da
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_tbcutoms_';
+$table_prefix  = 'chp_';
 
 /**
  * For developers: WordPress debugging mode.
@@ -96,8 +96,8 @@ define( 'ALLOW_UNFILTERED_UPLOADS', true );
 define('SITE_VERSION', '1.0.1');
 define('SITE_NAME', 'TBS');
 
-define('WP_HOME','https://tbs.themax.vn');
-define('WP_SITEURL','https://tbs.themax.vn');
+define('WP_HOME','https://chloe_pallete.com');
+define('WP_SITEURL','https://chloe_pallete.com');
 
 /* That's all, stop editing! Happy blogging. */
 
