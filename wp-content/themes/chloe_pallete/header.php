@@ -16,71 +16,27 @@
 <!--[if !(IE 7) | !(IE 8)  ]><!-->
 <html <?php language_attributes(); ?> xmlns:fb="http://ogp.me/ns/fb#">
 <!--<![endif]-->
-
 <head>
 <meta charset="UTF-8" />
 <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="format-detection" content="telephone=no">
-
 <title><?php  wp_title(''); ?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
-
-<link href="<?= get_template_directory_uri(); ?>/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?= get_template_directory_uri(); ?>/plugin/font-awesome/css/all.min.css" rel="stylesheet" >
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="<?= get_template_directory_uri(); ?>/css/style.css?v=<?= SITE_VERSION ?>">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-
-
 <?php
   $currentLang = get_locale();
   $currentLang= explode("_",$currentLang)[0];
-
 	wp_enqueue_script('jquery', array(), SITE_VERSION, true);
-
-  wp_enqueue_script('bootstrap_bundle', get_template_directory_uri() . '/plugin/bootstrap/js/bootstrap.bundle.min.js',array(),null,true);
-  wp_enqueue_script('bootbox', get_template_directory_uri() . '/js/bootbox.min.js',array(),null,true);
-  
-  wp_enqueue_style( 'bootstrapvalidator', get_template_directory_uri() . '/plugin/bootstrapvalidator/bootstrapValidator.min.css' );
-  wp_enqueue_script('formValidation', get_template_directory_uri() . '/plugin/bootstrapvalidator/formValidation.min.js',array(),null,true);
-  wp_enqueue_script('bootstrapvalidator', get_template_directory_uri() . '/plugin/bootstrapvalidator/bootstrap.min.js',array(),null,true);
-  if( $currentLang=="vi"){
-    wp_enqueue_script('bootstrapvalidator_lang', get_template_directory_uri() . '/plugin/bootstrapvalidator/language/vi_VN.js',array(),null,true);  
-  }
-  
-  
-  wp_enqueue_script('ajaxform', get_template_directory_uri() . '/js/ajax-form.min.js',array(),SITE_VERSION,true);
-  
-  wp_enqueue_script('fancybox', get_template_directory_uri() . '/plugin/fancybox/jquery.fancybox.min.js',array(),SITE_VERSION,true);
-  wp_enqueue_style( 'fancybox', get_template_directory_uri() . '/plugin/fancybox/jquery.fancybox.min.css' );
-
-  wp_enqueue_style( 'animations', get_template_directory_uri() . '/plugin/css3-animate-it/css/animations.css',20 );
-  wp_enqueue_script('animations', get_template_directory_uri() . '/plugin/css3-animate-it/js/css3-animate-it.js',array(),"1.0.1",true);
-  
-  wp_enqueue_style( 'fullpage', get_template_directory_uri() . '/plugin/fullpage/jquery.fullpage.min.css');
-  wp_enqueue_script('fullpage', get_template_directory_uri() . '/plugin/fullpage/jquery.fullpage.min.js',array(),SITE_VERSION,true);
-  wp_enqueue_script('fullpage_scrolloverflow', get_template_directory_uri() . '/plugin/fullpage/vendors/scrolloverflow.min.js',array(),SITE_VERSION,true);
-
   wp_enqueue_style( 'swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.css');
   wp_enqueue_script('swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.js',array(),SITE_VERSION,true);
-  
-  wp_enqueue_script('nicescroll', get_template_directory_uri() . '/plugin/jquery.nicescroll/dist/jquery.nicescroll.min.js',array(),SITE_VERSION,true);
-
-
-
-  wp_enqueue_style( 'plyr', get_template_directory_uri() . '/plugin/plyr/plyr.css',20 );
-  wp_enqueue_script('plyr', get_template_directory_uri() . '/plugin/plyr/plyr.min.js',array(),null,true);
+  wp_enqueue_script('gsap', get_template_directory_uri() . '/js/gsap.min.js',array(),SITE_VERSION,true);
+  wp_enqueue_script('scrolltrigger', get_template_directory_uri() . '/js/ScrollTrigger.min.js',array(),SITE_VERSION,true);
+  wp_enqueue_script('lenis', get_template_directory_uri() . '/js/lenis.min.js',array(),SITE_VERSION,true);
+  wp_enqueue_script('animation', get_template_directory_uri() . '/js/animation.js',array(),SITE_VERSION,true);
   wp_enqueue_script('splitType', get_template_directory_uri() . '/js/split-type.js',array(),null,true);
-
-  wp_enqueue_script('inlineSVG', get_template_directory_uri() . '/js/inlineSVG.min.js',array(),SITE_VERSION,true);
-
-  wp_enqueue_script('default', get_template_directory_uri() . '/js/default.js',array(),SITE_VERSION,true);
-
 	wp_head();
 
 global $hotline; 
