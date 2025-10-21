@@ -94,7 +94,7 @@ define('DISALLOW_FILE_EDIT',true);
 define('GMAP_KEY', '');
 define( 'ALLOW_UNFILTERED_UPLOADS', true );
 define('SITE_VERSION', '1.0.1');
-define('SITE_NAME', 'TBS');
+define('SITE_NAME', 'chloe_pallete');
 
 define('WP_HOME','https://chloe_pallete.com');
 define('WP_SITEURL','https://chloe_pallete.com');
