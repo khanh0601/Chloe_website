@@ -844,7 +844,9 @@ body{
 
 /* home_cake */
 
-
+.home_cake_slide  {
+    overflow: visible;
+}
 .home_cake_slide_wrap{
     transition-timing-function: linear;
 }

@@ -87,7 +87,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         <div class="swiper-pagination home_hero_pagination"></div>
       </div>
     </section>
-    <section class="home_seller">
+    <section class="home_seller overflow_hidden">
       <div class="kl_container">
         <div class="home_seller_inner">
           <div class="home_seller_content">
@@ -396,7 +396,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         </div>
       </div>
     </section>
-    <section class="home_cookie">
+    <section class="home_cookie overflow_hidden">
       <div class="home_cookie_img_wrap">
         <div class="home_cookie_img img_abs">
           <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookie.webp" alt="" />
@@ -448,7 +448,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         </div>
       </div>
     </section>
-    <section class="home_about">
+    <section class="home_about overflow_hidden">
       <div class="kl_container">
         <div class="home_about_content">
           <div
@@ -817,7 +817,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         </a>
       </div>
     </section>
-    <section class="home_review">
+    <section class="home_review overflow_hidden">
       <div class="kl_container">
         <div class="home_review_inner kl_grid">
           <div class="home_review_left">
@@ -1045,7 +1045,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         </button>
       </div>
     </section>
-    <section class="home_workshop">
+    <section class="home_workshop overflow_hidden">
       <div class="kl_container home_workshop_inner">
         <div class="home_workshop_info">
           <div class="home_workshop_info_subtitle txt_subtitle block_title">OUR WORKSHOPS</div>
@@ -1130,7 +1130,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         </div>
       </div>
     </section>
-    <section class="home_cake">
+    <section class="home_cake overflow_hidden">
       <div class="kl_container">
         <div class="home_cake_slide swiper">
           <div class="home_cake_slide_wrap swiper-wrapper">
