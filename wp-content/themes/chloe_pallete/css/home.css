@@ -144,10 +144,10 @@ body{
 }
 .home_seller_silder_item_info_cart{
     width: 2.5rem;
-    cursor: pointer;
 }
 .home_seller_silder_item_info_cart_wrap{
     opacity: 0;
+    cursor: pointer;
     pointer-events: none;
     transition: all .4s ease;
 }

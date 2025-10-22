@@ -33,6 +33,7 @@ a{
   box-sizing: border-box;
 }
 body {
+  margin: 0 !important;
   font-family: 'Figtree';
   color: #3B3B3B;
 }
@@ -86,6 +87,7 @@ h1, h2{
     width: 17.5rem;
     border-radius: 4.5rem;
     cursor: pointer;
+    border: none !important;
 }
 .home_hero_des_link_icon{
     width: 2rem;
