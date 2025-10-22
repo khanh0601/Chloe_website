@@ -4,7 +4,7 @@
         <div class="footer_top">
           <div class="footer_top_item">
             <div class="footer_top_item_icon img_full">
-              <img src="/asset/img/truck_icon.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/truck_icon.svg" alt="" />
             </div>
             <div class="footer_top_item_title txt_title_color txt_18">
               Free Delivery
@@ -15,7 +15,7 @@
           </div>
           <div class="footer_top_item">
             <div class="footer_top_item_icon img_full">
-              <img src="/asset/img/secure.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/secure.svg" alt="" />
             </div>
             <div class="footer_top_item_title txt_title_color txt_18">
               100% Secure
@@ -26,7 +26,7 @@
           </div>
           <div class="footer_top_item">
             <div class="footer_top_item_icon img_full">
-              <img src="/asset/img/return_icon.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/return_icon.svg" alt="" />
             </div>
             <div class="footer_top_item_title txt_title_color txt_18">
               Return Policy
@@ -37,7 +37,7 @@
           </div>
           <div class="footer_top_item">
             <div class="footer_top_item_icon img_full">
-              <img src="/asset/img/support_icon.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/support_icon.svg" alt="" />
             </div>
             <div class="footer_top_item_title txt_title_color txt_18">
               Support
@@ -71,7 +71,7 @@
                     required
                   />
                   <button type="submit" class="submit-btn">
-                    <img src="/asset/img/send_icon.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/send_icon.svg" alt="" />
                   </button>
                 </div>
               </div>
@@ -178,16 +178,16 @@
           </div>
           <div class="footer_copyright_right">
             <a href="#" class="footer_copyright_right_img img_full">
-              <img src="/asset/img/fb_icon.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/fb_icon.svg" alt="" />
             </a>
             <a href="#" class="footer_copyright_right_img img_full">
-              <img src="/asset/img/ytb_icon.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/ytb_icon.svg" alt="" />
             </a>
             <a href="#" class="footer_copyright_right_img img_full">
-              <img src="/asset/img/in_icon.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/in_icon.svg" alt="" />
             </a>
             <a href="#" class="footer_copyright_right_img img_full">
-              <img src="/asset/img/insta_icon.svg" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/insta_icon.svg" alt="" />
             </a>
           </div>
         </div>

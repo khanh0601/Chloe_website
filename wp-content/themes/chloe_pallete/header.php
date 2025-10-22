@@ -29,13 +29,14 @@
 <?php
   $currentLang = get_locale();
   $currentLang= explode("_",$currentLang)[0];
-	wp_enqueue_script('jquery', array(), SITE_VERSION, true);
+	wp_enqueue_script('jquery-cus', "https://code.jquery.com/jquery-3.7.1.min.js", [], null, true);
   wp_enqueue_style( 'swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.css');
   wp_enqueue_script('swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.js',array(),SITE_VERSION,true);
   wp_enqueue_script('gsap', get_template_directory_uri() . '/js/gsap.min.js',array(),SITE_VERSION,true);
   wp_enqueue_script('scrolltrigger', get_template_directory_uri() . '/js/ScrollTrigger.min.js',array(),SITE_VERSION,true);
   wp_enqueue_script('lenis', get_template_directory_uri() . '/js/lenis.min.js',array(),SITE_VERSION,true);
   wp_enqueue_script('animation', get_template_directory_uri() . '/js/animation.js',array(),SITE_VERSION,true);
+  wp_enqueue_script('global', get_template_directory_uri() . '/js/global.js');
   wp_enqueue_script('splitType', get_template_directory_uri() . '/js/split-type.js',array(),null,true);
 	wp_head();
 
@@ -239,25 +240,31 @@
               <div class="header_icon_inner">
                 <div class="header_icon_item_wrap">
                   <div class="header_icon_item img_full">
-                    <img src="/asset/img/search_icon.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/search_icon.svg" alt="" />
                   </div>
                 </div>
                 <div class="header_icon_item_wrap">
                   <div class="header_icon_item img_full">
-                    <img src="/asset/img/account_icon.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/account_icon.svg" alt="" />
                   </div>
                 </div>
                 <div class="header_icon_item_wrap">
                   <div class="header_icon_item img_full">
-                    <img src="/asset/img/cart_icon.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart_icon.svg" alt="" />
                   </div>
                   <div class="header_icon_item_num txt_14 color_white">(0)</div>
                 </div>
               </div>
             </div>
+            <div class="navbar-toggler-icon-wrap tablet">
+              <div class="navbar-toggler-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </header>
-  <!-- /Header --> 
+  </header>
   <div  class="fp-custom ">

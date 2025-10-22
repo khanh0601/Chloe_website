@@ -20,7 +20,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         <div class="swiper-wrapper">
           <div class="swiper-slide">
             <div class="home_hero_img img_full">
-              <img src="/asset/img/home_hero.webp" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
             </div>
             <div class="home_hero_des">
               <div
@@ -34,14 +34,14 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
               <a href="#" class="home_hero_des_link txt_uppercase">
                 <div class="home_hero_des_link_txt txt_16">order now</div>
                 <div class="home_hero_des_link_icon img_full">
-                  <img src="/asset/img/arrow-up-right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
                 </div>
               </a>
             </div>
           </div>
           <div class="swiper-slide">
             <div class="home_hero_img img_full">
-              <img src="/asset/img/home_hero.webp" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
             </div>
             <div class="home_hero_des">
               <div
@@ -55,14 +55,14 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
               <a href="#" class="home_hero_des_link txt_uppercase">
                 <div class="home_hero_des_link_txt txt_16">order now</div>
                 <div class="home_hero_des_link_icon img_full">
-                  <img src="/asset/img/arrow-up-right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
                 </div>
               </a>
             </div>
           </div>
           <div class="swiper-slide">
             <div class="home_hero_img img_full">
-              <img src="/asset/img/home_hero.webp" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
             </div>
             <div class="home_hero_des">
               <div
@@ -78,7 +78,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                   order now
                 </div>
                 <div class="home_hero_des_link_icon img_full">
-                  <img src="/asset/img/arrow-up-right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
                 </div>
               </a>
             </div>
@@ -149,7 +149,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -162,7 +162,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -181,7 +181,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -194,7 +194,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -213,7 +213,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -226,7 +226,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -245,7 +245,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -258,7 +258,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -277,7 +277,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -290,7 +290,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -309,7 +309,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -322,7 +322,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -341,7 +341,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -354,7 +354,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -373,7 +373,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
               </div>
               <div class="home_seller_silder_item_img img_full">
-                <img src="/asset/img/image_cake.jpg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
               <div class="home_seller_silder_item_info">
                 <div class="home_seller_silder_item_info_title txt_subtitle">
@@ -386,7 +386,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 </div>
                 <div class="home_seller_silder_item_info_cart_wrap">
                   <div class="home_seller_silder_item_info_cart img_full">
-                    <img src="/asset/img/cart.svg" alt="" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                   </div>
                 </div>
               </div>
@@ -399,7 +399,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
     <section class="home_cookie">
       <div class="home_cookie_img_wrap">
         <div class="home_cookie_img img_abs">
-          <img src="/asset/img/home_cookie.webp" alt="" />
+          <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookie.webp" alt="" />
           <div class="home_cookie_img_block"></div>
         </div>
       </div>
@@ -449,55 +449,59 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
       </div>
     </section>
     <section class="home_about">
-      <div class="home_about_content">
-        <div
-          class="home_about_content_subtitle txt_center txt_subtitle block_title"
-        >
-          About chloes palette cakes
-        </div>
-        <div class="home_about_content_title txt_title txt_center">
-          Where every cake becomes a work of art.
-        </div>
-      </div>
-      <div class="home_about_inner">
-        <div class="home_about_item">
-          <div class="home_about_item_des txt_16">
-            <p>
-              “Welcome to Chloes Palette Cakes where each cake is not just a
-              sweet treat, but a story crafted with inspiration, dedication, and
-              love.”
-            </p>
-            <p>
-              At Chloes Palette Cakes, we believe the perfect birthday cake lies
-              in the harmony of delicate flavors, unique aesthetics, and honest
-              emotion. Whether you dream of a pastel minimalist cake or an
-              elaborate themed design, our skilled team brings your vision to
-              life.
-            </p>
+      <div class="kl_container">
+        <div class="home_about_content">
+          <div
+            class="home_about_content_subtitle txt_center txt_subtitle block_title"
+          >
+            About chloes palette cakes
           </div>
-          <div class="home_about_item_border"></div>
-        </div>
-        <div class="home_about_item img_full">
-          <img src="/asset/img/home_about.webp" alt="" />
-        </div>
-        <div class="home_about_item">
-          <div class="home_about_item_des txt_16">
-            <p>
-              “We pour our hearts into every recipe, blending creativity with
-              love to make cakes that are as meaningful as they are beautiful.
-              From birthdays to weddings, each creation is a celebration of
-              happiness, made to bring smiles and sweet memories to every table.
-            </p>
+          <div class="home_about_content_title txt_title txt_center">
+            Where every cake becomes a work of art.
           </div>
-          <a href="#" class="home_about_item_link">
-            <div class="home_about_item_link_txt txt_uppercase txt_16">
-              Read more
+        </div>
+        <div class="home_about_inner">
+          <div class="home_about_item">
+            <div class="home_about_item_des txt_16">
+              <p>
+                “Welcome to Chloes Palette Cakes where each cake is not just a
+                sweet treat, but a story crafted with inspiration, dedication, and
+                love.”
+              </p>
+              <p>
+                At Chloes Palette Cakes, we believe the perfect birthday cake lies
+                in the harmony of delicate flavors, unique aesthetics, and honest
+                emotion. Whether you dream of a pastel minimalist cake or an
+                elaborate themed design, our skilled team brings your vision to
+                life.
+              </p>
             </div>
-            <div class="home_hero_des_link_icon img_full">
-              <img src="/asset/img/arrow-up-right.svg" alt="" />
+            <div class="home_about_item_border"></div>
+          </div>
+          <div class="home_about_item img_full">
+            <div class="home_about_item_inner">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about.webp" alt="" />
             </div>
-          </a>
-          <div class="home_about_item_border"></div>
+          </div>
+          <div class="home_about_item">
+            <div class="home_about_item_des txt_16">
+              <p>
+                We pour our hearts into every recipe, blending creativity with
+                love to make cakes that are as meaningful as they are beautiful.
+                From birthdays to weddings, each creation is a celebration of
+                happiness, made to bring smiles and sweet memories to every table.
+              </p>
+            </div>
+            <a href="#" class="home_about_item_link">
+              <div class="home_about_item_link_txt txt_uppercase txt_16">
+                Read more
+              </div>
+              <div class="home_hero_des_link_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+              </div>
+            </a>
+            <div class="home_about_item_border"></div>
+          </div>
         </div>
       </div>
       <div class="kl_container">
@@ -505,7 +509,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
           <div class="home_about_slide_wrap swiper-wrapper">
             <div class="home_about_slide_item swiper-slide">
               <div class="home_about_slide_item_img img_full">
-                <img src="/asset/img/home_about_slide.webp" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
               </div>
               <div class="home_about_slide_item_info">
                 <div class="home_about_slide_item_info_title txt_24">
@@ -515,13 +519,13 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                   Making every birthday unforgettable!
                 </div>
                 <a href="#" class="home_about_slide_item_info_icon img_full">
-                  <img src="/asset/img/Icon_right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
                 </a>
               </div>
             </div>
             <div class="home_about_slide_item swiper-slide">
               <div class="home_about_slide_item_img img_full">
-                <img src="/asset/img/home_about_slide.webp" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
               </div>
               <div class="home_about_slide_item_info">
                 <div class="home_about_slide_item_info_title txt_24">
@@ -531,13 +535,13 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                   Making every birthday unforgettable!
                 </div>
                 <a href="#" class="home_about_slide_item_info_icon img_full">
-                  <img src="/asset/img/Icon_right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
                 </a>
               </div>
             </div>
             <div class="home_about_slide_item swiper-slide">
               <div class="home_about_slide_item_img img_full">
-                <img src="/asset/img/home_about_slide.webp" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
               </div>
               <div class="home_about_slide_item_info">
                 <div class="home_about_slide_item_info_title txt_24">
@@ -547,13 +551,13 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                   Making every birthday unforgettable!
                 </div>
                 <a href="#" class="home_about_slide_item_info_icon img_full">
-                  <img src="/asset/img/Icon_right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
                 </a>
               </div>
             </div>
             <div class="home_about_slide_item swiper-slide">
               <div class="home_about_slide_item_img img_full">
-                <img src="/asset/img/home_about_slide.webp" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
               </div>
               <div class="home_about_slide_item_info">
                 <div class="home_about_slide_item_info_title txt_24">
@@ -563,13 +567,13 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                   Making every birthday unforgettable!
                 </div>
                 <a href="#" class="home_about_slide_item_info_icon img_full">
-                  <img src="/asset/img/Icon_right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
                 </a>
               </div>
             </div>
             <div class="home_about_slide_item swiper-slide">
               <div class="home_about_slide_item_img img_full">
-                <img src="/asset/img/home_about_slide.webp" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
               </div>
               <div class="home_about_slide_item_info">
                 <div class="home_about_slide_item_info_title txt_24">
@@ -579,13 +583,13 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                   Making every birthday unforgettable!
                 </div>
                 <a href="#" class="home_about_slide_item_info_icon img_full">
-                  <img src="/asset/img/Icon_right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
                 </a>
               </div>
             </div>
             <div class="home_about_slide_item swiper-slide">
               <div class="home_about_slide_item_img img_full">
-                <img src="/asset/img/home_about_slide.webp" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
               </div>
               <div class="home_about_slide_item_info">
                 <div class="home_about_slide_item_info_title txt_24">
@@ -595,7 +599,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                   Making every birthday unforgettable!
                 </div>
                 <a href="#" class="home_about_slide_item_info_icon img_full">
-                  <img src="/asset/img/Icon_right.svg" alt="" />
+                  <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
                 </a>
               </div>
             </div>
@@ -609,183 +613,185 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
           Trending
         </div>
         <div class="home_discover_title txt_title">To Discover </div>
-        <div class="home_discover_card kl_grid">
-          <div class="home_seller_silder_item">
-            <div class="home_seller_silder_item_top">
-              <div
-                class="home_seller_silder_item_top_type txt_uppercase txt_12"
-              >
-                Chantilly Cake
+        <div class="home_discover_card_wrap">
+          <div class="home_discover_card kl_grid">
+            <div class="home_seller_silder_item">
+              <div class="home_seller_silder_item_top">
+                <div
+                  class="home_seller_silder_item_top_type txt_uppercase txt_12"
+                >
+                  Chantilly Cake
+                </div>
+                <div
+                  class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
+                >
+                  SOLD OUT
+                </div>
               </div>
-              <div
-                class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-              >
-                SOLD OUT
+              <div class="home_seller_silder_item_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="/asset/img/image_cake.jpg" alt="" />
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">
-                Butter Croissant
-              </div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="/asset/img/cart.svg" alt="" />
+              <div class="home_seller_silder_item_info">
+                <div class="home_seller_silder_item_info_title txt_subtitle">
+                  Butter Croissant
+                </div>
+                <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                  <span>$160</span> - <span>$170</span>
+                </div>
+                <div class="home_seller_silder_item_info_cart_wrap">
+                  <div class="home_seller_silder_item_info_cart img_full">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="home_seller_silder_item">
-            <div class="home_seller_silder_item_top">
-              <div
-                class="home_seller_silder_item_top_type txt_uppercase txt_12"
-              >
-                Chantilly Cake
+            <div class="home_seller_silder_item">
+              <div class="home_seller_silder_item_top">
+                <div
+                  class="home_seller_silder_item_top_type txt_uppercase txt_12"
+                >
+                  Chantilly Cake
+                </div>
+                <div
+                  class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
+                >
+                  SOLD OUT
+                </div>
               </div>
-              <div
-                class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-              >
-                SOLD OUT
+              <div class="home_seller_silder_item_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="/asset/img/image_cake.jpg" alt="" />
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">
-                Butter Croissant
-              </div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="/asset/img/cart.svg" alt="" />
+              <div class="home_seller_silder_item_info">
+                <div class="home_seller_silder_item_info_title txt_subtitle">
+                  Butter Croissant
+                </div>
+                <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                  <span>$160</span> - <span>$170</span>
+                </div>
+                <div class="home_seller_silder_item_info_cart_wrap">
+                  <div class="home_seller_silder_item_info_cart img_full">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="home_seller_silder_item">
-            <div class="home_seller_silder_item_top">
-              <div
-                class="home_seller_silder_item_top_type txt_uppercase txt_12"
-              >
-                Chantilly Cake
+            <div class="home_seller_silder_item">
+              <div class="home_seller_silder_item_top">
+                <div
+                  class="home_seller_silder_item_top_type txt_uppercase txt_12"
+                >
+                  Chantilly Cake
+                </div>
+                <div
+                  class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
+                >
+                  SOLD OUT
+                </div>
               </div>
-              <div
-                class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-              >
-                SOLD OUT
+              <div class="home_seller_silder_item_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="/asset/img/image_cake.jpg" alt="" />
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">
-                Butter Croissant
-              </div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="/asset/img/cart.svg" alt="" />
+              <div class="home_seller_silder_item_info">
+                <div class="home_seller_silder_item_info_title txt_subtitle">
+                  Butter Croissant
+                </div>
+                <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                  <span>$160</span> - <span>$170</span>
+                </div>
+                <div class="home_seller_silder_item_info_cart_wrap">
+                  <div class="home_seller_silder_item_info_cart img_full">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="home_seller_silder_item">
-            <div class="home_seller_silder_item_top">
-              <div
-                class="home_seller_silder_item_top_type txt_uppercase txt_12"
-              >
-                Chantilly Cake
+            <div class="home_seller_silder_item">
+              <div class="home_seller_silder_item_top">
+                <div
+                  class="home_seller_silder_item_top_type txt_uppercase txt_12"
+                >
+                  Chantilly Cake
+                </div>
+                <div
+                  class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
+                >
+                  SOLD OUT
+                </div>
               </div>
-              <div
-                class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-              >
-                SOLD OUT
+              <div class="home_seller_silder_item_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="/asset/img/image_cake.jpg" alt="" />
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">
-                Butter Croissant
-              </div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="/asset/img/cart.svg" alt="" />
+              <div class="home_seller_silder_item_info">
+                <div class="home_seller_silder_item_info_title txt_subtitle">
+                  Butter Croissant
+                </div>
+                <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                  <span>$160</span> - <span>$170</span>
+                </div>
+                <div class="home_seller_silder_item_info_cart_wrap">
+                  <div class="home_seller_silder_item_info_cart img_full">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="home_seller_silder_item">
-            <div class="home_seller_silder_item_top">
-              <div
-                class="home_seller_silder_item_top_type txt_uppercase txt_12"
-              >
-                Chantilly Cake
+            <div class="home_seller_silder_item">
+              <div class="home_seller_silder_item_top">
+                <div
+                  class="home_seller_silder_item_top_type txt_uppercase txt_12"
+                >
+                  Chantilly Cake
+                </div>
+                <div
+                  class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
+                >
+                  SOLD OUT
+                </div>
               </div>
-              <div
-                class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-              >
-                SOLD OUT
+              <div class="home_seller_silder_item_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="/asset/img/image_cake.jpg" alt="" />
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">
-                Butter Croissant
-              </div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="/asset/img/cart.svg" alt="" />
+              <div class="home_seller_silder_item_info">
+                <div class="home_seller_silder_item_info_title txt_subtitle">
+                  Butter Croissant
+                </div>
+                <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                  <span>$160</span> - <span>$170</span>
+                </div>
+                <div class="home_seller_silder_item_info_cart_wrap">
+                  <div class="home_seller_silder_item_info_cart img_full">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="home_seller_silder_item">
-            <div class="home_seller_silder_item_top">
-              <div
-                class="home_seller_silder_item_top_type txt_uppercase txt_12"
-              >
-                Chantilly Cake
+            <div class="home_seller_silder_item">
+              <div class="home_seller_silder_item_top">
+                <div
+                  class="home_seller_silder_item_top_type txt_uppercase txt_12"
+                >
+                  Chantilly Cake
+                </div>
+                <div
+                  class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
+                >
+                  SOLD OUT
+                </div>
               </div>
-              <div
-                class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-              >
-                SOLD OUT
+              <div class="home_seller_silder_item_img img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
               </div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="/asset/img/image_cake.jpg" alt="" />
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">
-                Butter Croissant
-              </div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="/asset/img/cart.svg" alt="" />
+              <div class="home_seller_silder_item_info">
+                <div class="home_seller_silder_item_info_title txt_subtitle">
+                  Butter Croissant
+                </div>
+                <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                  <span>$160</span> - <span>$170</span>
+                </div>
+                <div class="home_seller_silder_item_info_cart_wrap">
+                  <div class="home_seller_silder_item_info_cart img_full">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -795,7 +801,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
     </section>
     <section class="home_course">
       <div class="home_course_img img_full">
-        <img src="/asset/img/home_course.webp" alt="" />
+        <img src="<?php echo get_template_directory_uri(); ?>/images/home_course.webp" alt="" />
       </div>
       <div class="home_course_info">
         <div class="home_course_info_txt txt_64 txt_wh_500">
@@ -806,7 +812,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         <a href="#" class="home_hero_des_link txt_uppercase">
           <div class="home_hero_des_link_txt txt_16">order now</div>
           <div class="home_hero_des_link_icon img_full">
-            <img src="/asset/img/arrow-up-right.svg" alt="" />
+            <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
           </div>
         </a>
       </div>
@@ -825,7 +831,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
             </div>
             <div class="home_review_left_amount">
               <div class="home_review_left_amount_icon img_full">
-                <img src="/asset/img/icon_start.svg" alt="" />
+                <img src="<?php echo get_template_directory_uri(); ?>/images/icon_start.svg" alt="" />
               </div>
               <div class="home_review_left_amount_txt txt_14 txt_uppercase">
                 2500+ reviews
@@ -834,54 +840,26 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
           </div>
           <div class="home_review_right right_full">
             <div class="home_review_right_img img_full">
-              <img src="/asset/img/home_review.webp" alt="" />
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_review.webp" alt="" />
             </div>
             <div class="home_review_right_slide swiper">
               <div class="home_review_right_slide_wrap swiper-wrapper">
                 <div class="home_review_right_slide_item swiper-slide">
                   <div class="home_review_right_slide_item_icon_wrap">
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
-                    </div>
-                  </div>
-                  <div class="home_review_right_slide_item_content txt_18">
-                    A hidden secret in Richmond ☺️ Try their jalapeno poppers!
-                    All their croissants are great. It is best to go early to
-                    avoid disappointment as they do run out of things very
-                    quickly!
-                  </div>
-                  <div class="home_review_right_slide_item_author txt_16">
-                    Arthur S Google Review
-                  </div>
-                </div>
-                <div class="home_review_right_slide_item swiper-slide">
-                  <div class="home_review_right_slide_item_icon_wrap">
-                    <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
-                    </div>
-                    <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
-                    </div>
-                    <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
-                    </div>
-                    <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
-                    </div>
-                    <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                   </div>
                   <div class="home_review_right_slide_item_content txt_18">
@@ -897,19 +875,19 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <div class="home_review_right_slide_item swiper-slide">
                   <div class="home_review_right_slide_item_icon_wrap">
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                   </div>
                   <div class="home_review_right_slide_item_content txt_18">
@@ -925,19 +903,47 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <div class="home_review_right_slide_item swiper-slide">
                   <div class="home_review_right_slide_item_icon_wrap">
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                     <div class="home_review_right_slide_item_icon img_full">
-                      <img src="/asset/img/icon_star_clone.svg" alt="" />
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
+                    </div>
+                  </div>
+                  <div class="home_review_right_slide_item_content txt_18">
+                    A hidden secret in Richmond ☺️ Try their jalapeno poppers!
+                    All their croissants are great. It is best to go early to
+                    avoid disappointment as they do run out of things very
+                    quickly!
+                  </div>
+                  <div class="home_review_right_slide_item_author txt_16">
+                    Arthur S Google Review
+                  </div>
+                </div>
+                <div class="home_review_right_slide_item swiper-slide">
+                  <div class="home_review_right_slide_item_icon_wrap">
+                    <div class="home_review_right_slide_item_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
+                    </div>
+                    <div class="home_review_right_slide_item_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
+                    </div>
+                    <div class="home_review_right_slide_item_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
+                    </div>
+                    <div class="home_review_right_slide_item_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
+                    </div>
+                    <div class="home_review_right_slide_item_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_star_clone.svg" alt="" />
                     </div>
                   </div>
                   <div class="home_review_right_slide_item_content txt_18">
@@ -958,7 +964,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
     </section>
     <section class="home_contact">
       <div class="home_contact_img img_full">
-        <img src="/asset/img/home_background_contact.webp" alt="" />
+        <img src="<?php echo get_template_directory_uri(); ?>/images/home_background_contact.webp" alt="" />
       </div>
       <div class="home_contact_form">
         <div
@@ -1000,7 +1006,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
               <option value="strawberry">Strawberry</option>
             </select>
             <div class="home_contact_form_info_img">
-              <img src="/asset/img/icon_arrow_down.svg" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/icon_arrow_down.svg" alt="">
             </div>
           </div>
         </div>
@@ -1014,12 +1020,12 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         </div>
         <div class="home_contact_form_upload">
           <label for="file-upload" class="upload-label">
-            <div class="home_contact_form_upload_img">
-              <img src="/asset/img/icon_image.svg" alt="">
+            <div class="home_contact_form_upload_img img_full desktop">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/icon_image.svg" alt="">
             </div>
             <span class="txt_14">UPLOAD A FILE</span>
-            <div class="home_contact_form_upload_icon">
-              <img src="/asset/img/icon_uploat.svg" alt="">
+            <div class="home_contact_form_upload_icon img_full">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/icon_uploat.svg" alt="">
             </div>
             <input
             type="file"
@@ -1034,7 +1040,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         <button type="submit" class="home_hero_des_link txt_uppercase">
           <div class="home_hero_des_link_txt txt_16">submit</div>
           <div class="home_hero_des_link_icon img_full">
-            <img src="/asset/img/arrow-up-right.svg" alt="" />
+            <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
           </div>
         </button>
       </div>
@@ -1049,7 +1055,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
           <div class="home_workshop_slide_swap swiper-wrapper">
             <div class="home_workshop_slide_item swiper-slide">   
               <div class="home_workshop_slide_item_img img_full">
-                <img src="/asset/img/home_workshop.webp" alt="">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
                 <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
@@ -1061,7 +1067,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
             </div>
             <div class="home_workshop_slide_item swiper-slide">   
               <div class="home_workshop_slide_item_img img_full">
-                <img src="/asset/img/home_workshop.webp" alt="">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
                 <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
@@ -1073,7 +1079,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
             </div>
             <div class="home_workshop_slide_item swiper-slide">   
               <div class="home_workshop_slide_item_img img_full">
-                <img src="/asset/img/home_workshop.webp" alt="">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
                 <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
@@ -1085,7 +1091,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
             </div>
             <div class="home_workshop_slide_item swiper-slide">   
               <div class="home_workshop_slide_item_img img_full">
-                <img src="/asset/img/home_workshop.webp" alt="">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
                 <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
@@ -1097,7 +1103,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
             </div>
             <div class="home_workshop_slide_item swiper-slide">   
               <div class="home_workshop_slide_item_img img_full">
-                <img src="/asset/img/home_workshop.webp" alt="">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
                 <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
@@ -1109,7 +1115,7 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
             </div>
             <div class="home_workshop_slide_item swiper-slide">   
               <div class="home_workshop_slide_item_img img_full">
-                <img src="/asset/img/home_workshop.webp" alt="">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
                 <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
@@ -1129,398 +1135,31 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
         <div class="home_cake_slide swiper">
           <div class="home_cake_slide_wrap swiper-wrapper">
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
             <div class="home_cake_slide_item swiper-slide img_full">
-              <img src="/asset/img/home_cake.webp" alt="">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="home_hero_img img_full">
-                <img src= "<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
-            </div>
-            <div class="home_hero_des">
-                <div class="home_hero_des_subtitle block_title color_white txt_subtitle">ChloesPalette</div>
-                <div class="home_hero_des_title color_white txt_72">Make your birthday sweeter with a cake full of love!</div>
-                <a href="#" class="home_hero_des_link txt_uppercase">
-                    <div class="home_hero_des_link_txt txt_16">order now</div>
-                    <div class="home_hero_des_link_icon img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
-                    </div>
-                </a>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="home_hero_img img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
-            </div>
-            <div class="home_hero_des">
-                <div class="home_hero_des_subtitle block_title color_white txt_subtitle">ChloesPalette</div>
-                <div class="home_hero_des_title color_white txt_72">Make your birthday sweeter with a cake full of love!</div>
-                <a href="#" class="home_hero_des_link txt_uppercase">
-                    <div class="home_hero_des_link_txt txt_16">order now</div>
-                    <div class="home_hero_des_link_icon img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
-                    </div>
-                </a>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="home_hero_img img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
-            </div>
-            <div class="home_hero_des">
-                <div class="home_hero_des_subtitle block_title color_white txt_subtitle">ChloesPalette</div>
-                <div class="home_hero_des_title color_white txt_72">Make your birthday sweeter with a cake full of love!</div>
-                <a href="#" class="home_hero_des_link">
-                    <div class="home_hero_des_link_txt txt_uppercase txt_16">order now</div>
-                    <div class="home_hero_des_link_icon img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
-                    </div>
-                </a>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-pagination home_hero_pagination"></div>
-      </div>
-    </section>
-    <section class="home_seller">
-      <div class="kl_container home_seller_inner">
-        <div class="home_seller_content">
-          <div class="home_seller_content_subtitle txt_subtitle txt_uppercase block_title">best sellers</div>
-          <div class="home_seller_content_title txt_title">Featured Products</div>
-        </div>
-        <div class="home_seller_category">
-          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500 block_title">All</div>
-          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Chantilly Cake</div>
-          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Vintage Cake</div>
-          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Kid Cake</div>
-          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Wedding Cake</div>
-          <div class="home_seller_category_item txt_uppercase txt_14 txt_wh_500">Flower Cake</div>
-        </div>
-      </div>
-      <div class="home_seller_silder swiper">
-        <div class="home_seller_silder_wrap swiper-wrapper">
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="home_seller_silder_item swiper-slide">
-            <div class="home_seller_silder_item_top">
-              <div class="home_seller_silder_item_top_type txt_uppercase txt_12">Chantilly Cake</div>
-              <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active">SOLD OUT</div>
-            </div>
-            <div class="home_seller_silder_item_img img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="">
-            </div>
-            <div class="home_seller_silder_item_info">
-              <div class="home_seller_silder_item_info_title txt_subtitle">Butter Croissant</div>
-              <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
-                <span>$160</span> - <span>$170</span>
-              </div>
-              <div class="home_seller_silder_item_info_cart_wrap">
-                <div class="home_seller_silder_item_info_cart img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-pagination home_seller_pagination"></div>
-      </div>
-    </section>
-    <section class="home_cookie">
-      <div class="home_cookie_img_wrap">
-        <div class="home_cookie_img img_abs">
-          <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookie.webp" alt="">
-          <div class="home_cookie_img_block"></div>
-        </div>
-      </div>
-      <div class="kl_container home_cookie_slide_wrap">
-        <div class="home_cookie_slide">
-          <div class="home_cookie_slide_list swiper">
-            <div class="home_cookie_slide_list_wrap swiper-wrapper">
-              <div class="home_cookie_slide_list_item swiper-slide">
-                <div class="home_cookie_slide_list_item_title txt_center color_white txt_70">Cookies and Muffins</div>
-                <div class="home_cookie_slide_list_item_des txt_center color_white txt_18">12 products</div>
-              </div>
-              <div class="home_cookie_slide_list_item swiper-slide">
-                <div class="home_cookie_slide_list_item_title txt_center color_white txt_70">Cookies and Muffins</div>
-                <div class="home_cookie_slide_list_item_des txt_center color_white txt_18">12 products</div>
-              </div>
-              <div class="home_cookie_slide_list_item swiper-slide">
-                <div class="home_cookie_slide_list_item_title txt_center color_white txt_70">Cookies and Muffins</div>
-                <div class="home_cookie_slide_list_item_des txt_center color_white txt_18">12 products</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="home_about">
-      <div class="home_about_content">
-        <div class="home_about_content_subtitle txt_center txt_subtitle block_title">About chloes palette cakes  </div>
-        <div class="home_about_content_title txt_title txt_center">Where every cake becomes a work of art.</div>
-      </div>
-      <div class="home_about_inner">
-        <div class="home_about_item">
-          <div class="home_about_item_des txt_16">
-            <p>“Welcome to Chloes Palette Cakes where each cake is not just a sweet treat, but a story crafted with inspiration, dedication, and love.”</p>
-            <p>At Chloes Palette Cakes, we believe the perfect birthday cake lies in the harmony of delicate flavors, unique aesthetics, and honest emotion. Whether you dream of a pastel minimalist cake or an elaborate themed design, our skilled team brings your vision to life.</p>
-          </div>
-          <div class="home_about_item_border"></div>
-        </div>
-        <div class="home_about_item img_full">
-          <img src="<?php echo get_template_directory_uri(); ?>/images/home_about.webp" alt="">
-        </div>
-        <div class="home_about_item">
-          <div class="home_about_item_des txt_16">
-            <p>“We pour our hearts into every recipe, blending creativity with love to make cakes that are as meaningful as they are beautiful. From birthdays to weddings, each creation is a celebration of happiness, made to bring smiles and sweet memories to every table.</p>
-          </div>
-          <a href="#" class="home_about_item_link ">
-            <div class="home_about_item_link_txt txt_uppercase txt_16">Read more</div>
-            <div class="home_hero_des_link_icon img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
-            </div>
-          </a>
-          <div class="home_about_item_border"></div>
-        </div>
-
-      </div>
-      <div class="home_about_slide swiper">
-        <div class="home_about_slide_wrap swiper-wrapper">
-          <div class="home_about_slide_item swiper-slide">
-            <div class="home_about_slide_item_img img_full"> 
-              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
-            </div>
-            <div class="home_about_slide_item_info">
-              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
-              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
-              <a href="#" class="home_about_slide_item_info_icon img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
-              </a>
-            </div>
-          </div>
-           <div class="home_about_slide_item swiper-slide">
-            <div class="home_about_slide_item_img img_full"> 
-              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
-            </div>
-            <div class="home_about_slide_item_info">
-              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
-              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
-              <a href="#" class="home_about_slide_item_info_icon img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
-              </a>
-            </div>
-          </div>
-           <div class="home_about_slide_item swiper-slide">
-            <div class="home_about_slide_item_img img_full"> 
-              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
-            </div>
-            <div class="home_about_slide_item_info">
-              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
-              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
-              <a href="#" class="home_about_slide_item_info_icon img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
-              </a>
-            </div>
-          </div>
-           <div class="home_about_slide_item swiper-slide">
-            <div class="home_about_slide_item_img img_full"> 
-              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
-            </div>
-            <div class="home_about_slide_item_info">
-              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
-              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
-              <a href="#" class="home_about_slide_item_info_icon img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
-              </a>
-            </div>
-          </div>
-           <div class="home_about_slide_item swiper-slide">
-            <div class="home_about_slide_item_img img_full"> 
-              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
-            </div>
-            <div class="home_about_slide_item_info">
-              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
-              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
-              <a href="#" class="home_about_slide_item_info_icon img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
-              </a>
-            </div>
-          </div>
-           <div class="home_about_slide_item swiper-slide">
-            <div class="home_about_slide_item_img img_full"> 
-              <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="">
-            </div>
-            <div class="home_about_slide_item_info">
-              <div class="home_about_slide_item_info_title txt_24">Kid Cake</div>
-              <div class="home_about_slide_item_info_des txt_14">Making every birthday unforgettable!</div>
-              <a href="#" class="home_about_slide_item_info_icon img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="">
-              </a>
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cake.webp" alt="">
             </div>
           </div>
         </div>

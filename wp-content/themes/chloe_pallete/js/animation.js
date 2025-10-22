@@ -1,6 +1,11 @@
 const parseRem = (input) => {
   return (input / 10) * parseFloat(getComputedStyle(document.querySelector('html')).fontSize)
 }
+  const viewport = {
+        w: window.innerWidth,
+        h: window.innerHeight,
+    };
+
 function getScreenType() {
   const width = window.innerWidth;
   let type = width > 991 ? 'dsk' : window.innerWidth > 767 ? 'tb' : 'mb';
