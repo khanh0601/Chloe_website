@@ -403,7 +403,7 @@ h1, h2{
   background-color: transparent;
   padding-block: 1.2rem;
   color: white;
-  transition: transform .4s ease, border-color .4s ease;
+  transition: transform .4s ease, border-color .4s ease, background-color .4s ease;
   border-bottom: 1px solid transparent;
   &.on_hide {
     transform: translateY(-102%);
@@ -425,6 +425,7 @@ h1, h2{
 .header_logo_inner{
   width: 9.3rem;
   transition: color .4s ease;
+  color: currentColor;
   svg{
     width: 100%;
   }

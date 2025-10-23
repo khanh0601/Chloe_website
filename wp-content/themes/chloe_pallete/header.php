@@ -73,7 +73,7 @@
 
   <!-- Header -->
   <header>
-      <div class="header on_scroll">
+      <div class="header ">
         <div class="kl_container">
           <div class="header_inner">
             <div class="header_menu">
@@ -252,7 +252,7 @@
                   </svg>
 
                   </div>
-                  <div class="header_icon_item_num txt_14 color_white">(<span>0</span>)</div>
+                  <div class="header_icon_item_num txt_14">(<span>0</span>)</div>
                 </div>
               </div>
             </div>
