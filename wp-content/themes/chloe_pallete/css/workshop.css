@@ -1,0 +1,133 @@
+.workshop_content{
+    padding-top: 22.5rem;
+}
+.workshop_content_title{
+    margin-bottom: 7.5rem;
+    font-size: 14rem;
+}
+.workshop_content_list_card{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 6.5rem;
+
+}
+.workshop_content_list_card_item{
+    width: calc(25% - 1.5rem);
+    position: relative;
+}
+.workshop_content_list_card_item_info{
+    display: flex;
+    margin-bottom: 1.5rem;
+    .workshop_content_list_card_item_info_item{
+        padding-inline: 1rem;
+        border-right: 1px solid #CCCCCC;
+    }
+    .workshop_content_list_card_item_info_item:first-child{
+        padding-left: 0;
+    }
+    .workshop_content_list_card_item_info_item:last-child{
+        padding-right: 0;
+        border-right: 0;
+    }
+    .workshop_content_list_card_item_title{
+        margin-bottom: 1.5rem;
+    }
+    
+}
+.workshop_content_list_card_item_img{
+    margin-bottom: 1.5rem;
+}
+.workshop_content_list_paging{
+    margin-inline: auto;
+    width: 58.5rem;
+    display: flex;
+    margin-bottom: 10.5rem;
+    justify-content: space-between;
+}
+.workshop_content_list_paging_num_txt{
+    color: #1B1B1B99;
+    transition: all .4s ease;
+    padding-inline: .5rem;
+    cursor: pointer;
+    &.active, &:hover{
+        color: #1b1b1b;
+        text-decoration: underline;
+    }
+}
+.workshop_content_list_paging_num{
+    display: flex;
+    gap: 3.5rem;
+}
+.workshop_content_list_paging_prev{
+    cursor: pointer;
+    &:hover{
+        color: #1b1b1b;
+        text-decoration: underline;
+    }
+}
+@media screen and (max-width:991px) {
+    .workshop_content_list_card_item_top{
+        top: 1.5rem;
+        left: 1.5rem;
+    }
+    .workshop_content_list_card{
+        gap: 1.5rem;
+        margin-bottom: 4.5rem;
+    }
+    .workshop_content_list_card_item{
+        width: calc(33.33% - 1rem);
+    }
+    .workshop_content_list_search_left, .workshop_content_list_search_right_sortby, .workshop_content_list_search_right_search{
+        width: 30rem;
+    }
+    .workshop_content_list_search{
+        flex-direction: column;
+        row-gap: 2rem;
+    }
+    .workshop_content_list_search_right_search{
+        input{
+            font-size: 1.3rem;
+        }
+    }
+    .workshop_content_list_search_right_sortby{
+        align-self: center;
+    }
+    .workshop_content{
+        padding-top: 8.5rem;
+    }
+    .workshop_content_title {
+        font-size: 8rem;
+        margin-bottom: 4rem;
+    }
+    .workshop_content_list_paging{
+        width: 40rem;
+        margin-bottom: 5rem;
+    }
+    .workshop_content_list_paging_num{
+        gap: 1.5rem;
+    }
+    .workshop_content_list_card_item_info_item {
+        font-size: 1rem;
+    }
+    .workshop_content_list_card_item_info{
+        margin-bottom: .5rem;
+    }
+}
+@media screen and (max-width:767px){
+    .workshop_content_list_card_item{
+        width: 100%;
+    }
+    .workshop_content_list_search_right{
+        flex-direction: column;
+    }
+    .workshop_content_list_search_right_sortby{
+        width: 100%;
+    }
+    .workshop_content_list_search_right_search{
+        width: 100%;
+    }
+    .workshop_content_list_search_left{
+        width: 100%;
+    }
+}

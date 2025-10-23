@@ -10,6 +10,7 @@ p{
 a{
   text-decoration: none;
   display: block;
+  color: #3B3B3B;
 }
 @font-face {
   font-family: "Figtree";
@@ -24,6 +25,12 @@ a{
   src: url("../fonts/Figtree-Medium.woff2");
 }
 @font-face {
+  font-family: "Figtree";
+  font-weight: 600;
+  font-style: normal;
+  src: url("../fonts/Figtree-SemiBold.woff2");
+}
+@font-face {
   font-family: "Anton";
   font-weight: 400;
   font-style: normal;
@@ -31,6 +38,21 @@ a{
 }
 *{
   box-sizing: border-box;
+}
+.border_line{
+  position: relative;
+  width: max-content;
+  &>div{
+    content: "";
+    background-color: #7F7F7F;
+    width: 0;
+    height: 1px;
+    position: absolute;
+    transition: all .3s ease;
+  }
+  &:hover>div{
+    width: 100%;
+  }
 }
 body {
   margin: 0 !important;
@@ -107,6 +129,9 @@ h1, h2{
     width: 100%;
   }
 }
+.svg_full{
+  width: 100%;
+}
 .block_title{
   position: relative;
   padding-left: 2rem;
@@ -125,7 +150,6 @@ h1, h2{
 .txt_title{
   font-size: 5.2rem;
   line-height: 1.05em;
-  text-transform: uppercase;
   font-weight: 500;
   color: #1D1D1D;
 }
@@ -178,7 +202,7 @@ h1, h2{
   margin-right: calc(var(--padding-container)*-1);
 }
 .img_full{
-  display: flex !important;
+  display: flex;
 }
 .img_full img{
   width: 100%;
@@ -610,6 +634,9 @@ footer{
     padding: 1.3rem 0 1.3rem 1.6rem;
     flex: 1;
   }
+  input:focus{
+    outline: none;
+  }
   button{
     background-color: #0F2A1D;
     border: none;
@@ -640,9 +667,6 @@ footer{
 .footer_site_right_col_item{
   margin-bottom: 1.6rem;
   transition: all .4s ease;
-  &:hover{
-    text-decoration: underline;
-  }
 }
 .footer_slogan_txt{
   font-family: "Anton";
@@ -674,6 +698,17 @@ footer{
 }
 .footer_copyright_right_img{
   width: 2.4rem;
+}
+.footer_copyright_right_img{
+  svg{
+    color: #7F7F7F;
+  }
+  &:hover svg{
+    color:#1D1D1D;
+  }
+}
+.footer_site_right_col_item{
+  position: relative;
 }
 @media screen and (max-width:991px) {
   .footer_slogan_txt{

@@ -1058,9 +1058,9 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500"> JAN 22, 2025</div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">Cost: $110</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">WoRKSHOPS </div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500"> JAN 22, 2025</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">Cost: $110</div>
               </div>
               <div class="home_workshop_slide_item_title txt_title_color txt_wh_500 txt_24">Vintage Cake Workshop</div>
               <div class="home_workshop_slide_item_des txt_16">Unleash your inner cake artist at our Vintage Cake Masterclass! Perfect for passionate bakers ready to level up their decorating skills and create edible art with heart.</div>
@@ -1070,9 +1070,9 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500"> JAN 22, 2025</div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">Cost: $110</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">WORKSHOPS </div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500"> JAN 22, 2025</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">Cost: $110</div>
               </div>
               <div class="home_workshop_slide_item_title txt_title_color txt_wh_500 txt_24">Vintage Cake Workshop</div>
               <div class="home_workshop_slide_item_des txt_16">Unleash your inner cake artist at our Vintage Cake Masterclass! Perfect for passionate bakers ready to level up their decorating skills and create edible art with heart.</div>
@@ -1082,9 +1082,9 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500"> JAN 22, 2025</div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">Cost: $110</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">WORKSHOPS </div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500"> JAN 22, 2025</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">Cost: $110</div>
               </div>
               <div class="home_workshop_slide_item_title txt_title_color txt_wh_500 txt_24">Vintage Cake Workshop</div>
               <div class="home_workshop_slide_item_des txt_16">Unleash your inner cake artist at our Vintage Cake Masterclass! Perfect for passionate bakers ready to level up their decorating skills and create edible art with heart.</div>
@@ -1094,9 +1094,9 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500"> JAN 22, 2025</div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">Cost: $110</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">WORKSHOPS </div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500"> JAN 22, 2025</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">Cost: $110</div>
               </div>
               <div class="home_workshop_slide_item_title txt_title_color txt_wh_500 txt_24">Vintage Cake Workshop</div>
               <div class="home_workshop_slide_item_des txt_16">Unleash your inner cake artist at our Vintage Cake Masterclass! Perfect for passionate bakers ready to level up their decorating skills and create edible art with heart.</div>
@@ -1106,9 +1106,9 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500"> JAN 22, 2025</div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">Cost: $110</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">WORKSHOPS </div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500"> JAN 22, 2025</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">Cost: $110</div>
               </div>
               <div class="home_workshop_slide_item_title txt_title_color txt_wh_500 txt_24">Vintage Cake Workshop</div>
               <div class="home_workshop_slide_item_des txt_16">Unleash your inner cake artist at our Vintage Cake Masterclass! Perfect for passionate bakers ready to level up their decorating skills and create edible art with heart.</div>
@@ -1118,9 +1118,9 @@ wp_enqueue_script( 'home-js', get_template_directory_uri() . '/js/home.js');
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_workshop.webp" alt="">
               </div>
               <div class="home_workshop_slide_item_info">
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">WORKSHOPS </div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500"> JAN 22, 2025</div>
-                <div class="home_workshop_slide_item_info_item txt_14 txt_wh_500">Cost: $110</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">WORKSHOPS </div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500"> JAN 22, 2025</div>
+                <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">Cost: $110</div>
               </div>
               <div class="home_workshop_slide_item_title txt_title_color txt_wh_500 txt_24">Vintage Cake Workshop</div>
               <div class="home_workshop_slide_item_des txt_16">Unleash your inner cake artist at our Vintage Cake Masterclass! Perfect for passionate bakers ready to level up their decorating skills and create edible art with heart.</div>

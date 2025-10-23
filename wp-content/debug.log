@@ -57,3 +57,4 @@
 [21-Oct-2025 15:23:30 UTC] PHP Notice:  Trying to access array offset on value of type bool in D:\Chloe_website\wp-content\themes\chloe_pallete\partials\section-banner.php on line 6
 [21-Oct-2025 15:23:30 UTC] PHP Notice:  Undefined variable: share_link in D:\Chloe_website\wp-content\themes\chloe_pallete\page.php on line 52
 [21-Oct-2025 15:23:30 UTC] PHP Notice:  Undefined variable: share_link in D:\Chloe_website\wp-content\themes\chloe_pallete\page.php on line 55
+[23-Oct-2025 07:10:13 UTC] PHP Parse error:  syntax error, unexpected '" alt="' (T_CONSTANT_ENCAPSED_STRING) in D:\Chloe_website\wp-content\themes\chloe_pallete\page-templates\shop.php on line 27

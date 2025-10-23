@@ -537,6 +537,9 @@ body{
 .home_review_left_subtitle{
     margin-bottom: 1.5rem;
 }
+.home_review_left_amount_txt {
+    font-weight: 600;
+}
 .home_review{
     padding-block: 12rem;
 }
@@ -634,6 +637,7 @@ body{
         border-radius: .5rem;
         appearance: none;
     }
+
     input::placeholder,
     textarea::placeholder {
     color: #BABABA;
@@ -641,6 +645,11 @@ body{
     }
     .home_hero_des_link {
         width: 13.4rem;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
     }
 }
 .home_contact_form_info{
@@ -706,6 +715,20 @@ body{
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
+}
+.remove-file {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 @media screen and (max-width:991px){
