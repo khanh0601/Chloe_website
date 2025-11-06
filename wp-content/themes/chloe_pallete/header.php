@@ -36,7 +36,7 @@
   wp_enqueue_script('scrolltrigger', get_template_directory_uri() . '/js/ScrollTrigger.min.js',array(),SITE_VERSION,true);
   wp_enqueue_script('lenis', get_template_directory_uri() . '/js/lenis.min.js',array(),SITE_VERSION,true);
   wp_enqueue_script('animation', get_template_directory_uri() . '/js/animation.js',array(),SITE_VERSION,true);
-  wp_enqueue_script('global', get_template_directory_uri() . '/js/global.js');
+  // wp_enqueue_script('global', get_template_directory_uri() . '/js/global.js');
   wp_enqueue_script('splitType', get_template_directory_uri() . '/js/split-type.js',array(),null,true);
 	wp_head();
 

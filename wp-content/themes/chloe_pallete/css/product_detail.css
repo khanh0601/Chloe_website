@@ -1,0 +1,18 @@
+.productdetail_breadcrum_item{
+    color: #1d1d1d;
+    width: max-content;
+    padding-inline: 1.2rem;
+    border-right: 1px solid #00000080;
+    line-height: 1.5;
+    &.current{
+        border: none;
+        color: #7F7F7F;
+    }
+}
+.productdetail_breadcrum{
+    margin-top: 15.5rem;
+    padding-bottom: 4rem;
+}
+.productdetail_breadcrum_inner{
+    display: flex;
+}

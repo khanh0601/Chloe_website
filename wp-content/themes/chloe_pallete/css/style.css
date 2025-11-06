@@ -47,8 +47,10 @@ a{
     background-color: #7F7F7F;
     width: 0;
     height: 1px;
+    left: 0;
     position: absolute;
     transition: all .3s ease;
+    bottom: 0;
   }
   &:hover>div{
     width: 100%;
@@ -58,6 +60,7 @@ body {
   margin: 0 !important;
   font-family: 'Figtree';
   color: #3B3B3B;
+  background-color: #F7FCEF;
 }
 .kl_container {
   width: 100%;
@@ -183,6 +186,22 @@ h1, h2{
   font-size: 2.4rem;
   line-height: 1.725em;
 }
+.txt_32{
+  font-size: 3.2rem;
+  line-height: 1.05;
+}
+.txt_40{
+  font-size: 4rem;
+  line-height: 1.5;
+}
+.txt_44{
+  font-size: 4.4rem;
+  line-height: 1.05;
+}
+.txt_48{
+  font-size: 4.8rem;
+  line-height: 1.5;
+}
 .txt_64{
   font-size: 6.4rem;
   line-height: 1.05em;
@@ -278,6 +297,18 @@ h1, h2{
 .txt_24{
   font-size: 1.8rem;
 }
+.txt_32{
+  font-size: 2.8rem;
+}
+.txt_40{
+  font-size: 2.5rem;
+}
+.txt_44{
+  font-size: 3.5rem;
+}
+.txt_48{
+  font-size: 4rem;
+}
 .txt_64{
   font-size: 3rem;
 }
@@ -350,6 +381,18 @@ h1, h2{
 }
 .txt_24{
   font-size: 1.6rem;
+}
+.txt_32{
+  font-size: 2.2rem;
+}
+.txt_40{
+  font-size: 2.3rem;
+}
+.txt_44{
+  font-size: 2.4rem;
+}
+.txt_48{
+  font-size: 2.6rem;
 }
 .txt_64{
   font-size: 2.2rem;
@@ -751,7 +794,25 @@ footer{
   }
   .footer_site_left, .footer_site_right{
     width: 100%;
-    gap: 1rem;
+    gap: 0;
+  }
+  .footer_site_right{
+    flex-wrap: wrap;
+    row-gap: 2rem;
+  }
+  .footer_site_right_col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+  }
+  .footer_site_right_col_item_inner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer_site_right_col_title {
+    font-size: 1.4rem;
   }
   .footer_site{
     padding-top: 4rem;

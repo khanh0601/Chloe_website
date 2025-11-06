@@ -315,6 +315,7 @@ body{
     &.img_full{
         border-radius: 20rem 20rem 0 0;
         overflow: hidden;
+        height: 100%;
     }
 }
 .home_about_item_des{
@@ -386,6 +387,9 @@ body{
     .home_about_slide_item_info{
         padding-right: 5rem;
     }
+    .home_about_content{
+        margin-bottom: 4rem;
+    }
 }
 @media screen and (max-width:767px){
     .home_about{
@@ -416,6 +420,10 @@ body{
     }
     .home_about_slide_item_info_icon {
         width: 1.5rem;
+    }
+    .home_about_content{
+        margin-bottom: 1rem;
+        width: 100%;
     }
 }
 
