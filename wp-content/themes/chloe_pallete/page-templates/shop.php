@@ -27,7 +27,7 @@ wp_enqueue_script( 'shop-js', get_template_directory_uri() . '/js/shop.js');
                   ><img src="<?php echo get_template_directory_uri(); ?>/images/icon_plus.svg" alt=""
                 /></span>
               </button>
-              <div class="filter-dropdown txt_16">
+              <div class="filter-dropdown shop_category txt_16">
                 <label
                   ><input type="checkbox" name="category" value="birthday" />
                   Birthday Cakes</label

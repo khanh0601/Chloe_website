@@ -182,12 +182,12 @@ const mainScript = () => {
           el: ".home_seller_pagination",
           type: "progressbar",
         },
-        speed: 400,
-        // autoplay: {
-        //   delay: 0,
-        //   disableOnInteraction: false,
-        //   // pauseOnMouseEnter: true
-        // },
+        speed: 4000,
+        autoplay: {
+          delay: 0,
+          disableOnInteraction: false,
+          // pauseOnMouseEnter: true
+        },
         breakpoints: {
           768: {
             slidesPerView: 2.7,

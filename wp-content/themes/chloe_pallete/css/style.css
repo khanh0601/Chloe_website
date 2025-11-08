@@ -785,6 +785,11 @@ footer{
   .footer_top{
     flex-wrap: wrap;
   }
+  .footer_top{
+    .footer_top_item:first-child, .footer_top_item:nth-child(2){
+      border-bottom: 1px solid #3333331A;
+    }
+  }
   .footer_top_item{
     width: 50%;
   }

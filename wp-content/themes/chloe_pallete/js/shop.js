@@ -21,7 +21,9 @@ $(document).on('click', function(e) {
     $('.filter-dropdown').removeClass('active');
   }
 });
-
+$('.shop_category input[type="checkbox"]').on('change', function() {
+        $(this).parent('label').toggleClass('active', this.checked);
+    });
 // Search functionality
 $('.search-input').on('input', function() {
   var searchTerm = $(this).val().toLowerCase();

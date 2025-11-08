@@ -67,6 +67,16 @@ add_action('edit_form_after_title', function($post) use($editorSettings) {
 
 
     }
+    else if($post->post_type == 'page' && basename(get_page_template())=="workshop_detail.php") {
+        remove_post_type_support( 'page', 'editor' );
+
+
+        $form = tr_form();
+        echo $form->editor('workshop_detail_des')->setLabel("Mô tả");
+        echo endBox();
+
+
+    }
 
 
     else if($post->post_type == 'page' && basename(get_page_template())=="thanks.php") {

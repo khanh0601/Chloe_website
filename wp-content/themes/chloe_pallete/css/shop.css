@@ -37,6 +37,44 @@
         outline: none;
     }
 }
+.shop_category{
+    input{
+        display: none;
+    }
+    .active{
+        &::after{
+            position: absolute;
+            width: .6rem;
+            height: .6rem;
+            /* border-radius: 50%; */
+            background-color: #1b1b1b;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            content: "";
+        }
+    }
+}
+.filter-dropdown{
+    label{
+        position: relative;
+        &::before{
+            content: "";
+            position: absolute;
+            width: 0;
+            bottom: 0;
+            height: 1px;
+            left: 0;
+            background-color: #1b1b1b;
+            transition: all .4s ease;
+        }
+        &:hover{
+            &::before{
+                width: 100%;
+            }
+        }
+    }
+}
 
 .filter-icon {
   width: 1.6rem;
@@ -97,9 +135,6 @@
   transition: background 0.2s;
 }
 
-.filter-dropdown label:hover {
-  background: #F5F0E8;
-}
 
 .filter-dropdown input[type="checkbox"],
 .filter-dropdown input[type="radio"] {
