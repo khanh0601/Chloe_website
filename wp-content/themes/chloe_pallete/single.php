@@ -3,145 +3,90 @@
  * The Template for displaying all single posts.
  *
  * @package WordPress
- * @subpackage Twenty_Twelve
- * @since Twenty Twelve 1.0
+ * @subpackage chloe_pallete
+ * @since chloe_pallete 1.0
  */
 
-global $disableFullpage;
-$disableFullpage= true;
-global $pageClass;
-$pageClass= "page-news-bg";
-
 get_header();
+wp_enqueue_style( 'workshop_detail-css', get_template_directory_uri() . '/css/workshop_detail.css');
+wp_enqueue_script( 'workshop_detail-js', get_template_directory_uri() . '/js/workshop_detail.js');
 
-$blog_page_link= get_permalink(get_option( 'page_for_posts' ));
+$pageID = get_queried_object_id();
+// Lấy ACF fields - KHÔNG CÓ GROUP, LẤY TRỰC TIẾP
+$workshop_name = get_field('workshops', get_the_ID());
+$workshop_date = get_field('date', get_the_ID());
+$workshop_time = get_field('time', get_the_ID());
+$workshop_location = get_field('location', get_the_ID());
+$workshop_cost = get_field('cost', get_the_ID());
 
-$categories = get_categories([
-    'hide_empty'       => 0,
-]);
+    // Lấy dữ liệu bài viết
+$post_title = get_the_title();
+$post_thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'full');
+$post_content = get_the_content();
 
+// Lấy category/term của post
+// $categories = get_the_terms(get_the_ID(), 'category');
+$category_link = $categories ? get_term_link($categories[0]) : '#';
+$category_name = $categories ? $categories[0]->name : 'Workshop';
 
-while ( have_posts() ) : the_post(); 
-
-$cur_post_id= get_the_ID();
-$cur_post_type= get_post_type();
-$cur_post_link= get_permalink();
-$cur_post_title =get_the_title();
-$cur_post_content =get_the_content();
-$description = get_the_excerpt();
-$post_date = date('d-m-Y', strtotime($post->post_date));
-$term = get_the_category($cur_post_id);
-if(!empty($term)){
-    $term = $term[0];
-}
-$cur_cat_id=$term->term_id;
-
-$images = wp_get_attachment_image_src(get_post_thumbnail_id($cur_post_id),'full', false, false);
-if(empty($images)){
-    $images =get_template_directory_uri()."/images/default-".$post->post_type.".jpg";
-}
-else{
-    $images= $images[0];
-}
-
-endwhile; 
-
-$share_link =get_permalink();
-
-
-
-$sectionImageID = tr_taxonomies_field('banner','category', $cur_cat_id);
-$sectionImage =  wp_get_attachment_image_src($sectionImageID,'full', false, false)[0];
-
-$allCate = get_categories(['hide_empty'      => true]);
-
+$workshop_query = new WP_Query($args);
 ?>
-
-
-<section  class=" animatedParent animateOnce section-post-detail section-top dark" data-title="<?= $title ?>" >
-
-    <div class="section-padding  div_zindex">
-        <div class="container-d">
-            <div class=" section-page-nav animated <?= defaultAnimation(0) ?>">
-                <ul>
-                <?php foreach ($allCate as $key => $category) { ?>
-                    <li class="<?= $category->term_id==$cur_cat_id?"active":"" ?>"><a href="<?=  get_category_link( $category->term_id ) ?>"><?= $category->name  ?></a></li>
-                <?php } ?>
-                </ul>
+    <section class="productdetail_breadcrum">
+        <div class="kl_container">
+            <div class="productdetail_breadcrum_inner">
+                <a href="/" class="productdetail_breadcrum_item border_line  txt_14">
+                    <div class="productdetail_breadcrum_item_overlay"></div>
+                    Home</a>
+                <a href="#" class="productdetail_breadcrum_item border_line txt_14">
+                    <div class="productdetail_breadcrum_item_overlay"></div>
+                    Workshop</a>
+                <div class="productdetail_breadcrum_item current txt_14"><?php echo esc_html($post_title); ?></div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-xl-10">
-                    <div class="section-content-wrapper post-detail ">
-                        <div class="inner relative">
-                            <h1 class="page-title font-2  post-title <?= defaultAnimation(1,"fadeInUpShort") ?>"><?= $cur_post_title ?></h1>
-                            <div class="post-attrs attr-items <?= defaultAnimation(1,"fadeInUpShort") ?>">
-                                <div class="attr post-cate">
-                                    <?= $term->name ?>
-                                </div>
-                                <div class="attr date-time attr  "><i class="fal fa-calendar-alt"></i> <?= $post_date ?></div>
-                            </div>
-
-                            <div class="editor-content font-1 <?= defaultAnimation(2,"fadeInUpShort") ?>">
-                                <?= apply_filters('the_content', $cur_post_content) ?>
-                            </div>
-                        </div>
+        </div>
+    </section>
+    <section class="workshopdetail_content">
+        <div class="kl_container">
+            <div class="workshopdetail_content_title txt_title"><?php echo esc_html($post_title); ?></div>
+            <div class="workshopdetail_content_img img_full">
+                 <?php if ($post_thumbnail): ?>
+                    <img src="<?php echo esc_url($post_thumbnail); ?>" alt="<?php echo esc_attr($post_title); ?>">
+                <?php else: ?>
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/workshop_detail.webp" alt="">
+                <?php endif; ?>
+            </div>
+            <div class="workshopdetail_content_info">
+                <div class="workshopdetail_content_info_item">
+                    <div class="workshopdetail_content_info_item_title txt_center txt_14 txt_uppercase txt_wh_500">WORKSHOPS </div>
+                    <div class="workshopdetail_content_info_item_des txt_16 txt_center txt_wh_500"> <?php echo esc_html($workshop_name ?: 'Vintage Cake 1'); ?></div>
+                </div>
+                <div class="workshopdetail_content_info_item">
+                    <div class="workshopdetail_content_info_item_title txt_center txt_14 txt_uppercase txt_wh_500">Date </div>
+                    <div class="workshopdetail_content_info_item_des txt_16 txt_center txt_wh_500"><?php echo $workshop_date ? nl2br(esc_html($workshop_date)) : 'TBA'; ?> -<br> <?php echo $workshop_time ? nl2br(esc_html($workshop_time)) : 'time'; ?></div>
+                </div>
+                <div class="workshopdetail_content_info_item">
+                    <div class="workshopdetail_content_info_item_title txt_center txt_14 txt_uppercase txt_wh_500">Location </div>
+                    <div class="workshopdetail_content_info_item_des txt_16 txt_center txt_wh_500"> <?php echo $workshop_location ? nl2br(esc_html($workshop_location)) : 'TBA'; ?></div>
+                </div>
+                <div class="workshopdetail_content_info_item">
+                    <div class="workshopdetail_content_info_item_title txt_center txt_14 txt_uppercase txt_wh_500">Cost </div>
+                    <div class="workshopdetail_content_info_item_des txt_16 txt_center txt_wh_500"><?php echo esc_html($workshop_cost ?: '$110'); ?></div>
+                </div>
+                <a href="#" class="workshopdetail_content_info_button">
+                    <div class="workshopdetail_content_info_button_txt txt_16 txt_uppercase txt_wh_500 color_white">Join now</div>
+                    <div class="workshopdetail_content_info_button_icon img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="">
                     </div>
-                </div>
+                </a>
+            </div>
+            <div class="workshopdetail_content_des_wrap">
+                <div class="workshopdetail_content_des"> <?php echo wp_kses_post($post_content); ?></div>
+                <a href="#" class="workshopdetail_content_info_button bottom">
+                        <div class="workshopdetail_content_info_button_txt txt_16 txt_uppercase txt_wh_500 color_white">Join now</div>
+                        <div class="workshopdetail_content_info_button_icon img_full">
+                            <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="">
+                        </div>
+                </a>
             </div>
         </div>
-    </div>
-</section>
-
-
-<?php 
-    $args = array(
-        'numberposts' => 9,
-        'exclude' => array($cur_post_id),
-        'post_type' => $cur_post_type,
-        'post_status' => 'publish',
-        'suppress_filters' => true,
-        'category' => $cur_cat_id,
-    );
-    $recent_posts = wp_get_recent_posts( $args, OBJECT );
-?>
-<?php if(!empty($recent_posts)) { ?>
-<section  class="section-post-other animatedParent animateOnce  fp-noscroll fp-auto-height-responsive overflow-hide"  data-nav="false" >
-    <div class="container-d">
-        <hr>
-        <div class="section-padding pt-3">
-            <h3 class="section-title font-2 line-0  text-center animated fadeInUpShort delay-250"><strong><?= __( 'Tin liên quan', 'tbs' ) ?></strong></h3>
-            <div class="items post-list  animated fadeInUpShort delay-500">
-                <div class="swiper swiper-default post-slide <?= !empty($cateId)?"post-slide-cate":"" ?>" >
-                  <div class="swiper-wrapper">
-                    <?php
-
-                        $index=0;
-                        foreach ($recent_posts as $key => $post) {
-                            echo '<div class="swiper-slide" >';
-                            $index++;
-                            nmc_get_template_part( 'partials/content-news', ["post"=>$post,"index"=>$index] );
-                            echo '</div>';
-                        }
-                    ?>
-                    <?php wp_reset_postdata(); ?>
-
-                  </div>
-                  <div class="slide-control">
-                      <div class="swiper-pagination  mt-4"></div>
-                  </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-<?php } ?>
-
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        $(".menu-item.menu-tin-tuc").addClass('current-menu-item');
-    });
-</script>
-
-<?php 
-get_footer();
+    </section>
+<?php get_footer(); ?>

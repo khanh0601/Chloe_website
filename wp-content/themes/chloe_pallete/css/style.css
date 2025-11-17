@@ -846,3 +846,131 @@ footer{
     margin-bottom: .8rem;
   }
 }
+
+
+/* menu_cart */
+.menu_cart{
+  pointer-events: none;
+  transition: all .6s ease;
+  opacity: 0;
+  &.active{
+    transform: translateX(0);
+    pointer-events: all;
+    opacity: 1;
+    .menu_cart_overlay{
+      opacity: 1;
+    }
+    .menu_cart_inner{
+      transform: translateX(0);
+    }
+  }
+}
+.menu_cart_overlay{
+  background-color: #1D1D1D80;
+  z-index: 1111;
+  position: absolute;
+  transition: all .6s ease;
+  inset: 0;
+  opacity: 0;
+}
+.menu_cart_title{
+  font-weight: 500;
+  color: #1b1b1b;
+  margin-bottom: 1.6rem;
+}
+.menu_cart_content_item_info_price_old{
+  color: #7F7F7F;
+  text-decoration: line-through;
+}
+.menu_cart_content_item_img{
+  width: 8.7rem;
+}
+.menu_cart_content_item{
+  padding-block: 3.2rem;
+  display: flex;
+  border-bottom: 1px solid #CCCCCC;
+  position: relative;
+  gap: 3.2rem;
+}
+.menu_cart_content_item_remove{
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  bottom: 3.2rem;
+}
+.menu_cart_icon{
+  width: 2.4rem;
+  cursor: pointer;
+
+}
+.menu_cart_head{
+  display: flex;
+  justify-content: space-between;
+  align-items:flex-start;
+}
+.menu_cart_inner{
+  width: 59.6rem;
+  background-color: #F7FCEF;
+  padding: 3.2rem;
+  position: relative;
+  z-index: 1000000;
+  transform: translateX(100%);
+  transition: all .6s ease;
+}
+.menu_cart{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: right;
+  z-index: 1000000000;
+}
+.menu_cart_content_item_img_overlay{
+  padding-top: 126.43%;
+}
+.menu_cart_content_item_img{
+  height: max-content;
+}
+.menu_cart_content_item_info_amount, .menu_cart_content_item_info_price{
+  display: flex;
+  gap: 1.1rem;
+}
+.menu_cart_content_item_info_price{
+  gap: .4rem;
+}
+.menu_cart_content_item_info_price{
+  margin-bottom: 1.4rem;
+}
+.menu_cart_content_item_info_cate{
+  margin-bottom: .4rem;
+}
+.menu_cart_content_item_info_name{
+  margin-bottom: .4rem;
+}
+.menu_cart_button_total{
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+.menu_cart_button_check{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: .8rem;
+  color: #fff;
+  border-radius: 4.5rem;
+  background-color: #0F2A1D;
+  padding-block: 1.3rem ;
+  cursor: pointer;
+}
+.menu_cart_button_check_icon{
+  width: 2rem;
+}
+.menu_cart_button{
+  position: absolute;
+  bottom: 3.2rem;
+  background-color: #F7FCEF;
+  border-top: 1px solid #ccc;
+  left: 3.2rem;
+  right: 3.2rem;
+}

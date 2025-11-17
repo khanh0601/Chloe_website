@@ -357,3 +357,27 @@ function archive_posttype() {
 
 }
 add_action( 'template_redirect', 'archive_posttype' );
+
+
+// Xóa "category" khỏi URL
+function remove_category_from_url($string) {
+    return str_replace('/category/', '/', $string);
+}
+add_filter('category_link', 'remove_category_from_url');
+
+// Đảm bảo WordPress hiểu URL mới
+function add_category_rewrite_rules() {
+    global $wp_rewrite;
+    $wp_rewrite->extra_permastructs['category']['struct'] = '/%category%';
+}
+add_action('init', 'add_category_rewrite_rules');
+
+// Redirect URL cũ sang URL mới
+function redirect_old_category_url() {
+    if (strpos($_SERVER['REQUEST_URI'], '/category/') !== false) {
+        $new_url = str_replace('/category/', '/', $_SERVER['REQUEST_URI']);
+        wp_redirect(home_url($new_url), 301);
+        exit();
+    }
+}
+add_action('template_redirect', 'redirect_old_category_url');

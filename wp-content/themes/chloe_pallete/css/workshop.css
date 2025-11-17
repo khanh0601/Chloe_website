@@ -35,6 +35,14 @@
     }
     
 }
+.workshop_content_list_card_item_des{
+    max-height: 3em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .workshop_content_list_card_item_img{
     margin-bottom: 1.5rem;
 }

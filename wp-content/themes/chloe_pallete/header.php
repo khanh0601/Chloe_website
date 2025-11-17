@@ -245,7 +245,7 @@
                   </div>
                 </div>
                 
-                <div class="header_icon_item_wrap">
+                <div class="header_icon_item_wrap cart">
                   <div class="header_icon_item img_full">
                   <svg width="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.6 2.20008L3.3 3.93341C3.04251 4.27673 2.91377 4.44839 2.91676 4.59207C2.91936 4.71711 2.97799 4.83437 3.07646 4.91148C3.18962 5.00008 3.40419 5.00008 3.83333 5.00008H16.1667C16.5958 5.00008 16.8104 5.00008 16.9235 4.91148C17.022 4.83437 17.0806 4.71711 17.0832 4.59207C17.0862 4.44839 16.9575 4.27673 16.7 3.93341L15.4 2.20008M4.6 2.20008C4.74667 2.00453 4.82 1.90675 4.91294 1.83623C4.99525 1.77377 5.08846 1.72716 5.18782 1.69879C5.3 1.66675 5.42222 1.66675 5.66667 1.66675H14.3333C14.5778 1.66675 14.7 1.66675 14.8122 1.69879C14.9115 1.72716 15.0047 1.77377 15.0871 1.83623C15.18 1.90675 15.2533 2.00453 15.4 2.20008M4.6 2.20008L3.03333 4.28897C2.83545 4.55281 2.73651 4.68474 2.66625 4.83002C2.6039 4.95893 2.55843 5.09534 2.53096 5.23588C2.5 5.39426 2.5 5.55916 2.5 5.88897L2.5 15.6667C2.5 16.6002 2.5 17.0669 2.68166 17.4234C2.84144 17.737 3.09641 17.992 3.41002 18.1518C3.76654 18.3334 4.23325 18.3334 5.16667 18.3334L14.8333 18.3334C15.7668 18.3334 16.2335 18.3334 16.59 18.1518C16.9036 17.992 17.1586 17.737 17.3183 17.4234C17.5 17.0669 17.5 16.6002 17.5 15.6667V5.88897C17.5 5.55916 17.5 5.39426 17.469 5.23588C17.4416 5.09534 17.3961 4.95893 17.3338 4.83002C17.2635 4.68474 17.1646 4.55282 16.9667 4.28897L15.4 2.20008M13.3333 8.33341C13.3333 9.21747 12.9821 10.0653 12.357 10.6904C11.7319 11.3156 10.8841 11.6667 10 11.6667C9.11594 11.6667 8.2681 11.3156 7.64298 10.6904C7.01786 10.0653 6.66667 9.21747 6.66667 8.33341" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -267,4 +267,70 @@
         </div>
       </div>
   </header>
+  <section class="menu_cart">
+    <div class="menu_cart_overlay"></div>
+    <div class="menu_cart_inner">
+      <div class="menu_cart_head">
+        <div class="menu_cart_title txt_32">Cart (2)</div>
+        <div class="menu_cart_icon img_full">
+          <img src="<?php echo get_template_directory_uri(); ?>/images/icon_close.svg" alt="">
+        </div>
+      </div>
+      <div class="menu_cart_content">
+        <div class="menu_cart_content_item">
+          <div class="menu_cart_content_item_img img_abs">
+            <div class="menu_cart_content_item_img_overlay"></div>
+            <img src="<?php echo get_template_directory_uri(); ?>/images/img_cart.webp" alt="">
+          </div>
+          <div class="menu_cart_content_item_info">
+            <div class="menu_cart_content_item_info_cate txt_12">Chantilly Cake</div>
+            <div class="menu_cart_content_item_info_name txt_title_color txt_wh_500 txt_16">Butter Croissant</div>
+            <div class="menu_cart_content_item_info_price txt_14">
+              <div class="menu_cart_content_item_info_price_new txt_14">$160</div>
+              -
+              <div class="menu_cart_content_item_info_price_old txt_14">$170</div>
+            </div>
+            <div class="menu_cart_content_item_info_amount txt_14">
+              <div class="menu_cart_content_item_info_amount_reduce txt_14">-</div>
+              <div class="menu_cart_content_item_info_amount_txt txt_14">1</div>
+              <div class="menu_cart_content_item_info_amount_increate txt_14">+</div>
+            </div>
+          </div>
+          <div class="menu_cart_content_item_remove txt_14">Remove</div>
+        </div>
+        <div class="menu_cart_content_item">
+          <div class="menu_cart_content_item_img img_full">
+            <img src="<?php echo get_template_directory_uri(); ?>/images/img_cart.webp" alt="">
+          </div>
+          <div class="menu_cart_content_item_info">
+            <div class="menu_cart_content_item_info_cate txt_12">Chantilly Cake</div>
+            <div class="menu_cart_content_item_info_name txt_title_color txt_wh_500 txt_16">Butter Croissant</div>
+            <div class="menu_cart_content_item_info_price txt_14">
+              <div class="menu_cart_content_item_info_price_new txt_14">$160</div>
+              -
+              <div class="menu_cart_content_item_info_price_old txt_14">$170</div>
+            </div>
+            <div class="menu_cart_content_item_info_amount txt_14">
+              <div class="menu_cart_content_item_info_amount_reduce txt_14">-</div>
+              <div class="menu_cart_content_item_info_amount_txt txt_14" >1</div>
+              <div class="menu_cart_content_item_info_amount_increate txt_14">+</div>
+            </div>
+          </div>
+          <div class="menu_cart_content_item_remove txt_14">Remove</div>
+        </div>
+      </div>
+      <div class="menu_cart_button">
+        <div class="menu_cart_button_total">
+          <div class="menu_cart_button_total_txt txt_16 txt_title_color">Subtotal (1 items)</div>
+          <div class="menu_cart_button_total_price txt_24 txt_wh_500 txt_title_color">$160</div>
+        </div>
+        <div class="menu_cart_button_check">
+          <div class="menu_cart_button_check_txt txt_wh_500 color_white txt_16 txt_uppercase">Checkout now</div>
+          <div class="menu_cart_button_check_icon img_full">
+            <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <div  class="fp-custom ">

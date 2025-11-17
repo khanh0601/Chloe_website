@@ -6,6 +6,13 @@ const parseRem = (input) => {
         h: window.innerHeight,
     };
 
+$('.cart').on('click', function() {
+  $('.menu_cart').addClass('active');
+});
+$('.menu_cart_icon').on('click', function() {
+  $('.menu_cart').removeClass('active');
+});
+
 function getScreenType() {
   const width = window.innerWidth;
   let type = width > 991 ? 'dsk' : window.innerWidth > 767 ? 'tb' : 'mb';

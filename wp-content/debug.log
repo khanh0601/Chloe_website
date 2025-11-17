@@ -58,3 +58,140 @@
 [21-Oct-2025 15:23:30 UTC] PHP Notice:  Undefined variable: share_link in D:\Chloe_website\wp-content\themes\chloe_pallete\page.php on line 52
 [21-Oct-2025 15:23:30 UTC] PHP Notice:  Undefined variable: share_link in D:\Chloe_website\wp-content\themes\chloe_pallete\page.php on line 55
 [23-Oct-2025 07:10:13 UTC] PHP Parse error:  syntax error, unexpected '" alt="' (T_CONSTANT_ENCAPSED_STRING) in D:\Chloe_website\wp-content\themes\chloe_pallete\page-templates\shop.php on line 27
+[17-Nov-2025 08:17:13 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:19:25 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:19:25 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:19:25 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:19:25 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:19:25 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:19:25 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:25:00 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 37
+[17-Nov-2025 08:25:00 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 38
+[17-Nov-2025 08:26:03 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 37
+[17-Nov-2025 08:26:03 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 38
+[17-Nov-2025 08:27:32 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 37
+[17-Nov-2025 08:27:32 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 38
+[17-Nov-2025 08:27:47 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 37
+[17-Nov-2025 08:27:47 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 38
+[17-Nov-2025 08:29:35 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 42
+[17-Nov-2025 08:29:35 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 43
+[17-Nov-2025 08:31:43 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 42
+[17-Nov-2025 08:31:43 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 43
+[17-Nov-2025 08:32:46 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 38
+[17-Nov-2025 08:32:46 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 39
+[17-Nov-2025 08:34:10 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 31
+[17-Nov-2025 08:34:10 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 32
+[17-Nov-2025 08:34:58 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:34:58 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:34:58 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:34:58 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:34:58 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 08:35:32 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 31
+[17-Nov-2025 08:35:32 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 32
+[17-Nov-2025 08:38:01 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 31
+[17-Nov-2025 08:38:01 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 32
+[17-Nov-2025 08:38:33 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 28
+[17-Nov-2025 08:38:33 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 29
+[17-Nov-2025 08:39:40 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 28
+[17-Nov-2025 08:39:40 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 29
+[17-Nov-2025 08:42:51 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 28
+[17-Nov-2025 08:42:51 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 29
+[17-Nov-2025 08:49:38 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:49:38 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:23
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:50:05 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:50:05 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:23
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:50:09 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:50:09 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:23
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:50:19 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:50:19 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:23
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 23
+[17-Nov-2025 08:51:59 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 27
+[17-Nov-2025 08:51:59 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:27
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 27
+[17-Nov-2025 08:55:12 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 27
+[17-Nov-2025 08:55:12 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:27
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 27
+[17-Nov-2025 08:57:13 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 43
+[17-Nov-2025 08:57:13 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:43
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 43
+[17-Nov-2025 09:00:52 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 43
+[17-Nov-2025 09:00:52 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:43
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 43
+[17-Nov-2025 09:01:54 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 43
+[17-Nov-2025 09:01:54 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:43
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 43
+[17-Nov-2025 09:05:39 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 27
+[17-Nov-2025 09:05:39 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:27
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 27
+[17-Nov-2025 09:06:21 UTC] PHP Notice:  Undefined variable: workshop_query in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 28
+[17-Nov-2025 09:06:21 UTC] PHP Fatal error:  Uncaught Error: Call to a member function have_posts() on null in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php:28
+Stack trace:
+#0 D:\Chloe_website\wp-includes\template-loader.php(106): include()
+#1 D:\Chloe_website\wp-blog-header.php(19): require_once('D:\\Chloe_websit...')
+#2 D:\Chloe_website\index.php(17): require('D:\\Chloe_websit...')
+#3 {main}
+  thrown in D:\Chloe_website\wp-content\themes\chloe_pallete\category.php on line 28
+[17-Nov-2025 09:17:15 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:15 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:15 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:15 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:29 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:29 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:29 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:29 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:17:29 UTC] PHP Notice:  Trying to access array offset on value of type null in D:\Chloe_website\wp-content\themes\chloe_pallete\typerocket\vendor\typerocket\core\src\Http\Responders\PostsResponder.php on line 40
+[17-Nov-2025 09:19:19 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 29
+[17-Nov-2025 09:19:19 UTC] PHP Notice:  Undefined variable: categories in D:\Chloe_website\wp-content\themes\chloe_pallete\single.php on line 30
