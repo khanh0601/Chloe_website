@@ -77,36 +77,64 @@
         <div class="kl_container">
           <div class="header_inner">
             <div class="header_menu">
-              <a
-                href="#"
-                class="header_menu_item txt_uppercase txt_16 txt_wh_500"
-                >home</a
-              >
-              <a
-                href="#"
-                class="header_menu_item txt_uppercase txt_16 txt_wh_500"
-                >Menu</a
-              >
-              <a
-                href="#"
-                class="header_menu_item txt_uppercase txt_16 txt_wh_500"
-                >Shop</a
-              >
-              <a
-                href="#"
-                class="header_menu_item txt_uppercase txt_16 txt_wh_500"
-                >Our story</a
-              >
-              <a
-                href="#"
-                class="header_menu_item txt_uppercase txt_16 txt_wh_500"
-                >workshop</a
-              >
-              <a
-                href="#"
-                class="header_menu_item txt_uppercase txt_16 txt_wh_500"
-                >contact</a
-              >
+              <?php
+                            // Lấy URL hiện tại
+                            $current_url = home_url($_SERVER['REQUEST_URI']);
+
+                            // Hàm kiểm tra menu active
+                            function is_menu_active($menu_url, $current_url) {
+                                $menu_url = trailingslashit($menu_url);
+                                $current_url = trailingslashit($current_url);
+                                return $menu_url === $current_url;
+                            }
+
+                            // Lấy menu theo TÊN "header"
+                            $menu = wp_get_nav_menu_object('header');
+
+                            if ($menu) {
+                                $menu_items = wp_get_nav_menu_items($menu->term_id);
+
+                                // Tổ chức menu
+                                $menu_list = array();
+                                $menu_children = array();
+
+                                foreach ($menu_items as $item) {
+                                    if ($item->menu_item_parent == 0) {
+                                        $menu_list[$item->ID] = $item;
+                                    } else {
+                                        $menu_children[$item->menu_item_parent][] = $item;
+                                    }
+                                }
+
+                                // Render theo structure của theme
+                                foreach ($menu_list as $parent_id => $parent) {
+                                    $has_children = isset($menu_children[$parent_id]);
+                                    // Kiểm tra parent active
+                                    $is_parent_active = is_menu_active($parent->url, $current_url);
+
+                                    // Kiểm tra nếu có child active thì parent cũng active
+                                    $has_active_child = false;
+                                    if ($has_children) {
+                                        foreach ($menu_children[$parent_id] as $child) {
+                                            if (is_menu_active($child->url, $current_url)) {
+                                                $has_active_child = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    $is_active = $is_parent_active || $has_active_child;
+                                    $active_class = $is_active ? 'active' : '';
+                                    ?>
+                                    <a
+                                      href="<?= esc_url($parent->url) ?>"
+                                      class="header_menu_item txt_uppercase txt_16 txt_wh_500 <?= $active_class ?>"
+                                      ><?= esc_html($parent->title) ?></a
+                                    >
+                                <?php
+                                    }
+                                }
+                                ?>
             </div>
             <div class="header_logo">
               <a href="/" class="header_logo_inner">
