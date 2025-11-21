@@ -33,6 +33,16 @@ nmc_get_template_part( 'partials/section-banner', [
 
 ?>
 
+<?php
+// Nếu là trang WooCommerce, dùng template riêng
+if ( is_woocommerce() || is_shop() || is_product_category() || is_product_tag() ) {
+    wc_get_template( 'archive-product.php' );
+    return;
+}
+
+// Code cũ của page.php tiếp tục...
+?>
+
 
 <section  class=" relative section-top d-bg animatedParent animateOnce dark" >
     <div class="bg"></div>

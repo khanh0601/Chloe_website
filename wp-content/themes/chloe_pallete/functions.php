@@ -358,3 +358,21 @@ function archive_posttype() {
 }
 add_action( 'template_redirect', 'archive_posttype' );
 
+// Debug: Xem template nào đang load
+add_filter( 'template_include', function( $template ) {
+    if ( is_product_category() ) {
+        error_log( 'Template being used: ' . $template );
+    }
+    return $template;
+}, 99 );
+
+// Debug: Xem số sản phẩm được query
+add_action( 'woocommerce_before_shop_loop', function() {
+    global $wp_query;
+    echo '<div style="background: yellow; padding: 10px; margin: 10px 0;">';
+    echo 'DEBUG INFO:<br>';
+    echo 'Found posts: ' . $wp_query->found_posts . '<br>';
+    echo 'Post count: ' . $wp_query->post_count . '<br>';
+    echo 'Is product category: ' . ( is_product_category() ? 'YES' : 'NO' ) . '<br>';
+    echo '</div>';
+});
