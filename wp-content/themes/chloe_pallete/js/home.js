@@ -155,10 +155,10 @@ const mainScript = () => {
           el: ".home_hero_pagination",
           clickable: true,
         },
-        autoplay: {
-          delay: 2500,
-          disableOnInteraction: false,
-        },
+        // autoplay: {
+        //   delay: 2500,
+        //   disableOnInteraction: false,
+        // },
       });
     }
     play() {
@@ -182,12 +182,12 @@ const mainScript = () => {
           el: ".home_seller_pagination",
           type: "progressbar",
         },
-        speed: 4000,
-        autoplay: {
-          delay: 0,
-          disableOnInteraction: false,
-          // pauseOnMouseEnter: true
-        },
+        speed: 400,
+        // autoplay: {
+        //   delay: 0,
+        //   disableOnInteraction: false,
+        //   // pauseOnMouseEnter: true
+        // },
         breakpoints: {
           768: {
             slidesPerView: 2.7,
@@ -228,7 +228,7 @@ const mainScript = () => {
     }
     setup() {
       var swiper3 = new Swiper(".home_about_slide", {
-        slidesPerView: 1.5,
+        slidesPerView: 1,
         spaceBetween: parseRem(20),
         loop: true,
         speed: 7000,
@@ -259,7 +259,6 @@ const mainScript = () => {
     }
     setup() {
       if (viewport.w < 767) {
-        console.log('✓ Mobile swiper initializing...');
         $('.home_discover_card_wrap').addClass('swiper');
         $('.home_discover_card').addClass('swiper-wrapper');
         $('.home_discover_card .home_seller_silder_item').addClass('swiper-slide');
@@ -300,11 +299,15 @@ const mainScript = () => {
     }
     setup() {
       var swiper4 = new Swiper(".home_review_right_slide", {
-        slidesPerView: 2,
+        slidesPerView: 1.2,
         spaceBetween: parseRem(20),
         // loop: true,
         breakpoints: {
           768: {
+            slidesPerView: 2.2,
+            spaceBetween: parseRem(24),
+          },
+          991: {
             slidesPerView: 2.7,
             spaceBetween: parseRem(40),
           },
@@ -377,8 +380,8 @@ const mainScript = () => {
     }
     setup() {
       var swiper5 = new Swiper(".home_workshop_slide", {
-        slidesPerView: 1.5,
-        spaceBetween: parseRem(10),
+        slidesPerView: 1.2,
+        spaceBetween: parseRem(20),
         // loop: true,
         pagination: {
           el: ".home_workshop_pagination",
@@ -387,8 +390,8 @@ const mainScript = () => {
         speed: 400,
         breakpoints: {
           768: {
-            slidesPerView: 2.7,
-            spaceBetween: parseRem(15),
+            slidesPerView: 2.2,
+            spaceBetween: parseRem(20),
           },
           991: {
             slidesPerView: 4.32,

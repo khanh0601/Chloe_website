@@ -108,7 +108,7 @@ h1, h2{
     padding: 1.2rem 2.4rem;
     align-items: center;
     gap: .8rem;
-    width: 17.5rem;
+    width: fit-content;
     border-radius: 4.5rem;
     cursor: pointer;
     border: none !important;
@@ -158,7 +158,7 @@ h1, h2{
 }
 .txt_subtitle{
   font-size: 1.6rem;
-  line-height: 1.2em;
+  line-height: 1em;
   text-transform: uppercase;
   font-weight: 500;
   color: #1D1D1D;
@@ -282,17 +282,8 @@ h1, h2{
   .tablet{
     display: block;
   }
-  .txt_12{
-  font-size: 1.1rem;
-}
-.txt_14 {
-  font-size: 1.2rem;
-}
-.txt_16 {
-  font-size: 1.3rem;
-}
 .txt_18{
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 .txt_24{
   font-size: 1.8rem;
@@ -310,7 +301,8 @@ h1, h2{
   font-size: 4rem;
 }
 .txt_64{
-  font-size: 3rem;
+  font-size: 3.6rem;
+  line-height: 1.15;
 }
 .txt_70{
   font-size: 4rem;
@@ -322,15 +314,14 @@ h1, h2{
   font-size: 3.5rem;
 }
 .txt_subtitle{
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 .home_hero_des_link{
     margin-top: 2.2rem;
 }
 .home_hero_des_link{
-    padding: 1.2rem 1.2rem;
+    padding: 1.2rem 2.4rem;
     gap: .8rem;
-    width: 13.5rem;
 }
 .home_hero_des_link_icon{
     width: 2rem;
@@ -351,9 +342,6 @@ h1, h2{
   .middle{
     display: none;
   }
-  .txt_16 {
-  font-size: 1.4rem;
-}
 
 .kl_grid {
   display: grid;
@@ -367,55 +355,43 @@ h1, h2{
   background: url('/assets/img/line-th2.png') repeat;
   background-size: auto;
 }
-.txt_12{
-  font-size: 1.1rem;
-}
-.txt_14 {
-  font-size: 1.2rem;
-}
-.txt_16 {
-  font-size: 1.3rem;
-}
 .txt_18{
-  font-size: 1.5rem;
-}
-.txt_24{
   font-size: 1.6rem;
 }
+.txt_24{
+  font-size: 1.8rem;
+}
 .txt_32{
-  font-size: 2.2rem;
-}
-.txt_40{
-  font-size: 2.3rem;
-}
-.txt_44{
   font-size: 2.4rem;
 }
+.txt_40{
+  font-size: 2.8rem;
+}
+.txt_44{
+  font-size: 3rem;
+}
 .txt_48{
-  font-size: 2.6rem;
+  font-size: 3.2rem;
 }
 .txt_64{
-  font-size: 2.2rem;
+  font-size: 3.2rem;
 }
 .txt_70{
-  font-size: 2.5rem;
+  font-size: 3.4rem;
 }
 .txt_72{
-  font-size: 2.5rem;
+  font-size: 4rem;
 }
 .txt_title{
-  font-size: 2rem;
+  font-size: 3.6rem;
 }
 .txt_subtitle{
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 .home_hero_des_link{
-    margin-top: 1.5rem;
-}
-.home_hero_des_link{
-    padding: .7rem;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
     gap: .4rem;
-    width: 12.5rem;
 }
 .home_hero_des_link_icon{
     width: 2rem;
@@ -629,6 +605,7 @@ footer{
   width: 25%;
   border-right: 1px solid #3333331A;
   padding-block: 3.2rem;
+  padding-inline: 2.2rem;
   
 }
 .footer_top_item_icon{
@@ -650,7 +627,6 @@ footer{
 .footer_site{
   padding-top: 6rem;
   padding-bottom: 2.7rem;
-  border-bottom: 1px solid #3333331A;
 }
 .footer_site_inner{
   display: flex;
@@ -737,6 +713,7 @@ footer{
 }
 .footer_copyright{
   display: flex;
+  align-items: center;
   padding-block: 3.2rem;
   justify-content: space-between;
 }
@@ -755,29 +732,55 @@ footer{
   position: relative;
 }
 @media screen and (max-width:991px) {
+  .footer_copyright {
+    padding-block: 2.4rem;
+  }
+  .footer_site_inner {
+    flex-direction: column;
+    gap: 4rem;
+  }
+  .footer_site{
+    padding-block: 4rem;
+  }
   .footer_slogan_txt{
     font-size: 7rem;
     letter-spacing: 2rem;
   }
   .footer_site_left{
-    width: 30.364%;
+    width: 100%;
+    order: 2;
   }
   .footer_site_left_form {
     gap: .8rem;
-    input{
-      padding: .5rem 0 .5rem 1rem;
-    }
-    button{
-      width: 3.5rem;
-      height: 3.5rem;
-    }
+    max-width: 40rem;
   }
   .footer_site_right{
-  gap: 1.5rem;
-  width: 60%;
-}
+    gap: 2.4rem;
+    width: 100%;
+  }
+  .footer_site_right_col_item {
+    margin-bottom: 1.2rem;
+  }
+  .footer_site_right_col_title {
+    margin-bottom: 2rem;
+  }
+  .footer_site_left_title {
+    margin-bottom: .6rem;
+  }
+  .footer_site_left_des {
+    margin-bottom: 2rem;
+  }
 }
 @media screen and (max-width:767px){
+  .header_logo_inner {
+    width: 4.4rem;
+  }
+  .header {
+    padding-block: 1rem;
+  }
+  .footer_site_left_des{
+    max-width: 28rem;
+  }
   .footer_slogan_txt{
     font-size: 3.5rem;
     letter-spacing: 1.5rem;
@@ -795,11 +798,18 @@ footer{
   }
   .footer_site_inner{
     flex-direction: column;
-    row-gap: 4rem;
+    row-gap: 3.2rem;
   }
-  .footer_site_left, .footer_site_right{
+   .footer_site_right{
     width: 100%;
     gap: 0;
+  }
+  .footer_site_left {
+    margin-inline: -2rem;
+    padding-inline: 2rem;
+    width: calc(100% + 4rem);
+    padding-top: 3.2rem;
+    border-top: 1px solid #3333331A;
   }
   .footer_site_right{
     flex-wrap: wrap;
@@ -820,19 +830,20 @@ footer{
     font-size: 1.4rem;
   }
   .footer_site{
-    padding-top: 4rem;
-  }
-  .footer_site_left_title {
-    margin-bottom: 1.5rem;
+    padding-top: 3.2rem;
   }
   .footer_slogan{
     padding-top: 4.5rem;
     padding-bottom: 3rem;
   }
   .footer_copyright_left{
-    gap: 3rem;
+    gap: .6rem;
     align-items: center;
   }
+  .footer_copyright {
+    padding-block: 1.2rem;
+  }
+  
   .footer_copyright_right{
     gap: .7rem;
   }

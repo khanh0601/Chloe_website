@@ -805,7 +805,7 @@
           <img src="<?php echo get_template_directory_uri(); ?>/images/home_course.webp" alt="" />
         </div>
         <div class="home_course_info">
-          <div class="home_course_info_txt txt_64 txt_wh_500">
+          <div class="home_course_info_txt txt_64 txt_wh_500 txt_center">
             Every cake is a sweet gift made with love and care. Let us help you
             create unforgettable moments from the flavor to the feeling, it all
             begins with one beautiful cake.
