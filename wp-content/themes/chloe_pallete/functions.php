@@ -9,7 +9,22 @@ add_filter('tr_theme_options_page', function() {
 load_theme_textdomain( 'chloe_pallete', get_template_directory().'/languages' );
 add_theme_support( 'post-thumbnails' );
 
-
+add_action('wp_head', function() {
+  $fonts = [
+      'Figtree-Regular.woff2',
+      'Figtree-Medium.woff2', 
+      'Figtree-SemiBold.woff2',
+      'Anton-Regular.woff2'
+  ];
+  
+  foreach ($fonts as $font) {
+      printf(
+          '<link rel="preload" href="%s/fonts/%s" as="font" type="font/woff2" crossorigin="anonymous">',
+          get_template_directory_uri(),
+          $font
+      );
+  }
+}, 1);
 //Media Support
 add_image_size( 'post-default', 900, 480, true ); // 480 pixels wide by 370 pixels tall, soft proportional crop mode
 //add_image_size( 'post-news', 410, 460, true );

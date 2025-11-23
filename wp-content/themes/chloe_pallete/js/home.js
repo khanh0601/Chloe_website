@@ -1,19 +1,14 @@
 
-
-
-
-
-
-
-
 const mainScript = () => {
   gsap.registerPlugin(ScrollTrigger);
   $("html").css("scroll-behavior", "auto");
   $("html").css("height", "auto");
-  const lenis = new Lenis({
-    lerp: 0.15,
-    smootth: false
-  });
+  function activeItem(elArr, index) {
+      elArr.forEach((el, idx) => {
+          $(el).removeClass('active').eq(index).addClass('active')
+      })
+  }
+  let lenis = new Lenis({});
   function raf(time) {
     lenis.raf(time);
     requestAnimationFrame(raf);
@@ -64,6 +59,130 @@ const mainScript = () => {
       return Math.abs(rect.top - headerRect.top) <= 2;
     }
   }
+  const isTouchDevice = () => {
+    return (
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    navigator.msMaxTouchPoints > 0
+    );
+};
+  if (!isTouchDevice()) {
+    $("html").attr("data-has-cursor", "true");
+    window.addEventListener("pointermove", function (e) {
+    updatePointer(e);
+    });
+} else {
+    $("html").attr("data-has-cursor", "false");
+    window.addEventListener("pointerdown", function (e) {
+    updatePointer(e);
+    });
+}
+  function updatePointer(e) {
+    pointer.x = e.clientX;
+    pointer.y = e.clientY;
+    pointer.xNor = (e.clientX / $(window).width() - 0.5) * 2;
+    pointer.yNor = (e.clientY / $(window).height() - 0.5) * 2;
+    if (cursor.userMoved != true) {
+    cursor.userMoved = true;
+    cursor.init();
+    }
+}
+class Loading {
+  constructor() {}
+  isDoneLoading() {
+  return true;
+  }
+}
+let load = new Loading();
+const pointer = {
+  x: $(window).width() / 2,
+  y: $(window).height() / 2,
+  xNor: $(window).width() / 2 / $(window).width(),
+  yNor: $(window).height() / 2 / $(window).height(),
+};
+const xSetter = (el) => gsap.quickSetter(el, "x", `px`);
+    const ySetter = (el) => gsap.quickSetter(el, "y", `px`);
+    const xGetter = (el) => gsap.getProperty(el, "x");
+    const yGetter = (el) => gsap.getProperty(el, "y");
+    const lerp = (a, b, t = 0.08) => {
+        return a + (b - a) * t;
+    };
+class Cursor {
+  constructor() {
+  this.targetX = pointer.x;
+  this.targetY = pointer.y;
+  this.userMoved = false;
+  xSetter(".cursor-main")(this.targetX);
+  ySetter(".cursor-main")(this.targetY);
+  }
+  init() {
+  requestAnimationFrame(this.update.bind(this));
+  $(".cursor-main .cursor-inner").addClass("active");
+  }
+  isUserMoved() {
+  return this.userMoved;
+  }
+  update() {
+  if (this.userMoved || load.isDoneLoading()) {
+      this.updatePosition();
+  }
+  requestAnimationFrame(this.update.bind(this));
+  }
+  updatePosition() {
+  this.targetX = pointer.x;
+  this.targetY = pointer.y;
+  let targetInnerX = xGetter(".cursor-main");
+  let targetInnerY = yGetter(".cursor-main");
+
+  if ($("[data-cursor]:hover").length) {
+      this.onHover();
+  } else {
+      this.reset();
+  }
+
+  if (
+      Math.hypot(this.targetX - targetInnerX, this.targetY - targetInnerY) >
+      1 ||
+      Math.abs(lenis.velocity) > 0.1
+  ) {
+      xSetter(".cursor-main")(lerp(targetInnerX, this.targetX, 0.1));
+      ySetter(".cursor-main")(
+      lerp(targetInnerY, this.targetY - lenis.velocity / 16, 0.1)
+      );
+  }
+  }
+  onHover() {
+  let type = $("[data-cursor]:hover").attr("data-cursor");
+  let gotBtnSize = false;
+  if ($("[data-cursor]:hover").length) {
+      switch (type) {
+      case "explore": 
+          $(".cursor").addClass("on-hover-explore");
+          break;
+      case "drag": 
+          $(".cursor").addClass("on-hover-drag");
+      break;
+      case "detail": 
+          $(".cursor").addClass("on-hover-detail");
+      break;
+      case "hidden": 
+          $(".cursor").addClass("on-hover-hidden");
+          break;
+      default:
+          break;
+      }
+  } else {
+      gotBtnSize = false;
+  }
+  }
+  reset() {
+  $(".cursor").removeClass("on-hover-explore");
+  $(".cursor").removeClass("on-hover-hidden");
+  $(".cursor").removeClass("on-hover-drag");
+  $(".cursor").removeClass("on-hover-detail");
+  }
+}
+let cursor = new Cursor();
   class Header extends TriggerSetupHero {
     constructor() {
       super();
@@ -79,12 +198,23 @@ const mainScript = () => {
     }
     setup() {
       this.tl = gsap.timeline();
+      let menu_item = new SplitType('.header_menu_item ', { types: 'lines, words', lineClass: 'kv_line' });
     }
     play() {
       this.tl.play();
     }
     interact() {
-
+      $(".navbar-toggler-icon-wrap").on("click", (e) => {
+        e.preventDefault();
+        if ($('body').hasClass('menu-open')) {
+          $('body').removeClass('menu-open');
+          this.deactiveMenuTablet();
+        }
+        else {
+          $('body').addClass('menu-open');
+          this.activeMenuTablet();
+        }
+      })
     }
     toggleColorMode = (color) => {
       let elArr = Array.from($(`[data-section="${color}"]`));
@@ -126,6 +256,21 @@ const mainScript = () => {
         }
       }, 100);
     }
+    activeMenuTablet = () => {
+      // lenis.stop();
+      gsap.fromTo('.header_menu', { clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)' }, {
+        duration: 1, clipPath: 'polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)', ease: "circ.inOut"
+      });
+      gsap.fromTo('.header_menu_item .word', { autoAlpha: 0, yPercent: 100 }, { duration: .8, autoAlpha: 1, yPercent: 0, stagger: .025 });
+    }
+    deactiveMenuTablet = () => {
+      // lenis.start();
+      $('body').removeClass('menu-open')
+      gsap.fromTo('.header_menu', { clipPath: 'polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)' }, {
+        duration: 1, clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)', ease: "circ.inOut"
+      });
+      gsap.fromTo('.header_menu_item .word', { autoAlpha: 1, yPercent: 0 }, { duration: .6, autoAlpha: 0, yPercent: 100, stagger: .025 });
+    }
   }
   const header = new Header();
 
@@ -142,7 +287,7 @@ const mainScript = () => {
       this.tl = gsap.timeline({
         scrollTrigger: {
           trigger: this.triggerEl,
-          start: 'top 20%',
+          start: 'top-=1px bottom',
           once: true,
         },
       });
@@ -160,6 +305,16 @@ const mainScript = () => {
         //   disableOnInteraction: false,
         // },
       });
+      // new MasterTimeline({
+      //   triggerInit: this.triggerEl,
+      //   timeline: this.tl,
+      //   tweenArr: [
+      //     new FadeSplitText({ el: $('.swiper-slide:first-child .home_hero_des_subtitle'), onMask: true }),
+      //     new FadeSplitText({ el: $('.swiper-slide:first-child .home_hero_des_title'), onMask: true }),
+      //     new FadeSplitText({ el: $('.swiper-slide:first-child .home_hero_des_link'), onMask: true }),
+      //     new FadeIn({ el: $('.swiper-slide:first-child .home_hero_des_link') }),
+      //   ]
+      // })
     }
     play() {
       this.tl.play();
@@ -183,11 +338,6 @@ const mainScript = () => {
           type: "progressbar",
         },
         speed: 400,
-        // autoplay: {
-        //   delay: 0,
-        //   disableOnInteraction: false,
-        //   // pauseOnMouseEnter: true
-        // },
         breakpoints: {
           768: {
             slidesPerView: 2.7,
@@ -210,15 +360,105 @@ const mainScript = () => {
       super.setTrigger(this.setup.bind(this));
     }
     setup() {
-      var swiper2 = new Swiper(".home_cookie_slide_list", {
-        slidesPerView: 1,
-        initialSlide: 1,
-        spaceBetween: parseRem(0),
+      let tl = gsap.timeline({
+          scrollTrigger: {
+              trigger: this.triggerEl,
+              start: "top top+=45%",
+              once: true,
+          },
+      })
+      new MasterTimeline({
+          timeline: tl,
+          tweenArr: [
+              ...Array.from($('.home-senses-menu-item-txt')).flatMap((el, idx) => new FadeSplitText({ el: el, onMask: true, delay: idx == 0? '<=0' : '<=.1' })),
+          ]
+      })
+      if(viewport.w > 991) {
+          activeItem(['.home_cookies_content_item'], 0);
+          let listBg = $(".home_cookies_bg_item");
+          let listItemMenu = ['.home_cookies_content_item'];
+          let triggered = new Array(listBg.length).fill(false);
+          let wasFullyScaled = new Array(listBg.length).fill(false);
+          gsap.set(listBg, {scale: 0});
+          gsap.set(listBg[0], {scale: 1});
+          let tl = gsap.timeline({
+              scrollTrigger: {
+                  trigger: $(".home_cookies"),
+                  start: "top top",
+                  end: "bottom bottom",
+                  scrub: 1,
+                  onUpdate: (self) => {
+                      if(self.progress == 1 ){
+                          activeItem(listItemMenu, listBg.length -1);
+                      }
+                      listBg.each((i, el) => {
+                          const currentScale = gsap.getProperty(el, "scale");
+                          if (!triggered[i] && currentScale >= .3) {
+                              triggered[i] = true;
+                              wasFullyScaled[i] = true;
+                              console.log(`➡ Element ${i} scaled to 1`);
+                              activeItem(listItemMenu, i);
+                          }
+                          if (wasFullyScaled[i] && currentScale < .3) {
+                              wasFullyScaled[i] = false;
+                      
+                              const prevIndex = i - 1;
+                              if (prevIndex >= 0 && triggered[prevIndex]) {
+                                  console.log(`⬅ Scroll up: Element ${i} scaling down — trigger previous index ${prevIndex}`);
+                                  activeItem(listItemMenu, prevIndex);
+                              }
+                              triggered[i] = false;
+                          }
+                      });
+                      
+                  }
+              },
+          })
+          listBg.each((i, el) => {
+              switch (i) {
+                  case 0:
+                      tl.to(el, {
+                          scale: 2,
+                          ease: "none",
+                          duration: 0.5,
+                      });
+                      break;
+                  case listBg.length - 1:
+                      tl.to(el, {
+                          scale: 1,
+                          ease: "none",
+                          duration: 0.5,
+                      }, '-=0.5');
+                      break;
+                  default:
+                      tl.to(el, {
+                          scale: 2,
+                          ease: "none",
+                          duration: 1,
+                      }, '-=0.5');
+                      break;
+                  }
+          })
+      }
+      else {
+          let listBg = $(".home_cookies_bg_item");
+          listBg.each((i, el) => {
+              let tl = new gsap.timeline({
+                  scrollTrigger: {
+                      trigger: el,
+                      start: "top bottom",
+                      end: "bottom top",
+                      scrub: 1,
+                  },
+              });
+              tl.to($(el).find('.home_cookies_bg_item_inner'), { yPercent: -20, duration: 1, ease: "none"})
 
-      });
-    }
+          })
+      }
+      
   }
-  let homeCookie = new HomeCookie('.home_cookie ');
+  }
+  let homeCookie = new HomeCookie('.home_cookies ');
   class HomeAbout extends TriggerSetup {
     constructor(triggerEl) {
       super(triggerEl);
@@ -263,13 +503,14 @@ const mainScript = () => {
         $('.home_discover_card').addClass('swiper-wrapper');
         $('.home_discover_card .home_seller_silder_item').addClass('swiper-slide');
         var swiper7 = new Swiper(".home_discover_card_wrap", {
-          slidesPerView: '1.5',        // Hiển thị 6 slide cùng lúc
-          spaceBetween: parseRem(10),        // Khoảng cách giữa các slide
+          slidesPerView: '1.5',        
+          spaceBetween: parseRem(10),        
           loop: true,
-          speed: 5000,                 // Cần bật loop để autoplay mượt
+          speed: 7000,
           autoplay: {
-            delay: 0,                // Thời gian giữa các slide (ms)
-            disableOnInteraction: false // Vẫn tiếp tục chạy sau khi user tương tác
+            reverseDirection: true,
+            delay: 0,                
+            disableOnInteraction: false 
           },
         });
       } else {
@@ -451,6 +692,7 @@ const mainScript = () => {
     },
   };
   function animationGlobal() {
+    cursor.init();
     header.trigger();
     const pageName = $(".main").attr("data-barba-namespace");
     if (pageName) {

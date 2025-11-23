@@ -20,7 +20,36 @@
         <div class="swiper mySwiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <div class="home_hero_img img_full">
+              <div class="home_hero_img img_fullfill">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
+              </div>
+              <div class="home_hero_des">
+                <div
+                  class="home_hero_des_subtitle block_title color_white txt_subtitle"
+                >
+                  ChloesPalette
+                </div>
+                <div class="home_hero_des_title color_white txt_72">
+                  Make your birthday sweeter with a cake full of love!
+                </div>
+                <a href="#" class="btn_black btn home_hero_des_link txt_uppercase">
+                  <div class="btn_txt_wrap">
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+                  </div>
+                  <div class="btn_ic_wrap">
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="home_hero_img img_fullfill">
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
               </div>
               <div class="home_hero_des">
@@ -41,28 +70,7 @@
               </div>
             </div>
             <div class="swiper-slide">
-              <div class="home_hero_img img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
-              </div>
-              <div class="home_hero_des">
-                <div
-                  class="home_hero_des_subtitle block_title color_white txt_subtitle"
-                >
-                  ChloesPalette
-                </div>
-                <div class="home_hero_des_title color_white txt_72">
-                  Make your birthday sweeter with a cake full of love!
-                </div>
-                <a href="#" class="home_hero_des_link txt_uppercase">
-                  <div class="home_hero_des_link_txt txt_16">order now</div>
-                  <div class="home_hero_des_link_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
-                  </div>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="home_hero_img img_full">
+              <div class="home_hero_img img_fullfill">
                 <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
               </div>
               <div class="home_hero_des">
@@ -397,53 +405,119 @@
           </div>
         </div>
       </section>
-      <section class="home_cookie overflow_hidden">
-        <div class="home_cookie_img_wrap">
-          <div class="home_cookie_img img_abs">
-            <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookie.webp" alt="" />
-            <div class="home_cookie_img_block"></div>
+      <section class="home_cookies" data-cursor="explore">
+        <div class="home_cookies_overlay"></div>
+        <div class="home_cookies_bg">
+          <div class="home_cookies_bg_inner">
+          <div class="home_cookies_bg_item">
+            <div class="home_cookies_bg_item_inner img_fullfill">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookies_bg.webp" alt="">
+            </div>
+            <div class="home_cookies_bg_item_info">
+              <div class="home_cookies_bg_item_info_title_wrap">
+                <div class="home_cookies_bg_item_info_title txt_48">Wedding Cake</div>
+              </div>
+              <a href="#" class="home_cookies_bg_item_info_link txt_16 hover_arr">
+                Explore
+                <div class="line_arr">
+                  <div class="line line_main"></div>
+                  <div class="line line_clone"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="home_cookies_bg_item">
+            <div class="home_cookies_bg_item_inner img_fullfill">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookies_bg2.webp" alt="">
+            </div>
+            <div class="home_cookies_bg_item_info">
+              <div class="home_cookies_bg_item_info_title_wrap">
+                <div class="home_cookies_bg_item_info_title txt_48">Kid Cake</div>
+              </div>
+              <a href="#" class="home_cookies_bg_item_info_link txt_16 hover_arr">
+                Explore
+                <div class="line_arr">
+                  <div class="line line_main"></div>
+                  <div class="line line_clone"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="home_cookies_bg_item">
+            <div class="home_cookies_bg_item_inner img_fullfill">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookies_bg.webp" alt="">
+            </div>
+            <div class="home_cookies_bg_item_info">
+              <div class="home_cookies_bg_item_info_title_wrap">
+                <div class="home_cookies_bg_item_info_title txt_48">Chantilly Cake</div>
+              </div>
+              <a href="#" class="home_cookies_bg_item_info_link txt_16 hover_arr">
+                Explore
+                <div class="line_arr">
+                  <div class="line line_main"></div>
+                  <div class="line line_clone"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="home_cookies_bg_item">
+            <div class="home_cookies_bg_item_inner img_fullfill">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookies_bg2.webp" alt="">
+            </div>
+            <div class="home_cookies_bg_item_info">
+              <div class="home_cookies_bg_item_info_title_wrap">
+                <div class="home_cookies_bg_item_info_title txt_48">Vintage Cake</div>
+              </div>
+              <a href="#" class="home_cookies_bg_item_info_link txt_16 hover_arr">
+                Explore
+                <div class="line_arr">
+                  <div class="line line_main"></div>
+                  <div class="line line_clone"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="home_cookies_bg_item">
+            <div class="home_cookies_bg_item_inner img_fullfill">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/home_cookies_bg.webp" alt="">
+            </div>
+            <div class="home_cookies_bg_item_info">
+              <div class="home_cookies_bg_item_info_title_wrap">
+                <div class="home_cookies_bg_item_info_title txt_48">Flower Cake</div>
+              </div>
+              <a href="#" class="home_cookies_bg_item_info_link txt_16 hover_arr">
+                Explore
+                <div class="line_arr">
+                  <div class="line line_main"></div>
+                  <div class="line line_clone"></div>
+                </div>
+              </a>
+            </div>
+          </div>
           </div>
         </div>
-        <div class="kl_container home_cookie_slide_wrap">
-          <div class="home_cookie_slide">
-            <div class="home_cookie_slide_list swiper">
-              <div class="home_cookie_slide_list_wrap swiper-wrapper">
-                <div class="home_cookie_slide_list_item swiper-slide">
-                  <div
-                    class="home_cookie_slide_list_item_title txt_center color_white txt_70"
-                  >
-                    Cookies and Muffins
-                  </div>
-                  <div
-                    class="home_cookie_slide_list_item_des txt_center color_white txt_18"
-                  >
-                    12 products
-                  </div>
-                </div>
-                <div class="home_cookie_slide_list_item swiper-slide">
-                  <div
-                    class="home_cookie_slide_list_item_title txt_center color_white txt_70"
-                  >
-                    Cookies and Muffins
-                  </div>
-                  <div
-                    class="home_cookie_slide_list_item_des txt_center color_white txt_18"
-                  >
-                    12 products
-                  </div>
-                </div>
-                <div class="home_cookie_slide_list_item swiper-slide">
-                  <div
-                    class="home_cookie_slide_list_item_title txt_center color_white txt_70"
-                  >
-                    Cookies and Muffins
-                  </div>
-                  <div
-                    class="home_cookie_slide_list_item_des txt_center color_white txt_18"
-                  >
-                    12 products
-                  </div>
-                </div>
+        <div class="home_cookies_content">
+          <div class="kl_container">
+            <div class="home_cookies_content_inner">
+              <div class="home_cookies_content_item active">
+                <div class="home_cookies_content_item_label txt_20">(01)</div>
+                <div class="home_cookies_content_item_title txt_48">Wedding Cake</div>
+              </div>
+              <div class="home_cookies_content_item">
+                <div class="home_cookies_content_item_label txt_20">(02)</div>
+                <div class="home_cookies_content_item_title txt_48">Kid Cake</div>
+              </div>
+              <div class="home_cookies_content_item">
+                <div class="home_cookies_content_item_label txt_20">(03)</div>
+                <div class="home_cookies_content_item_title txt_48">Chantilly Cake</div>
+              </div>
+              <div class="home_cookies_content_item">
+                <div class="home_cookies_content_item_label txt_20">(04)</div>
+                <div class="home_cookies_content_item_title txt_48">Vintage Cake</div>
+              </div>
+              <div class="home_cookies_content_item">
+                <div class="home_cookies_content_item_label txt_20">(05)</div>
+                <div class="home_cookies_content_item_title txt_48">Flower Cake</div>
               </div>
             </div>
           </div>

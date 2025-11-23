@@ -1,75 +1,74 @@
 <?php
 
-/**
- * The Header for our theme.
- *
- * Displays all of the <head> section and everything up till <div id="main">
- */
+    /**
+     * The Header for our theme.
+     *
+     * Displays all of the <head> section and everything up till <div id="main">
+     */
 
 ?><!DOCTYPE html>
 <!--[if IE 7]>
-<html class="ie ie7" <?php language_attributes(); ?>>
+<html class="ie ie7"                     <?php language_attributes(); ?>>
 <![endif]-->
 <!--[if IE 8]>
-<html class="ie ie8" <?php language_attributes(); ?>>
+<html class="ie ie8"                     <?php language_attributes(); ?>>
 <![endif]-->
 <!--[if !(IE 7) | !(IE 8)  ]><!-->
-<html <?php language_attributes(); ?> xmlns:fb="http://ogp.me/ns/fb#">
+<html      <?php language_attributes(); ?> xmlns:fb="http://ogp.me/ns/fb#">
 <!--<![endif]-->
 <head>
 <meta charset="UTF-8" />
 <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="format-detection" content="telephone=no">
-<title><?php  wp_title(''); ?></title>
+<title><?php wp_title(''); ?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
-<link href="<?= get_template_directory_uri(); ?>/plugin/font-awesome/css/all.min.css" rel="stylesheet" >
-<link rel="stylesheet" href="<?= get_template_directory_uri(); ?>/css/style.css?v=<?= SITE_VERSION ?>">
-<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+<link rel="stylesheet" href="<?php echo get_template_directory_uri();?>/css/style.css?v=<?php echo SITE_VERSION?>">
+<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 <?php
-  $currentLang = get_locale();
-  $currentLang= explode("_",$currentLang)[0];
-	wp_enqueue_script('jquery-cus', "https://code.jquery.com/jquery-3.7.1.min.js", [], null, true);
-  wp_enqueue_style( 'swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.css');
-  wp_enqueue_script('swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.js',array(),SITE_VERSION,true);
-  wp_enqueue_script('gsap', get_template_directory_uri() . '/js/gsap.min.js',array(),SITE_VERSION,true);
-  wp_enqueue_script('scrolltrigger', get_template_directory_uri() . '/js/ScrollTrigger.min.js',array(),SITE_VERSION,true);
-  wp_enqueue_script('lenis', get_template_directory_uri() . '/js/lenis.min.js',array(),SITE_VERSION,true);
-  wp_enqueue_script('animation', get_template_directory_uri() . '/js/animation.js',array(),SITE_VERSION,true);
-  // wp_enqueue_script('global', get_template_directory_uri() . '/js/global.js');
-  wp_enqueue_script('splitType', get_template_directory_uri() . '/js/split-type.js',array(),null,true);
-	wp_head();
+    $currentLang = get_locale();
+    $currentLang = explode("_", $currentLang)[0];
+    wp_enqueue_script('jquery-cus', "https://code.jquery.com/jquery-3.7.1.min.js", [], null, true);
+    wp_enqueue_style('swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.css');
+    wp_enqueue_script('swiper', get_template_directory_uri() . '/plugin/swiper/swiper-bundle.min.js', [], SITE_VERSION, true);
+    wp_enqueue_script('gsap', get_template_directory_uri() . '/js/gsap.min.js', [], SITE_VERSION, true);
+    wp_enqueue_script('scrolltrigger', get_template_directory_uri() . '/js/ScrollTrigger.min.js', [], SITE_VERSION, true);
+    wp_enqueue_script('lenis', get_template_directory_uri() . '/js/lenis.min.js', [], SITE_VERSION, true);
+    wp_enqueue_script('animation', get_template_directory_uri() . '/js/animation.js', [], SITE_VERSION, true);
+    // wp_enqueue_script('global', get_template_directory_uri() . '/js/global.js');
+    wp_enqueue_script('splitType', get_template_directory_uri() . '/js/split-type.js', [], null, true);
+    wp_head();
 
-  $currentLang = get_locale();
-  $currentLang= explode("_",$currentLang)[0];
-  $homeUrl = home_url();
-  $isFrontPage = is_front_page();
+    $currentLang = get_locale();
+    $currentLang = explode("_", $currentLang)[0];
+    $homeUrl     = home_url();
+    $isFrontPage = is_front_page();
 
-  $languages=[
-    ["url"=>"#","slug"=>"vi"],
-    ["url"=>"#","slug"=>"en"],
-  ];
-  if(function_exists("pll_the_languages")){
-    $languages =   pll_the_languages( array(
-           'show_flags' => 0,
-           'hide_current'=>0,
-           'raw'=>1
-      ));  
-  }
-  
- ?>
+    $languages = [
+        ["url" => "#", "slug" => "vi"],
+        ["url" => "#", "slug" => "en"],
+    ];
+    if (function_exists("pll_the_languages")) {
+        $languages = pll_the_languages([
+            'show_flags'   => 0,
+            'hide_current' => 0,
+            'raw'          => 1,
+        ]);
+    }
 
-<?= tr_options_field('tr_theme_options.script_header');?>
+?>
+
+<?php echo tr_options_field('tr_theme_options.script_header');?>
 
 
 </head>
 
-<?php 
-  global $disableFullpage;
-  global $pageClass;
+<?php
+    global $disableFullpage;
+    global $pageClass;
 ?>
-<body class="<?= $isFrontPage ?"home-page":"" ?> <?= !empty($disableFullpage)?"disable-fullpage":"" ?> <?= $pageClass ?>">
-  <?= tr_options_field('tr_theme_options.script_body');?>
+<body class="<?php echo $isFrontPage ? "home-page" : ""?> <?php echo ! empty($disableFullpage) ? "disable-fullpage" : ""?> <?php echo $pageClass?>">
+  <?php echo tr_options_field('tr_theme_options.script_body');?>
 
   <!-- Header -->
   <header>
@@ -78,62 +77,63 @@
           <div class="header_inner">
             <div class="header_menu">
               <?php
-                            // Lấy URL hiện tại
-                            $current_url = home_url($_SERVER['REQUEST_URI']);
+                  // Lấy URL hiện tại
+                  $current_url = home_url($_SERVER['REQUEST_URI']);
 
-                            // Hàm kiểm tra menu active
-                            function is_menu_active($menu_url, $current_url) {
-                                $menu_url = trailingslashit($menu_url);
-                                $current_url = trailingslashit($current_url);
-                                return $menu_url === $current_url;
-                            }
+                  // Hàm kiểm tra menu active
+                  function is_menu_active($menu_url, $current_url)
+                  {
+                      $menu_url    = trailingslashit($menu_url);
+                      $current_url = trailingslashit($current_url);
+                      return $menu_url === $current_url;
+                  }
 
-                            // Lấy menu theo TÊN "header"
-                            $menu = wp_get_nav_menu_object('header');
+                  // Lấy menu theo TÊN "header"
+                  $menu = wp_get_nav_menu_object('header');
 
-                            if ($menu) {
-                                $menu_items = wp_get_nav_menu_items($menu->term_id);
+                  if ($menu) {
+                      $menu_items = wp_get_nav_menu_items($menu->term_id);
 
-                                // Tổ chức menu
-                                $menu_list = array();
-                                $menu_children = array();
+                      // Tổ chức menu
+                      $menu_list     = [];
+                      $menu_children = [];
 
-                                foreach ($menu_items as $item) {
-                                    if ($item->menu_item_parent == 0) {
-                                        $menu_list[$item->ID] = $item;
-                                    } else {
-                                        $menu_children[$item->menu_item_parent][] = $item;
-                                    }
-                                }
+                      foreach ($menu_items as $item) {
+                          if ($item->menu_item_parent == 0) {
+                              $menu_list[$item->ID] = $item;
+                          } else {
+                              $menu_children[$item->menu_item_parent][] = $item;
+                          }
+                      }
 
-                                // Render theo structure của theme
-                                foreach ($menu_list as $parent_id => $parent) {
-                                    $has_children = isset($menu_children[$parent_id]);
-                                    // Kiểm tra parent active
-                                    $is_parent_active = is_menu_active($parent->url, $current_url);
+                      // Render theo structure của theme
+                      foreach ($menu_list as $parent_id => $parent) {
+                          $has_children = isset($menu_children[$parent_id]);
+                          // Kiểm tra parent active
+                          $is_parent_active = is_menu_active($parent->url, $current_url);
 
-                                    // Kiểm tra nếu có child active thì parent cũng active
-                                    $has_active_child = false;
-                                    if ($has_children) {
-                                        foreach ($menu_children[$parent_id] as $child) {
-                                            if (is_menu_active($child->url, $current_url)) {
-                                                $has_active_child = true;
-                                                break;
-                                            }
-                                        }
-                                    }
+                          // Kiểm tra nếu có child active thì parent cũng active
+                          $has_active_child = false;
+                          if ($has_children) {
+                              foreach ($menu_children[$parent_id] as $child) {
+                                  if (is_menu_active($child->url, $current_url)) {
+                                      $has_active_child = true;
+                                      break;
+                                  }
+                              }
+                          }
 
-                                    $is_active = $is_parent_active || $has_active_child;
-                                    $active_class = $is_active ? 'active' : '';
-                                    ?>
+                          $is_active    = $is_parent_active || $has_active_child;
+                          $active_class = $is_active ? 'active' : '';
+                      ?>
                                     <a
-                                      href="<?= esc_url($parent->url) ?>"
-                                      class="header_menu_item txt_uppercase txt_16 txt_wh_500 <?= $active_class ?>"
-                                      ><?= esc_html($parent->title) ?></a
+                                      href="<?php echo esc_url($parent->url)?>"
+                                      class="header_menu_item txt_uppercase txt_16 txt_wh_500 <?php echo $active_class?>"
+                                      ><?php echo esc_html($parent->title)?></a
                                     >
                                 <?php
                                     }
-                                }
+                                    }
                                 ?>
             </div>
             <div class="header_logo">
@@ -272,7 +272,7 @@
 
                   </div>
                 </div>
-                
+
                 <div class="header_icon_item_wrap cart">
                   <div class="header_icon_item img_full">
                   <svg width="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -361,4 +361,13 @@
       </div>
     </div>
   </section>
+  <div class="cursor">
+    <div class="cursor-main" >
+      <div class="cursor-inner active">
+        <div class=" txt_16 cursor-inner-explore-txt">Explore</div>
+        <div class=" txt_16 cursor-inner-drag-txt">Drag</div>
+        <div class="txt_16 cursor-inner-detail-txt">Detail</div>
+      </div>
+    </div>
+  </div>
   <div  class="fp-custom ">
