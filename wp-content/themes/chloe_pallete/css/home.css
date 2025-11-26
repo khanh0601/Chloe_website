@@ -120,6 +120,9 @@ body{
     margin-bottom: .8rem;
 
 }
+.home_seller_silder_item_info_title {
+    margin-bottom: .6rem;
+}
 .home_seller_silder_item_img {
     aspect-ratio: 396/500;
 }
@@ -139,6 +142,7 @@ body{
     position: absolute;
     top: 2.5rem;
     left: 2.5rem;
+    z-index: 10;
 }
 .home_seller_silder_item_info_price{
     span:last-child{
@@ -151,7 +155,6 @@ body{
     left: 2.5rem;
     right: 2.5rem;
     bottom: 2.5rem;
-    height: 9.2rem;
     padding: 2.5rem;
     background-color: #fff;
     border-radius: .5rem;

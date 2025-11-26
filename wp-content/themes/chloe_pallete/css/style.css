@@ -220,7 +220,7 @@ h1, h2{
     padding: 1.2rem 2.4rem;
     align-items: center;
     gap: .8rem;
-    width: fit-content;
+    width: max-content;
     border-radius: 4.5rem;
     cursor: pointer;
     border: none !important;
@@ -836,7 +836,6 @@ footer{
 }
 .footer_site_right_col_item{
   margin-bottom: 1.6rem;
-  transition: all .4s ease;
 }
 .footer_slogan_txt{
   font-family: "Anton";

@@ -273,7 +273,73 @@ let cursor = new Cursor();
     }
   }
   const header = new Header();
-
+  class Footer extends TriggerSetup {
+    constructor(triggerEl) {
+      super(triggerEl);
+    }
+    trigger() {
+      super.setTrigger(this.setup.bind(this));
+    }
+    setup() {
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.footer_top',
+          start: "top+=65% bottom",
+          once: true,
+        },
+      });
+      $('.footer_top_item').each((i, el) => {
+        new MasterTimeline({
+          timeline: tl,
+          tweenArr: [
+            new FadeIn({ el: $(el).find('.footer_top_item_icon '), delay: '<=.1', type: 'bottom' }),
+            new FadeSplitText({ el: $(el).find('.footer_top_item_title').get(0), onMask: true, delay: .1 }),  
+            new FadeSplitText({ el: $(el).find('.footer_top_item_des').get(0), delay: .1 }),
+          ]
+        })
+      })
+      let tlSite = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.footer_site',
+          start: "top+=55% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tlSite,
+        tweenArr: [
+          new FadeSplitText({ el: $('.footer_site_left_title').get(0), onMask: true, delay: .1 }),
+          new FadeSplitText({ el: $('.footer_site_left_des').get(0), onMask: true, delay: .1 }),
+          new FadeIn({ el: $('.footer_site_left_form'), delay: .1 }),
+        ]
+      })
+      $('.footer_site_right_col').each((i, el) => {
+        new MasterTimeline({
+          timeline: tlSite,
+          tweenArr: [
+            new FadeIn({ el: $(el).find('.footer_site_right_col_title')}),
+            ...Array.from($(el).find('.footer_site_right_col_item')).flatMap((el, idx) => new FadeIn({ el: $(el).get(0), delay: '<=.1', type: 'bottom' })),
+          ]
+        })
+      })
+      let tlSlogan = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.footer_slogan',
+          start: "top+=55% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tlSlogan,
+        tweenArr: [
+          new FadeSplitText({ el: $('.footer_slogan_txt').get(0),isDisableRevert: true, breakType: 'chars', onMask: true }),
+          new FadeIn({ el: $('.footer_copyright_left'), delay: .3 }),
+          ...Array.from($('.footer_copyright_right_img')).flatMap((el, idx) => new FadeIn({ el: el, delay: .3, type: 'bottom' })),
+        ]
+      })
+    }
+  }
+  let footer = new Footer('.footer ');
   class HomeHero extends TriggerSetupHero {
     constructor() {
       super();
@@ -284,18 +350,11 @@ let cursor = new Cursor();
       super.init(this.play.bind(this));
     }
     setup() {
-      this.tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: this.triggerEl,
-          start: 'top-=1px bottom',
-          once: true,
-        },
-      });
+      this.tl = gsap.timeline();
       var swiper = new Swiper(".mySwiper", {
         slidesPerView: 1,
         spaceBetween: 30,
         effect: "fade",
-        loop: true,
         pagination: {
           el: ".home_hero_pagination",
           clickable: true,
@@ -305,25 +364,26 @@ let cursor = new Cursor();
         //   disableOnInteraction: false,
         // },
       });
-      // new MasterTimeline({
-      //   triggerInit: this.triggerEl,
-      //   timeline: this.tl,
-      //   tweenArr: [
-      //     new FadeSplitText({ el: $('.swiper-slide:first-child .home_hero_des_subtitle'), onMask: true }),
-      //     new FadeSplitText({ el: $('.swiper-slide:first-child .home_hero_des_title'), onMask: true }),
-      //     new FadeSplitText({ el: $('.swiper-slide:first-child .home_hero_des_link'), onMask: true }),
-      //     new FadeIn({ el: $('.swiper-slide:first-child .home_hero_des_link') }),
-      //   ]
-      // })
+      new MasterTimeline({
+        timeline: this.tl,
+        triggerInit: '.home_hero',
+        tweenArr: [
+          new FadeIn({ el: $('.home_hero .swiper-slide:first-child .home_hero_des_subtitle') }),
+          new FadeSplitText({ el: $('.home_hero .swiper-slide:first-child .home_hero_des_title').get(0), onMask: true, delay: .1 }),
+          new FadeIn({ el: $('.home_hero .swiper-slide:first-child .home_hero_des_link'), delay: .1 }),
+        ]
+      })
     }
     play() {
-      this.tl.play();
+      console.log('play')
+      // this.tl.play();
     }
   }
   const homeHero = new HomeHero();
   class HomeSeller extends TriggerSetup {
     constructor(triggerEl) {
       super(triggerEl);
+      this.tl = null;
     }
     trigger() {
       super.setTrigger(this.setup.bind(this));
@@ -349,6 +409,43 @@ let cursor = new Cursor();
           },
         },
       });
+      this.tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.home_seller_inner',
+          start: "top+=75% bottom",
+          once: true,
+        }
+      });
+      new MasterTimeline({
+        timeline: this.tl,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          new FadeIn({ el: $('.home_seller_content_subtitle')}),
+          new FadeSplitText({ el: $('.home_seller_content_title').get(0), onMask: true, delay: .1 }),
+          ...Array.from($('.home_seller_category_item')).flatMap((el, idx) => new FadeIn({ el: el, delay: idx == 0? '<=0' : '<=.1' })),
+        ]
+      })
+      let tlItemList = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.home_seller_silder_wrap',
+          start: "top+=75% bottom",
+          once: true,
+        }
+      }
+      );
+      $(this.triggerEl).find(".home_seller_silder_item").each((i, el) => {
+        new MasterTimeline({
+          timeline: tlItemList,
+          triggerInit: this.triggerEl,
+          tweenArr: [
+            new ScaleInset({ el: $(el).find('.home_seller_silder_item_img').get(0)}),
+            ...Array.from($(el).find('.home_seller_silder_item_top .txt_12')).flatMap((el, idx) => new FadeIn({ el: el, delay: '<=.1', type: 'bottom' })),
+            new FadeIn({ el: $(el).find('.home_seller_silder_item_info'), type: 'bottom'}),
+            new FadeSplitText({ el: $(el).find('.home_seller_silder_item_info_title').get(0), onMask: true, delay: .1 }),
+            new FadeIn({ el: $(el).find('.home_seller_silder_item_info_price'), delay: .1, type: 'bottom' }),
+          ].filter(Boolean)
+        })
+      })
     }
   }
   let homeSeller = new HomeSeller('.home_seller ');
@@ -370,7 +467,12 @@ let cursor = new Cursor();
       new MasterTimeline({
           timeline: tl,
           tweenArr: [
-              ...Array.from($('.home-senses-menu-item-txt')).flatMap((el, idx) => new FadeSplitText({ el: el, onMask: true, delay: idx == 0? '<=0' : '<=.1' })),
+              ...Array.from($('.home_cookies_content_item')).flatMap((el, idx) => {
+                return [
+                  new FadeSplitText({ el: $(el).find('.home_cookies_content_item_label').get(0), delay: idx == 0? '<=0' : `<=.05*${idx}` }),
+                  new FadeSplitText({ el: $(el).find('.home_cookies_content_item_title').get(0)}),
+                ]
+              }),
           ]
       })
       if(viewport.w > 991) {
@@ -487,6 +589,57 @@ let cursor = new Cursor();
           },
         },
       });
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.triggerEl,
+          start: "top+=35% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tl,
+        tweenArr: [
+          new FadeIn({ el: $('.home_about_content_subtitle')}),
+          new FadeSplitText({ el: $('.home_about_content_title').get(0), onMask: true, delay: .1 }),
+        ]
+      })
+      $('.home_about_item').each((i, el) => {
+        let tlItem = new gsap.timeline({
+          scrollTrigger: {
+            trigger: el,
+            start: "top+=75% bottom",
+            once: true,
+          }
+        });
+        new MasterTimeline({
+          timeline: tlItem,
+          tweenArr: [
+            ...($(el).find('.home_about_item_des p').length > 0 ? Array.from($(el).find('.home_about_item_des p')).map((p, idx) => new FadeSplitText({ el: $(p).get(0), delay: idx == 0? '<=0' : `<=.05*${idx}` })) : []),
+            $(el).find('.home_about_item_inner').length > 0 ? new ScaleInset({ el: $(el).find('.home_about_item_inner').get(0), delay: .1 }) : null,
+            $(el).find('.home_about_item_link').length > 0 ? new FadeIn({ el: $(el).find('.home_about_item_link'), delay: .2 }) : null,
+            $(el).find('.home_about_item_border').length > 0 ? new FadeIn({ el: $(el).find('.home_about_item_border'), delay: .3 }) : null,
+          ].filter(Boolean)
+        })
+      })
+      $(this.triggerEl).find('.home_about_slide_item').each((i, el) => {
+        let tlItem = new gsap.timeline({
+          scrollTrigger: {
+            trigger: el,
+            start: "top+=75% bottom",
+            once: true,
+          }
+        });
+        new MasterTimeline({
+          timeline: tlItem,
+          tweenArr: [
+            new ScaleInset({ el: $(el).find('.home_about_slide_item_img').get(0), delay: .1 }),
+            new FadeIn({ el: $(el).find('.home_about_slide_item_info'), delay: .1 }),
+            new FadeSplitText({ el: $(el).find('.home_about_slide_item_info_title').get(0), onMask: true, delay: .1 }),
+            new FadeSplitText({ el: $(el).find('.home_about_slide_item_info_des').get(0), delay: .1 }),
+            new ScaleInset({ el: $(el).find('.home_about_slide_item_info_icon').get(0), delay: .2 }),
+          ]
+        })
+      })
     }
   }
   let homeAbout = new HomeAbout('.home_about ');
@@ -514,8 +667,42 @@ let cursor = new Cursor();
           },
         });
       } else {
-        console.log(viewport.w)
       }
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.triggerEl,
+          start: "top+=35% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tl,
+        tweenArr: [
+          new FadeIn({ el: $('.home_discover_subtitle')}),
+          new FadeSplitText({ el: $('.home_discover_title').get(0), onMask: true, delay: .1 }),
+        ]
+      })
+      $(this.triggerEl).find(".home_seller_silder_item").each((i, el) => {
+        let tlItemList = new gsap.timeline({
+          scrollTrigger: {
+            trigger: el,
+            start: "top+=75% bottom",
+            once: true,
+          }
+        }
+        );
+        new MasterTimeline({
+          timeline: tlItemList,
+          triggerInit: this.triggerEl,
+          tweenArr: [
+            new ScaleInset({ el: $(el).find('.home_seller_silder_item_img').get(0)}),
+            ...Array.from($(el).find('.home_seller_silder_item_top .txt_12')).flatMap((el, idx) => new FadeIn({ el: el, delay: '<=.1', type: 'bottom' })),
+            new FadeIn({ el: $(el).find('.home_seller_silder_item_info'), type: 'bottom'}),
+            new FadeSplitText({ el: $(el).find('.home_seller_silder_item_info_title').get(0), onMask: true, delay: .1 }),
+            new FadeIn({ el: $(el).find('.home_seller_silder_item_info_price'), delay: .1, type: 'bottom' }),
+          ].filter(Boolean)
+        })
+      })
     }
   }
   let homeDiscover = new HomeDiscover('.home_discover ');
@@ -527,7 +714,30 @@ let cursor = new Cursor();
       super.setTrigger(this.setup.bind(this));
     }
     setup() {
-
+      let tlScrub = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.triggerEl,
+          start: 'center bottom+=10%',
+          end: `center top+=40%`,
+          scrub: 1,
+        },
+      });
+      let title = new SplitType( $(this.triggerEl).find('.home_course_info_txt').get(0), {type: 'chars, words, lines', lineClass: 'split-line'});
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.triggerEl,
+          start: "top+=45% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tl,
+        tweenArr: [
+          new FadeSplitText({ el: $('.home_course_info_txt').get(0), onMask: true,breakType: 'chars',isFast: true, isDisableRevert: true }),
+          new FadeIn({ el: $('.home_course .home_hero_des_link'), delay: .8}),
+        ]
+      })
+      tlScrub.fromTo('.home_course_info_txt .char', {color: 'rgba(255,255,255, 0.5)'}, {color: 'rgba(255,255,255, 1)', stagger: .03, ease: "none"})
     }
   }
   let homeCourse = new HomeCourse('.home_course ');
@@ -554,6 +764,39 @@ let cursor = new Cursor();
           },
         },
       });
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.triggerEl,
+          start: "top+=35% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tl,
+        tweenArr: [
+          new FadeIn({ el: $('.home_review_left_subtitle')}),
+          new ScaleInset({ el: $('.home_review_right_img').get(0) }),
+          new FadeSplitText({ el: $('.home_review_left_title').get(0), onMask: true, delay: .1 }),
+          new FadeIn({ el: $('.home_review_left_amount'), delay: .1 }),
+        ]
+      })
+      $('.home_review_right_slide_item').each((i, el) => {
+        let tlItem = new gsap.timeline({
+          scrollTrigger: {
+            trigger: el,
+            start: "top+=75% bottom",
+            once: true,
+          }
+        });
+        new MasterTimeline({
+          timeline: tlItem,
+          tweenArr: [
+            new FadeIn({ el: $(el).find('.home_review_right_slide_item_icon_wrap')}),
+            new FadeSplitText({ el: $(el).find('.home_review_right_slide_item_content').get(0), onMask: true, delay: .1 }),
+            new FadeSplitText({ el: $(el).find('.home_review_right_slide_item_author').get(0), delay: .4 }),
+          ]
+        })
+      })
     }
   }
   let homeReview = new HomeReview('.home_review ');
@@ -566,7 +809,26 @@ let cursor = new Cursor();
       this.interact();
     }
     setup() {
-
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.triggerEl,
+          start: "top+=35% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tl,
+        tweenArr: [
+          new FadeIn({ el: $('.home_contact_form_subtitle ')}),
+          new FadeSplitText({ el: $('.home_contact_form_title ').get(0), onMask: true, delay: .1 }),
+          new FadeIn({ el: $('.home_contact_form_name input')}),
+          new FadeIn({ el: $('.home_contact_form_info input')}),
+          new FadeIn({ el: $('.home_contact_form_info_select select')}),
+          new FadeIn({ el: $('.home_contact_form_design textarea')}),
+          new FadeIn({ el: $('.home_contact_form_upload')}),
+          new FadeIn({ el: $('.home_contact .home_hero_des_link')})
+        ]
+      })
     }
     interact() {
       $('#file-upload').on('change', function (e) {
@@ -640,6 +902,38 @@ let cursor = new Cursor();
           },
         },
       });
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.triggerEl,
+          start: "top+=35% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tl,
+        tweenArr: [
+          new FadeIn({ el: $('.home_workshop_info_subtitle')}),
+          new FadeSplitText({ el: $('.home_workshop_info_title').get(0), onMask: true, delay: .1 }),
+        ]
+      })
+      let tlItem = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.home_workshop_slide',
+          start: "top+=75% bottom",
+          once: true,
+        }
+      });
+      $('.home_workshop_slide_item').each((i, el) => {
+        new MasterTimeline({
+          timeline: tlItem,
+          tweenArr: [
+            new ScaleInset({ el: $(el).find('.home_workshop_slide_item_img').get(0)}),
+            new FadeIn({ el: $(el).find('.home_workshop_slide_item_info')}),
+            new FadeSplitText({ el: $(el).find('.home_workshop_slide_item_title').get(0), onMask: true, delay: .2 }),
+            new FadeSplitText({ el: $(el).find('.home_workshop_slide_item_des').get(0), delay: .1 }),
+          ]
+        })
+      })
     }
   }
   let homeWorkshop = new HomeWorkshop('.home_workshop  ');
@@ -672,6 +966,21 @@ let cursor = new Cursor();
           },
         },
       });
+      let tlItem = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.home_cake_slide',
+          start: "top+=25% bottom",
+          once: true,
+        }
+      });
+      $('.home_cake_slide_item').each((i, el) => {
+        new MasterTimeline({
+          timeline: tlItem,
+          tweenArr: [
+            new ScaleInset({ el: $(el).get(0)}, {delay: .1}),
+          ]
+        })
+      })
     }
   }
   let homeCake = new HomeCake('.home_cake  ');
@@ -688,6 +997,7 @@ let cursor = new Cursor();
       homeContact.trigger();
       homeWorkshop.trigger();
       homeCake.trigger();
+      footer.trigger();
       return;
     },
   };

@@ -71,8 +71,9 @@
   <?php echo tr_options_field('tr_theme_options.script_body');?>
 
   <!-- Header -->
+  <?php $pageClass = isset($args['pageClass']) ? $args['pageClass'] : ''; ?>
   <header>
-      <div class="header ">
+      <div class="header <?php echo $pageClass?>">
         <div class="kl_container">
           <div class="header_inner">
             <div class="header_menu">

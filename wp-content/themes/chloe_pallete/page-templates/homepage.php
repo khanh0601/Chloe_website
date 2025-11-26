@@ -161,7 +161,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -193,7 +193,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -225,7 +225,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -257,7 +257,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -289,7 +289,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -321,7 +321,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -353,7 +353,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -385,7 +385,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div
@@ -707,7 +707,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
@@ -737,7 +737,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
@@ -767,7 +767,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
@@ -797,7 +797,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
@@ -827,7 +827,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
@@ -857,7 +857,7 @@
                   <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
                 </div>
                 <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_subtitle">
+                  <div class="home_seller_silder_item_info_title txt_16">
                     Butter Croissant
                   </div>
                   <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">

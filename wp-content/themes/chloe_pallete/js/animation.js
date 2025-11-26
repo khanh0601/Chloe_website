@@ -272,12 +272,12 @@ class FadeSplitText {
                   headingType: headingType
       }).DOM.splitType;
       this.delay = delay;
-      this.duration = isFast? 0.45 : .6;
+      this.duration = isFast? 0.2 : .6;
       this.onMask && gsap.set(el.querySelectorAll('.line__mask'), { overflow: 'hidden' });
       this.animation = gsap.from(this.textSplit[this.breakType], {
           autoAlpha: 0,
           yPercent: 100,
-          stagger: this.breakType == 'lines' ? 0.1 : 0.04,
+          stagger: this.breakType == 'lines' ? 0.1 : 0.02,
           duration: this.breakType == 'lines' ? this.duration : 1,
           ease: 'power2.out',
           onComplete: () => {
