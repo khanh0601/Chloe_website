@@ -12,9 +12,9 @@
 
 get_header();
 wp_enqueue_style( 'our_story-css', get_template_directory_uri() . '/css/our_story.css');
-wp_enqueue_script( 'our_story-js', get_template_directory_uri() . '/js/our_story.js');
 
 ?>
+  <div class="main" data-barba-namespace="ourStory">
     <section class="home_hero">
         <div class="swiper mySwiper">
           <div class="swiper-wrapper">
@@ -31,10 +31,18 @@ wp_enqueue_script( 'our_story-js', get_template_directory_uri() . '/js/our_story
                 <div class="home_hero_des_title color_white txt_72">
                   Make your birthday sweeter with a cake full of love!
                 </div>
-                <a href="#" class="home_hero_des_link txt_uppercase">
-                  <div class="home_hero_des_link_txt txt_16">order now</div>
-                  <div class="home_hero_des_link_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
+                  <div class="btn_txt_wrap">
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+                  </div>
+                  <div class="btn_ic_wrap">
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
                   </div>
                 </a>
               </div>
@@ -261,40 +269,64 @@ wp_enqueue_script( 'our_story-js', get_template_directory_uri() . '/js/our_story
                 <div class="story_choose_right_wrap">
                   <div class="story_choose_right">
                       <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num">01</div>
+                          <div class="story_choose_right_item_num txt_16">01</div>
                           <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
                           <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color">Read more</a>
+                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
+                            Read more
+                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                          </a>
+                          <div class="story_choose_right_item_line"></div>
                       </div>
                       <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num">01</div>
+                          <div class="story_choose_right_item_num txt_16">01</div>
                           <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
                           <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color">Read more</a>
+                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
+                            Read more
+                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                          </a>
+                          <div class="story_choose_right_item_line"></div>
                       </div>
                       <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num">01</div>
+                          <div class="story_choose_right_item_num txt_16">01</div>
                           <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
                           <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color">Read more</a>
+                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
+                            Read more
+                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                          </a>
+                          <div class="story_choose_right_item_line"></div>
                       </div>
                       <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num">01</div>
+                          <div class="story_choose_right_item_num txt_16">01</div>
                           <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
                           <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color">Read more</a>
+                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
+                            Read more
+                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                          </a>
+                          <div class="story_choose_right_item_line"></div>
                       </div>
                       <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num">01</div>
+                          <div class="story_choose_right_item_num txt_16">01</div>
                           <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
                           <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color">Read more</a>
+                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
+                            Read more
+                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                          </a>
+                          <div class="story_choose_right_item_line"></div>
                       </div>
                       <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num">01</div>
+                          <div class="story_choose_right_item_num txt_16">01</div>
                           <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
                           <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color">Read more</a>
+                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
+                            Read more
+                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                          </a>
+                          <div class="story_choose_right_item_line"></div>
                       </div>
                   </div>
                   <div class="story_choose_right_panigation swiper-pagination tablet"></div>
@@ -312,10 +344,18 @@ wp_enqueue_script( 'our_story-js', get_template_directory_uri() . '/js/our_story
             create unforgettable moments from the flavor to the feeling, it all
             begins with one beautiful cake.
           </div>
-          <a href="#" class="home_hero_des_link txt_uppercase">
-            <div class="home_hero_des_link_txt txt_16">order now</div>
-            <div class="home_hero_des_link_icon img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+          <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
+            <div class="btn_txt_wrap">
+              <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+              <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+            </div>
+            <div class="btn_ic_wrap">
+              <div class="btn_ic home_hero_des_link_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+              </div>
+              <div class="btn_ic home_hero_des_link_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+              </div>
             </div>
           </a>
         </div>
@@ -344,4 +384,5 @@ wp_enqueue_script( 'our_story-js', get_template_directory_uri() . '/js/our_story
 
         </div>
     </section>
+  </div>
 <?php get_footer(); ?>

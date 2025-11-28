@@ -86,8 +86,9 @@
         background-color: unset;
         border: unset;
         padding-left: 2.5rem;
-        color: #1B1B1B99;
-        font-size: 1.6rem;
+        color: #1b1b1b;
+        font-size: 1.8rem;
+        padding-bottom: 1rem;
         &:placeholder{
             color: #1B1B1B99;
         }
@@ -216,6 +217,7 @@
     position: absolute;
     top: 2.5rem;
     left: 2.5rem;
+    z-index: 10;
 }
 .shop_content_list_card_item_info_price{
     span:last-child{

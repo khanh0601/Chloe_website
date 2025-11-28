@@ -10,7 +10,7 @@
  * @since chloe_pallete 1.0
  */
 // truyền class vào header khi gọi ở template page này được khôg
-$pageClass = 'on_scroll';
+$pageClass = 'on_dark';
 
 get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'shop-css', get_template_directory_uri() . '/css/shop.css');

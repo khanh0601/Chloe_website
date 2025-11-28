@@ -100,7 +100,11 @@ a{
     display: flex;
     position: fixed;
     inset: 0;
+    &.on-hover-hidden .cursor-inner {
+      opacity: 0;
+    }
 }
+
 .cursor-main {
   justify-content: center;
   align-items: center;
@@ -123,6 +127,10 @@ a{
   position: relative;
   &.active {
     opacity: 1;
+  }
+  &.on-hover-sm {
+    width: .6rem;
+    height: .6rem;
   }
 }
 .cursor.on-hover-explore .cursor-inner-explore-txt, .cursor.on-hover-drag .cursor-inner-drag-txt, .cursor.on-hover-detail .cursor-inner-detail-txt {
@@ -354,6 +362,40 @@ h1, h2{
   height: 1px;
   position: relative;
 }
+.line-anim.line-anim-hover {
+  background-color: #0000;
+  position: absolute;
+  bottom: 0;
+  overflow: hidden;
+}
+.line-anim {
+  z-index: 1;
+  pointer-events: none;
+  background-color: #c0c5c4;
+  width: 100%;
+  height: max(1px, .1rem);
+  transition: background-color .4s;
+}
+.hover-un {
+  position: relative;
+}
+.hover-un:hover .line-anim-inner-hover {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.hover-un .line-anim-inner-hover {
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform .6s ease;
+}
+.line-anim-inner {
+  width: 100%;
+  height: 100%;
+}
+.line-anim-inner.line-anim-inner-hover {
+  background-color: currentColor;
+  position: relative;
+}
 .hover_arr:hover .line_main {
   transform: translateX(calc(100% + 2rem));
 }
@@ -573,7 +615,7 @@ h1, h2{
   &.on_hide {
     transform: translateY(-102%);
   }
-  &.on_scroll {
+  &.on_scroll, &.on_dark {
     color: black;
     background-color: #F7FCEF;
     border-color: #ccc;

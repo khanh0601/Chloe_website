@@ -263,13 +263,13 @@ class FadeSplitText {
       if (!el || el.textContent === '') return;
       this.DOM = { el: el };
       this.onMask = onMask || false;
-      this.breakType = breakType || 'lines';
+      this.breakType = breakType || 'words';
       this.textSplit = new TextSplit({
           el: this.DOM.el,
           type: this.onMask ?
-                  this.breakType == 'lines' ?
-                      this.breakType : `${this.breakType}, lines` : this.breakType,
-                  headingType: headingType
+                  this.breakType == 'chars' ?
+                      `chars, words, lines` : `words, lines` : `words`,
+        headingType: headingType
       }).DOM.splitType;
       this.delay = delay;
       this.duration = isFast? 0.2 : .6;
@@ -277,8 +277,8 @@ class FadeSplitText {
       this.animation = gsap.from(this.textSplit[this.breakType], {
           autoAlpha: 0,
           yPercent: 100,
-          stagger: this.breakType == 'lines' ? 0.1 : 0.02,
-          duration: this.breakType == 'lines' ? this.duration : 1,
+          stagger: this.breakType == 'chars' ? 0.01 : 0.015,
+          duration: this.breakType == 'chars' ? .8 : this.duration,
           ease: 'power2.out',
           onComplete: () => {
               if (!isDisableRevert) {

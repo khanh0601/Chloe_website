@@ -12,8 +12,6 @@
 
     get_header();
     wp_enqueue_style('home-css', get_template_directory_uri() . '/css/home.css');
-    wp_enqueue_script('home-js', get_template_directory_uri() . '/js/home.js');
-
 ?>
     <div class='main' data-barba-namespace="home">
       <section class="home_hero">
@@ -32,7 +30,7 @@
                 <div class="home_hero_des_title color_white txt_72">
                   Make your birthday sweeter with a cake full of love!
                 </div>
-                <a href="#" class="btn_black btn home_hero_des_link txt_uppercase">
+                <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
                   <div class="btn_txt_wrap">
                     <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
                     <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
@@ -61,10 +59,18 @@
                 <div class="home_hero_des_title color_white txt_72">
                   Make your birthday sweeter with a cake full of love!
                 </div>
-                <a href="#" class="home_hero_des_link txt_uppercase">
-                  <div class="home_hero_des_link_txt txt_16">order now</div>
-                  <div class="home_hero_des_link_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
+                  <div class="btn_txt_wrap">
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+                  </div>
+                  <div class="btn_ic_wrap">
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
                   </div>
                 </a>
               </div>
@@ -82,12 +88,18 @@
                 <div class="home_hero_des_title color_white txt_72">
                   Make your birthday sweeter with a cake full of love!
                 </div>
-                <a href="#" class="home_hero_des_link">
-                  <div class="home_hero_des_link_txt txt_uppercase txt_16">
-                    order now
+                <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
+                  <div class="btn_txt_wrap">
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
                   </div>
-                  <div class="home_hero_des_link_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                  <div class="btn_ic_wrap">
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
+                    <div class="btn_ic home_hero_des_link_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    </div>
                   </div>
                 </a>
               </div>
@@ -884,10 +896,18 @@
             create unforgettable moments from the flavor to the feeling, it all
             begins with one beautiful cake.
           </div>
-          <a href="#" class="home_hero_des_link txt_uppercase">
-            <div class="home_hero_des_link_txt txt_16">order now</div>
-            <div class="home_hero_des_link_icon img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+          <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
+            <div class="btn_txt_wrap">
+              <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+              <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+            </div>
+            <div class="btn_ic_wrap">
+              <div class="btn_ic home_hero_des_link_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+              </div>
+              <div class="btn_ic home_hero_des_link_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+              </div>
             </div>
           </a>
         </div>
@@ -1113,9 +1133,17 @@
             <p class="upload-info txt_14">PNG, JPG, GIF up to 5MB</p>
           </div>
           <button type="submit" class="home_hero_des_link txt_uppercase">
-            <div class="home_hero_des_link_txt txt_16">submit</div>
-            <div class="home_hero_des_link_icon img_full">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+            <div class="btn_txt_wrap">
+              <div class="btn_txt home_hero_des_link_txt txt_16">Submit</div>
+              <div class="btn_txt home_hero_des_link_txt txt_16">Submit</div>
+            </div>
+            <div class="btn_ic_wrap">
+              <div class="btn_ic home_hero_des_link_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+              </div>
+              <div class="btn_ic home_hero_des_link_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+              </div>
             </div>
           </button>
         </div>
