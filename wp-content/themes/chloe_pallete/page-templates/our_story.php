@@ -12,136 +12,109 @@
 
 get_header();
 wp_enqueue_style( 'our_story-css', get_template_directory_uri() . '/css/our_story.css');
+$pageID = get_queried_object_id();
+// Banner Chính
+$banner = tr_posts_field('banner', $pageID); // Mỗi item: ['image', 'subtitle', 'title', 'order', 'link']
 
+// About Cake
+$about_subtitle = tr_posts_field('about_subtitle', $pageID);
+$about_title = tr_posts_field('about_title', $pageID);
+$about_text_1 = tr_posts_field('about_text_1', $pageID);
+$about_image = wp_get_attachment_url(tr_posts_field('about_image', $pageID));
+$about_text_2 = tr_posts_field('about_text_2', $pageID);
+$about_readmore = tr_posts_field('about_readmore', $pageID);
+$about_link = tr_posts_field('about_link', $pageID);
+
+// Choose Us
+$choose_subtitle = tr_posts_field('choose_subtitle', $pageID);
+$choose_title = tr_posts_field('choose_title', $pageID);
+$choose_image = wp_get_attachment_url(tr_posts_field('choose_image', $pageID));
+$choose_items = tr_posts_field('choose_items', $pageID); // Mỗi item: ['num', 'title', 'des', 'read_more', 'link']
+
+// Message Cake
+$message_image = wp_get_attachment_url(tr_posts_field('message_image', $pageID));
+$message_des = tr_posts_field('message_des', $pageID);
+$message_order = tr_posts_field('message_order', $pageID);
+$message_link = tr_posts_field('message_link', $pageID);
+
+// Our Mission
+$mission_title = tr_posts_field('mission_title', $pageID);
+$mission_des = tr_posts_field('mission_des', $pageID);
+$mission_image1 = wp_get_attachment_url(tr_posts_field('mission_image1', $pageID));
+$mission_image2 = wp_get_attachment_url(tr_posts_field('mission_image2', $pageID));
 ?>
   <div class="main" data-barba-namespace="ourStory">
     <section class="home_hero">
         <div class="swiper mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="home_hero_img img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
-              </div>
-              <div class="home_hero_des">
-                <div
-                  class="home_hero_des_subtitle block_title color_white txt_subtitle"
-                >
-                  ChloesPalette
-                </div>
-                <div class="home_hero_des_title color_white txt_72">
-                  Make your birthday sweeter with a cake full of love!
-                </div>
-                <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
-                  <div class="btn_txt_wrap">
-                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
-                    <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+            <?php if (!empty($banner)) : ?>
+              <?php foreach ($banner as $item): ?>
+                <div class="swiper-slide">
+                  <div class="home_hero_img img_fullfill">
+                    <img src="<?= esc_url(wp_get_attachment_url($item['image'])) ?>" />
                   </div>
-                  <div class="btn_ic_wrap">
-                    <div class="btn_ic home_hero_des_link_icon img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                  <div class="home_hero_des">
+                    <div
+                      class="home_hero_des_subtitle block_title color_white txt_subtitle"
+                    >
+                      <?= $item['subtitle'] ?>
                     </div>
-                    <div class="btn_ic home_hero_des_link_icon img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                    <div class="home_hero_des_title color_white txt_72">
+                      <?= $item['title'] ?>
                     </div>
+                    <a href="<?= $item['link'] ?>" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
+                      <div class="btn_txt_wrap">
+                        <div class="btn_txt home_hero_des_link_txt txt_16"><?= $item['order'] ?></div>
+                        <div class="btn_txt home_hero_des_link_txt txt_16"><?= $item['order'] ?></div>
+                      </div>
+                      <div class="btn_ic_wrap">
+                        <div class="btn_ic home_hero_des_link_icon img_full">
+                          <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                        </div>
+                        <div class="btn_ic home_hero_des_link_icon img_full">
+                          <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
+                        </div>
+                      </div>
+                    </a>
                   </div>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="home_hero_img img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
-              </div>
-              <div class="home_hero_des">
-                <div
-                  class="home_hero_des_subtitle block_title color_white txt_subtitle"
-                >
-                  ChloesPalette
                 </div>
-                <div class="home_hero_des_title color_white txt_72">
-                  Make your birthday sweeter with a cake full of love!
-                </div>
-                <a href="#" class="home_hero_des_link txt_uppercase">
-                  <div class="home_hero_des_link_txt txt_16">order now</div>
-                  <div class="home_hero_des_link_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
-                  </div>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="home_hero_img img_full">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/home_hero.webp" />
-              </div>
-              <div class="home_hero_des">
-                <div
-                  class="home_hero_des_subtitle block_title color_white txt_subtitle"
-                >
-                  ChloesPalette
-                </div>
-                <div class="home_hero_des_title color_white txt_72">
-                  Make your birthday sweeter with a cake full of love!
-                </div>
-                <a href="#" class="home_hero_des_link">
-                  <div class="home_hero_des_link_txt txt_uppercase txt_16">
-                    order now
-                  </div>
-                  <div class="home_hero_des_link_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
-                  </div>
-                </a>
-              </div>
-            </div>
+              <?php endforeach; ?>
+            <?php endif; ?>
           </div>
           <div class="swiper-pagination home_hero_pagination"></div>
         </div>
-    </section>
+      </section>
     <section class="home_about overflow_hidden">
         <div class="kl_container">
           <div class="home_about_content">
             <div
               class="home_about_content_subtitle txt_center txt_subtitle block_title"
             >
-              About chloes palette cakes
+              <?= wp_kses_post($about_subtitle) ?>
             </div>
             <div class="home_about_content_title txt_title txt_center">
-              Where every cake becomes a work of art.
+              <?= wp_kses_post($about_title) ?>
             </div>
           </div>
           <div class="home_about_inner">
             <div class="home_about_item">
               <div class="home_about_item_des txt_16">
-                <p>
-                  “Welcome to Chloes Palette Cakes where each cake is not just a
-                  sweet treat, but a story crafted with inspiration, dedication, and
-                  love.”
-                </p>
-                <p>
-                  At Chloes Palette Cakes, we believe the perfect birthday cake lies
-                  in the harmony of delicate flavors, unique aesthetics, and honest
-                  emotion. Whether you dream of a pastel minimalist cake or an
-                  elaborate themed design, our skilled team brings your vision to
-                  life.
-                </p>
+                <?= wp_kses_post($about_text_1) ?>
               </div>
               <div class="home_about_item_border"></div>
             </div>
             <div class="home_about_item img_full">
               <div class="home_about_item_inner">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/home_about.webp" alt="" />
+                <img src="<?php echo $about_image ?>" alt="" />
               </div>
             </div>
             <div class="home_about_item">
               <div class="home_about_item_des txt_16">
-                <p>
-                  We pour our hearts into every recipe, blending creativity with
-                  love to make cakes that are as meaningful as they are beautiful.
-                  From birthdays to weddings, each creation is a celebration of
-                  happiness, made to bring smiles and sweet memories to every table.
-                </p>
+                <?= wp_kses_post($about_text_2) ?>
               </div>
-              <a href="#" class="home_about_item_link">
+              <a href="<?= wp_kses_post($about_link) ?>" class="home_about_item_link">
                 <div class="home_about_item_link_txt txt_uppercase txt_16">
-                  Read more
+                  <?= wp_kses_post($about_readmore) ?>
                 </div>
                 <div class="home_hero_des_link_icon img_full">
                   <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="" />
@@ -151,183 +124,81 @@ wp_enqueue_style( 'our_story-css', get_template_directory_uri() . '/css/our_stor
             </div>
           </div>
         </div>
+        <?php
+          $uncategorized = get_term_by( 'slug', 'uncategorized', 'product_cat' );
+          $exclude_ids = $uncategorized ? array( $uncategorized->term_id ) : array();
+        // Lấy tất cả product categories
+        $product_categories = get_terms( array(
+            'taxonomy'   => 'product_cat',
+            'hide_empty' => false, // Chỉ lấy category có sản phẩm
+            'orderby'    => 'name',
+            'order'      => 'ASC',
+            'exclude'    => $exclude_ids,
+        ) );
+
+        if ( ! empty( $product_categories ) && ! is_wp_error( $product_categories ) ) :
+        ?>
         <div class="kl_container">
           <div class="home_about_slide swiper">
             <div class="home_about_slide_wrap swiper-wrapper">
-              <div class="home_about_slide_item swiper-slide">
-                <div class="home_about_slide_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
-                </div>
-                <div class="home_about_slide_item_info">
-                  <div class="home_about_slide_item_info_title txt_24">
-                    Kid Cake
+              <?php foreach ( $product_categories as $category ) : 
+                  // Lấy thumbnail của category
+                  $thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
+                  $image_url = $thumbnail_id ? wp_get_attachment_url( $thumbnail_id ) : get_template_directory_uri() . '/images/placeholder.webp';
+                  
+                  // Lấy link category
+                  $category_link = get_term_link( $category );
+              ?>
+                <a href="<?php echo esc_url( $category_link ); ?>" class="home_about_slide_item swiper-slide">
+                  <div class="home_about_slide_item_img img_full">
+                    <img src="<?php echo esc_url( $image_url ); ?>" alt="" />
                   </div>
-                  <div class="home_about_slide_item_info_des txt_14">
-                    Making every birthday unforgettable!
+                  <div class="home_about_slide_item_info">
+                    <div class="home_about_slide_item_info_title txt_24">
+                      <?php echo esc_html( $category->name ); ?>
+                    </div>
+                    <div class="home_about_slide_item_info_des txt_14">
+                      <?php echo esc_html( $category->description ); ?>
+                    </div>
+                    <div class="home_about_slide_item_info_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
+                    </div>
                   </div>
-                  <a href="#" class="home_about_slide_item_info_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
-                  </a>
-                </div>
-              </div>
-              <div class="home_about_slide_item swiper-slide">
-                <div class="home_about_slide_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
-                </div>
-                <div class="home_about_slide_item_info">
-                  <div class="home_about_slide_item_info_title txt_24">
-                    Kid Cake
-                  </div>
-                  <div class="home_about_slide_item_info_des txt_14">
-                    Making every birthday unforgettable!
-                  </div>
-                  <a href="#" class="home_about_slide_item_info_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
-                  </a>
-                </div>
-              </div>
-              <div class="home_about_slide_item swiper-slide">
-                <div class="home_about_slide_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
-                </div>
-                <div class="home_about_slide_item_info">
-                  <div class="home_about_slide_item_info_title txt_24">
-                    Kid Cake
-                  </div>
-                  <div class="home_about_slide_item_info_des txt_14">
-                    Making every birthday unforgettable!
-                  </div>
-                  <a href="#" class="home_about_slide_item_info_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
-                  </a>
-                </div>
-              </div>
-              <div class="home_about_slide_item swiper-slide">
-                <div class="home_about_slide_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
-                </div>
-                <div class="home_about_slide_item_info">
-                  <div class="home_about_slide_item_info_title txt_24">
-                    Kid Cake
-                  </div>
-                  <div class="home_about_slide_item_info_des txt_14">
-                    Making every birthday unforgettable!
-                  </div>
-                  <a href="#" class="home_about_slide_item_info_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
-                  </a>
-                </div>
-              </div>
-              <div class="home_about_slide_item swiper-slide">
-                <div class="home_about_slide_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
-                </div>
-                <div class="home_about_slide_item_info">
-                  <div class="home_about_slide_item_info_title txt_24">
-                    Kid Cake
-                  </div>
-                  <div class="home_about_slide_item_info_des txt_14">
-                    Making every birthday unforgettable!
-                  </div>
-                  <a href="#" class="home_about_slide_item_info_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
-                  </a>
-                </div>
-              </div>
-              <div class="home_about_slide_item swiper-slide">
-                <div class="home_about_slide_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/home_about_slide.webp" alt="" />
-                </div>
-                <div class="home_about_slide_item_info">
-                  <div class="home_about_slide_item_info_title txt_24">
-                    Kid Cake
-                  </div>
-                  <div class="home_about_slide_item_info_des txt_14">
-                    Making every birthday unforgettable!
-                  </div>
-                  <a href="#" class="home_about_slide_item_info_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/Icon_right.svg" alt="" />
-                  </a>
-                </div>
-              </div>
+              </a>
+                <?php endforeach; ?>
             </div>
           </div>
         </div>
-    </section>
+        <?php endif; ?>
+      </section>
     <section class="story_choose">
         <div class="kl_container">
             <div class="story_choose_inner kl_grid">
                 <div class="story_choose_left">
                     <div class="story_choose_left_info">
-                        <div class="story_choose_left_subtitle txt_subtitle block_title">WHY CHOOSE US?</div>
-                        <div class="story_choose_left_title txt_title">The art of French pastry, perfected for you</div>
+                        <div class="story_choose_left_subtitle txt_subtitle block_title"><?= wp_kses_post($choose_subtitle) ?></div>
+                        <div class="story_choose_left_title txt_title"><?= wp_kses_post($choose_title) ?></div>
                     </div>
                     <div class="story_choose_left_img img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/story_choose.webp" alt="">
+                        <img src="<?php echo $choose_image ?>" alt="">
                     </div>
                 </div>
                 <div class="story_choose_right_wrap">
                   <div class="story_choose_right">
-                      <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num txt_16">01</div>
-                          <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
-                          <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
-                            Read more
-                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                          </a>
-                          <div class="story_choose_right_item_line"></div>
-                      </div>
-                      <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num txt_16">01</div>
-                          <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
-                          <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
-                            Read more
-                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                          </a>
-                          <div class="story_choose_right_item_line"></div>
-                      </div>
-                      <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num txt_16">01</div>
-                          <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
-                          <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
-                            Read more
-                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                          </a>
-                          <div class="story_choose_right_item_line"></div>
-                      </div>
-                      <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num txt_16">01</div>
-                          <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
-                          <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
-                            Read more
-                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                          </a>
-                          <div class="story_choose_right_item_line"></div>
-                      </div>
-                      <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num txt_16">01</div>
-                          <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
-                          <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
-                            Read more
-                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                          </a>
-                          <div class="story_choose_right_item_line"></div>
-                      </div>
-                      <div class="story_choose_right_item">
-                          <div class="story_choose_right_item_num txt_16">01</div>
-                          <div class="story_choose_right_item_title txt_32 txt_title_color">Premium Quality</div>
-                          <div class="story_choose_right_item_des txt_16">Every ingredient is carefully sourced and crafted to meet the highest standards.</div>
-                          <a href="#" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
-                            Read more
-                            <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                          </a>
-                          <div class="story_choose_right_item_line"></div>
-                      </div>
+                    <?php if (!empty($choose_items)) : ?>
+                      <?php foreach ($choose_items as $item): ?>
+                        <div class="story_choose_right_item">
+                            <div class="story_choose_right_item_num txt_16"><?= $item['num'] ?></div>
+                            <div class="story_choose_right_item_title txt_32 txt_title_color"><?= $item['title'] ?></div>
+                            <div class="story_choose_right_item_des txt_16"><?= $item['des'] ?></div>
+                            <a href="<?= $item['link'] ?>" data-cursor="txtLink" class="story_choose_right_item_link txt_wh_500 txt_16 txt_title_color hover-un">
+                              <?= $item['read_more'] ?>
+                              <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                            </a>
+                            <div class="story_choose_right_item_line"></div>
+                        </div>
+                      <?php endforeach; ?>
+                    <?php endif; ?> 
                   </div>
                   <div class="story_choose_right_panigation swiper-pagination tablet"></div>
                 </div>
@@ -336,18 +207,16 @@ wp_enqueue_style( 'our_story-css', get_template_directory_uri() . '/css/our_stor
     </section>
     <section class="home_course">
         <div class="home_course_img img_full">
-          <img src="<?php echo get_template_directory_uri(); ?>/images/home_course.webp" alt="" />
+          <img src="<?php echo $message_image ?>" alt="" />
         </div>
         <div class="home_course_info">
-          <div class="home_course_info_txt txt_64 txt_wh_500">
-            Every cake is a sweet gift made with love and care. Let us help you
-            create unforgettable moments from the flavor to the feeling, it all
-            begins with one beautiful cake.
+          <div class="home_course_info_txt txt_64 txt_wh_500 txt_center">
+            <?= wp_kses_post($message_des) ?>
           </div>
-          <a href="#" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
+          <a href="<?= wp_kses_post($message_link) ?>" data-cursor="hidden" class="btn_black btn home_hero_des_link txt_uppercase">
             <div class="btn_txt_wrap">
-              <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
-              <div class="btn_txt home_hero_des_link_txt txt_16">order now</div>
+              <div class="btn_txt home_hero_des_link_txt txt_16"><?= wp_kses_post($message_order) ?></div>
+              <div class="btn_txt home_hero_des_link_txt txt_16"><?= wp_kses_post($message_order) ?></div>
             </div>
             <div class="btn_ic_wrap">
               <div class="btn_ic home_hero_des_link_icon img_full">
@@ -359,24 +228,23 @@ wp_enqueue_style( 'our_story-css', get_template_directory_uri() . '/css/our_stor
             </div>
           </a>
         </div>
-    </section>
+      </section>
     <section class="story_about">
         <div class="kl_container">
           <div class="story_about_inner">
             <div class="story_about_title txt_40">
-                <span>✺</span>Our mission to create a bakery and café that nourishes the bodies, minds, and spirits of the communities we serve- our neighborhood, our retail and wholesale customers.
+                <?= wp_kses_post($mission_title) ?>
             </div>
             <div class="story_about_content">
               <div class="story_about_content_img img_full middle">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/story_about_1.webp" alt="">
+                <img src="<?php echo $mission_image2 ?>" alt="">
               </div>
               <div class="story_about_content_inner">
                 <div class="story_about_content_des txt_16">
-                  <p>Explore our unique art space and immerse in a world of color and thought. We believe that art is more than just a product, it's a beautiful spiritual experience. Each book is a portal to a different mind, a unique perspective waiting to be absorbed, interpreted, and reimagined.</p>
-                  <p>Let our shelves be your gateway to a world of creativity, discovery, and endless inspiration. After all, in the realm of art, every page is a masterpiece waiting to be uncovered.</p>
+                  <?= wp_kses_post($mission_des) ?>
                 </div>
                 <div class="story_about_content_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/story_about_2.webp" alt="">
+                  <img src="<?php echo $mission_image1 ?>" alt="">
                 </div>
               </div>
             </div>

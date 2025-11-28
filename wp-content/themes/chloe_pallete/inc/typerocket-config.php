@@ -10,59 +10,134 @@ add_action('edit_form_after_title', function($post) use($editorSettings) {
 
         $form = tr_form();
         echo beginBox("Banner Chính",true);
-        echo $form->text('home_banner_video')->setLabel("Banner Video");
-        echo $form->image('home_banner_video_poster')->setLabel("Banner Video Poster");
-        echo $form->row(
-            $form->text('banner_content')->setLabel("Nội dung"),
-            $form->text('banner_link')->setLabel("Liên kết")
-        );
-        echo endBox();
-        //subdivision
-
-        echo beginBox("Giới thiệu",true);
-        echo $form->text('about_title')->setLabel("Tiêu đề");
-        echo $form->editor('about_description')->setLabel("Mô tả");
-        echo $form->repeater('about_items')->setLabel("Danh sách")->setFields([
-            $form->row(
-                $form->image('image')->setLabel("Logo"),
-                $form->text('title')->setLabel("Tiêu đề"),
-                $form->text('link')->setLabel("Liên kết")
-            )
-
-        ]);
+            echo $form->repeater('banner')->setLabel("Banner chính")->setFields([
+                    $form->image('image')->setLabel("Hình ảnh"),
+                    $form->text('subtitle')->setLabel("Tiêu đề phụ"),
+                    $form->text('title')->setLabel("Tiêu đề"),
+                    $form->text('order')->setLabel("Order"),
+                    $form->text('link')->setLabel("link"),
+            ]);
         echo endBox();
 
+
+        echo beginBox("Best seller",true);
+            echo $form->text('seller_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('seller_title')->setLabel("Tiêu đề");
+        echo endBox();
+
+        echo beginBox("Introduce Cake",true);
+            echo $form->repeater('intro')->setLabel("Giới thiệu về các loại cake")->setFields([
+                    $form->text('num')->setLabel("Số thứ tự"),
+                    $form->text('title')->setLabel("Tiêu đề"),
+                    $form->image('image')->setLabel("Hình ảnh"),
+                    $form->text('link')->setLabel("link"),
+            ]);
+        echo endBox();
+        
+
+        echo beginBox("About Cake",true);
+            echo $form->text('about_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('about_title')->setLabel("Tiêu đề");
+            echo $form->editor('about_text_1')->setLabel("Mô tả 1");
+            echo $form->image('about_image')->setLabel("Hình ảnh");
+            echo $form->editor('about_text_2')->setLabel("Mô tả 2");
+            echo $form->text('about_readmore')->setLabel("Text Read more");
+            echo $form->text('about_link')->setLabel("link");
+        echo endBox();
+
+        echo beginBox("Trendding Cake",true);
+            echo $form->text('trend_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('trend_title')->setLabel("Tiêu đề");
+        echo endBox();
+
+        echo beginBox("Message Cake",true);
+            echo $form->image('message_image')->setLabel("Hình ảnh");
+            echo $form->text('message_des')->setLabel("Mô tả");
+            echo $form->text('message_order')->setLabel("Text order");
+            echo $form->text('message_link')->setLabel("link");
+        echo endBox();
+
+
+        echo beginBox("Review Cake",true);
+            echo $form->text('review_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('review_title')->setLabel("Tiêu đề");
+            echo $form->text('review_amount')->setLabel("Số lượng review");
+            echo $form->image('review_image')->setLabel("Hình ảnh");
+            echo $form->repeater('review_items')->setLabel("review item")->setFields([
+                $form->editor('des')->setLabel("Mô tả"),
+                $form->text('author')->setLabel("Tên người đánh giá"),
+            ]);
+        echo endBox();
+
+        echo beginBox("Form Cake",true);
+            echo $form->text('form_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('form_title')->setLabel("Tiêu đề");
+        echo endBox();
+
+        echo beginBox("Workshop Cake",true);
+            echo $form->text('workshop_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('workshop_title')->setLabel("Tiêu đề");
+        echo endBox();
+
+        echo beginBox("List Cake",true);
+            echo $form->repeater('cake_item')->setLabel("Hình ảnh cake")->setFields([
+                $form->image('image')->setLabel("Hình ảnh"),
+            ]);
+        echo endBox();
     }
 
-    else if($post->post_type == 'page' && basename(get_page_template())=="aboutus.php") {
+    else if($post->post_type == 'page' && basename(get_page_template())=="our_story.php") {
         remove_post_type_support( 'page', 'editor' );
 
 
         $form = tr_form();
         echo beginBox("Banner Chính",true);
-        echo $form->row(
-            $form->image('banner_image')->setLabel("Banner"),
-            $form->image('banner_image_mobile')->setLabel("Banner Mobile")
-        );
-        echo $form->row(
-            $form->text('banner_title')->setLabel("Tiêu đề"),
-            $form->textarea('banner_content')->setLabel("Nội dung")
-        );
+            echo $form->repeater('banner')->setLabel("Banner chính")->setFields([
+                    $form->image('image')->setLabel("Hình ảnh"),
+                    $form->text('subtitle')->setLabel("Tiêu đề phụ"),
+                    $form->text('title')->setLabel("Tiêu đề"),
+                    $form->text('order')->setLabel("Order"),
+                    $form->text('link')->setLabel("link"),
+            ]);
         echo endBox();
 
-        echo beginBox("Tổng quan",true);
-        echo $form->row(
-            $form->image('oveview_bg')->setLabel("Hình ảnh")
-        );
-        echo $form->repeater('oveview_items')->setLabel("Nội dung")->setFields([
-            $form->repeater('group')->setLabel("")->setFields([
-                $form->row(
-                        $form->text('title')->setLabel("Tiêu đề"),
-                        $form->text('content')->setLabel("Mô tả"),
-                        $form->checkbox('highlight')->setLabel("Nổi bật")
-                    )
-            ])
-        ]);
+
+        echo beginBox("About Cake",true);
+            echo $form->text('about_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('about_title')->setLabel("Tiêu đề");
+            echo $form->editor('about_text_1')->setLabel("Mô tả 1");
+            echo $form->image('about_image')->setLabel("Hình ảnh");
+            echo $form->editor('about_text_2')->setLabel("Mô tả 2");
+            echo $form->text('about_readmore')->setLabel("Text Read more");
+            echo $form->text('about_link')->setLabel("link");
+        echo endBox();
+
+        echo beginBox("Choose Us",true);
+            echo $form->text('choose_subtitle')->setLabel("Tiêu đề phụ");
+            echo $form->text('choose_title')->setLabel("Tiêu đề");
+            echo $form->image('choose_image')->setLabel("Hình ảnh");
+            echo $form->repeater('choose_items')->setLabel("item")->setFields([
+                    $form->text('num')->setLabel("Số thứ tự"),
+                    $form->text('title')->setLabel("Tiêu đề"),
+                    $form->text('des')->setLabel("Mô tả"),
+                    $form->text('read_more')->setLabel("Read more"),
+                    $form->text('link')->setLabel("link"),
+            ]);
+        echo endBox();
+
+        echo beginBox("Message Cake",true);
+            echo $form->image('message_image')->setLabel("Hình ảnh");
+            echo $form->text('message_des')->setLabel("Mô tả");
+            echo $form->text('message_order')->setLabel("Text order");
+            echo $form->text('message_link')->setLabel("link");
+        echo endBox();
+
+
+        echo beginBox("Our Mission",true);
+            echo $form->editor('mission_title')->setLabel("Tiêu đề");
+            echo $form->editor('mission_des')->setLabel("Mô tả");
+            echo $form->image('mission_image1')->setLabel("Hình ảnh 1");
+            echo $form->image('mission_image2')->setLabel("Hình ảnh 2");
         echo endBox();
 
 
@@ -74,6 +149,20 @@ add_action('edit_form_after_title', function($post) use($editorSettings) {
         $form = tr_form();
         echo $form->editor('workshop_detail_des')->setLabel("Mô tả");
         echo endBox();
+
+
+    }
+
+    else if($post->post_type == 'page' && basename(get_page_template())=="custom_cake.php") {
+        remove_post_type_support( 'page', 'editor' );
+
+        $form = tr_form();
+        echo beginBox("Banner Chính",true);
+            echo $form->image('banner')->setLabel("Hình banner");
+            echo $form->editor('title')->setLabel("Tiêu đề");
+            echo $form->editor('des')->setLabel("Mô tả");
+        echo endBox();
+
 
 
     }

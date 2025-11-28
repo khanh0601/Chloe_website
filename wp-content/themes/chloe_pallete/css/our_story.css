@@ -344,8 +344,9 @@
 .story_about_title{
     color:  #1b1b1b;
     padding-left: 10rem;
-    span{
+    strong{
         margin-right: 6rem;
+        font-weight: normal;
     }
 }
 .story_about_content_des{
