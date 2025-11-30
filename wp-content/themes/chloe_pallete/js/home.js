@@ -420,15 +420,18 @@ const mainScript = () => {
     constructor(triggerEl) {
       super(triggerEl);
       this.tl = null;
+      this.sellerSwiper = null; // Thêm để lưu swiper instance
     }
+    
     trigger() {
       super.setTrigger(this.setup.bind(this));
     }
+    
     setup() {
-      var swiper1 = new Swiper(".home_seller_silder", {
+      // Lưu swiper vào class property
+      this.sellerSwiper = new Swiper(".home_seller_silder", {
         slidesPerView: 1.5,
         spaceBetween: parseRem(10),
-        // loop: true,
         pagination: {
           el: ".home_seller_pagination",
           type: "progressbar",
@@ -445,6 +448,39 @@ const mainScript = () => {
           },
         },
       });
+      
+      // ✅ Bind 'this' để truy cập được class methods
+      $('.home_seller_category_item').on('click', (e) => {
+        const selectedCategory = $(e.currentTarget).data('category');
+        
+        // Update active state
+        $('.home_seller_category_item').removeClass('active');
+        $(e.currentTarget).addClass('active');
+        
+        // Filter products
+        if (selectedCategory === 'all') {
+          $('.home_seller_silder_item').each((idx, item) => {
+            this.activeItem(item); // ✅ Hiển thị lại tất cả với animation
+          });
+        } else {
+          $('.home_seller_silder_item').each((idx, item) => {
+            const productCategories = $(item).data('categories') ? $(item).data('categories').split(' ') : [];
+            
+            if (productCategories.includes(selectedCategory)) {
+              this.activeItem(item); // ✅ Có thể gọi được method
+            } else {
+              $(item).hide();
+            }
+          });
+        }
+        
+        // Update Swiper sau khi filter
+        setTimeout(() => {
+          this.sellerSwiper.update();
+        }, 100);
+      });
+      
+      // Animation setup code...
       this.tl = gsap.timeline({
         scrollTrigger: {
           trigger: '.home_seller_inner',
@@ -452,6 +488,7 @@ const mainScript = () => {
           once: true,
         }
       });
+      
       new MasterTimeline({
         timeline: this.tl,
         triggerInit: this.triggerEl,
@@ -460,15 +497,16 @@ const mainScript = () => {
           new FadeSplitText({ el: $('.home_seller_content_title').get(0), onMask: true, delay: .1 }),
           ...Array.from($('.home_seller_category_item')).flatMap((el, idx) => new FadeIn({ el: el, delay: idx == 0 ? '<=0' : '<=.1' })),
         ]
-      })
+      });
+      
       let tlItemList = new gsap.timeline({
         scrollTrigger: {
           trigger: '.home_seller_silder_wrap',
           start: "top+=75% bottom",
           once: true,
         }
-      }
-      );
+      });
+      
       $(this.triggerEl).find(".home_seller_silder_item").each((i, el) => {
         new MasterTimeline({
           timeline: tlItemList,
@@ -480,17 +518,37 @@ const mainScript = () => {
             new FadeSplitText({ el: $(el).find('.home_seller_silder_item_info_title').get(0), onMask: true, delay: .1 }),
             new FadeIn({ el: $(el).find('.home_seller_silder_item_info_price'), delay: .1, type: 'bottom' }),
           ].filter(Boolean)
-        })
-      })
+        });
+      });
+    }
+    
+    activeItem(el) {
+      $(el).show();
+      
+      // Tạo timeline mới cho animation
+      const itemTl = gsap.timeline();
+      
+      new MasterTimeline({
+        timeline: itemTl,
+        tweenArr: [
+          new ScaleInset({ el: $(el).find('.home_seller_silder_item_img').get(0) }),
+          ...Array.from($(el).find('.home_seller_silder_item_top .txt_12')).flatMap((el, idx) => new FadeIn({ el: el, delay: '<=.1', type: 'bottom' })),
+          new FadeIn({ el: $(el).find('.home_seller_silder_item_info'), type: 'bottom' }),
+          new FadeSplitText({ el: $(el).find('.home_seller_silder_item_info_title').get(0), onMask: true, delay: .1 }),
+          new FadeIn({ el: $(el).find('.home_seller_silder_item_info_price'), delay: .1, type: 'bottom' }),
+        ].filter(Boolean)
+      });
     }
   }
-  let homeSeller = new HomeSeller('.home_seller ');
+  
+  let homeSeller = new HomeSeller('.home_seller');
   class HomeCookie extends TriggerSetup {
     constructor(triggerEl) {
       super(triggerEl);
     }
     trigger() {
       super.setTrigger(this.setup.bind(this));
+      this.interact();
     }
     setup() {
       let tl = gsap.timeline({
@@ -594,6 +652,14 @@ const mainScript = () => {
         })
       }
 
+    }
+    interact() {
+      if(viewport.w > 991) {
+        $('.home_cookies_content_inner').on('click', (e) => {
+          let linkCategory = $('.home_cookies_content_item.active .home_cookies_content_item_title').data('category-link');
+          window.location.href = linkCategory;
+        });
+      }
     }
   }
   let homeCookie = new HomeCookie('.home_cookies ');
@@ -969,8 +1035,8 @@ const mainScript = () => {
           tweenArr: [
             new ScaleInset({ el: $(el).find('.home_workshop_slide_item_img').get(0) }),
             new FadeIn({ el: $(el).find('.home_workshop_slide_item_info') }),
-            new FadeSplitText({ el: $(el).find('.home_workshop_slide_item_title').get(0), onMask: true, delay: .2 }),
-            new FadeSplitText({ el: $(el).find('.home_workshop_slide_item_des').get(0), delay: .3 }),
+            new FadeSplitText({ el: $(el).find('.home_workshop_slide_item_title').get(0), onMask: true, delay: .4 }),
+            new FadeIn({ el: $(el).find('.home_workshop_slide_item_des'), type: 'bottom', delay: .3 }),
           ]
         })
       })
@@ -1009,7 +1075,7 @@ const mainScript = () => {
       let tlItem = new gsap.timeline({
         scrollTrigger: {
           trigger: '.home_cake_slide',
-          start: "top+=25% bottom",
+          start: "top+=15% bottom",
           once: true,
         }
       });
@@ -1017,7 +1083,7 @@ const mainScript = () => {
         new MasterTimeline({
           timeline: tlItem,
           tweenArr: [
-            new ScaleInset({ el: $(el).get(0) }, { delay: .1 }),
+            new FadeIn({ el: $(el).get(0), type: 'left' }, { delay: .1 }),
           ]
         })
       })

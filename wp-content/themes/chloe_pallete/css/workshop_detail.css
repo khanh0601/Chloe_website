@@ -115,9 +115,11 @@
 }
 .workshopdetail_content_info{
     display: flex;
-    margin-inline: 10.3rem;
+    padding-inline: 10.3rem;
     gap: 3.2rem;
     padding-block: 6rem;
+    margin-bottom: 6rem;
+    border-bottom: 1px solid #CCCCCC;
     .workshopdetail_content_info_item:last-child{
         .workshopdetail_content_info_item_des{
             font-size: 2.4rem
@@ -129,6 +131,8 @@
     height: 2rem;
 }
 .workshopdetail_content_info_button{
+    color: white;
+    text-transform: uppercase;
     background-color: #0F2A1D;
     border-radius: 4.5rem;
     display: flex;
@@ -140,17 +144,33 @@
         margin-bottom: 6rem ;
     }
 }
-.workshopdetail_content_info{
-    margin-block: 6rem;
-}
 .workshopdetail_content_des_wrap{
     width: 81.2rem;
     margin-inline: auto;
 }
+.workshopdetail_content_des_title {
+    margin-bottom: 6rem;
+}
 .workshopdetail_content_des{
+
     margin-bottom: 6rem;
     img{
         width: 100%;
+        margin-bottom: 6rem;
+    }
+    h2 {
+        font-size: 2.4rem;
+        margin-bottom: 2.4rem;
+        font-weight: 500;
+    }
+    p {
+        margin-bottom: 2.4rem;
+    }
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        padding-left: 2rem;
     }
 }
 @media screen and (max-width:991px) {

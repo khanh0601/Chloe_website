@@ -91,9 +91,25 @@ body{
 }
 .home_seller_category_item{
     cursor: pointer;
- &::before{
-    background-color: #1D1D1D;
-}   
+    position: relative;
+  padding-left: 2rem;
+    &::before{
+        position: absolute;
+        width: 1.2rem;
+        height: 1.2rem;
+        background-color: #1D1D1D;
+        content: "";
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all .4s ease;
+    } 
+    &.active{
+        &::before{
+            opacity: 1;
+        }
+    }
 }
 .home_seller_inner{
     margin-bottom: 5rem;
@@ -476,8 +492,12 @@ body{
     left: 2.5rem;
     padding-top: 1.5rem;
     padding-left: 2.5rem;
+    padding-right: 5.8rem;
     right: 2.5rem;
     background-color: #fff;
+}
+.home_about_slide_item_info_title {
+    margin-bottom: .8rem;
 }
 .home_about_slide_item_info_icon{
     position: absolute;
@@ -1018,10 +1038,10 @@ body{
         padding-right: 0;
         border-right: 0;
     }
-    .home_workshop_slide_item_title{
-        margin-bottom: 1.5rem;
-    }
     
+}
+.home_workshop_slide_item_title{
+    margin-bottom: 1.6rem;
 }
 .home_workshop_slide_swap{
     transition-timing-function: linear;
@@ -1065,4 +1085,27 @@ body{
 }
 .home_cake_slide_wrap{
     transition-timing-function: linear;
+}
+.home_cake_slide_item {
+    position: relative;
+    &:hover {
+        .home_cake_slide_item_overlay {
+            opacity: 1;
+        }
+    }
+}
+.home_cake_slide_item_overlay {
+    position: absolute;
+    inset: 0;
+    background-color: #00000033;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: all .4s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.home_cake_slide_item_overlay_icon {
+    width: 3.2rem;
 }

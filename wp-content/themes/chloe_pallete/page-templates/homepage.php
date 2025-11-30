@@ -22,8 +22,15 @@
     $seller_title = tr_posts_field('seller_title', $pageID);
 
     // Introduce Cake
-    $intro = tr_posts_field('intro', $pageID); // Mỗi item: ['num', 'title', 'image']
-
+    $uncategorized = get_term_by('slug', 'uncategorized', 'product_cat');
+    $exclude_ids = $uncategorized ? array($uncategorized->term_id) : array();
+    $intro = get_terms(array(
+        'taxonomy'   => 'product_cat',
+        'hide_empty' => false,
+        'orderby'    => 'name',
+        'order'      => 'ASC',
+        'exclude'    => $exclude_ids,
+    ));
     // About Cake
     $about_subtitle = tr_posts_field('about_subtitle', $pageID);
     $about_title = tr_posts_field('about_title', $pageID);
@@ -117,295 +124,133 @@
             </div>
             <div class="home_seller_category">
               <div
-                class="home_seller_category_item txt_uppercase txt_14 txt_wh_500 block_title"
+                class="home_seller_category_item active txt_uppercase txt_14 txt_wh_500"
+                data-category="all"
               >
                 All
               </div>
-              <div
-                class="home_seller_category_item txt_uppercase txt_14 txt_wh_500"
-              >
-                Chantilly Cake
-              </div>
-              <div
-                class="home_seller_category_item txt_uppercase txt_14 txt_wh_500"
-              >
-                Vintage Cake
-              </div>
-              <div
-                class="home_seller_category_item txt_uppercase txt_14 txt_wh_500"
-              >
-                Kid Cake
-              </div>
-              <div
-                class="home_seller_category_item txt_uppercase txt_14 txt_wh_500"
-              >
-                Wedding Cake
-              </div>
-              <div
-                class="home_seller_category_item txt_uppercase txt_14 txt_wh_500"
-              >
-                Flower Cake
-              </div>
+              <?php
+                // Lấy category Uncategorized để loại trừ
+                $uncategorized = get_term_by( 'slug', 'uncategorized', 'product_cat' );
+                $exclude_ids = $uncategorized ? array( $uncategorized->term_id ) : array();
+
+                // Lấy tất cả product categories
+                $product_categories = get_terms( array(
+                    'taxonomy'   => 'product_cat',
+                    'hide_empty' => false,
+                    'orderby'    => 'name',
+                    'order'      => 'ASC',
+                    'exclude'    => $exclude_ids,
+                ) );
+
+                if ( ! empty( $product_categories ) && ! is_wp_error( $product_categories ) ) :
+                  foreach ( $product_categories as $category ) :
+              ?>
+                <div
+                  class="home_seller_category_item txt_uppercase txt_14 txt_wh_500"
+                  data-category="<?php echo esc_attr( $category->slug ); ?>"
+                >
+                  <?php echo esc_html( $category->name ); ?>
+                </div>
+              <?php
+                  endforeach;
+                endif;
+              ?>
             </div>
           </div>
           <div class="home_seller_silder swiper">
             <div class="home_seller_silder_wrap swiper-wrapper">
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                  <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                  >
-                    Chantilly Cake
-                  </div>
-                  <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                  >
-                    SOLD OUT
-                  </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                  <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                  <div class="home_seller_silder_item_info_title txt_16">
-                    Butter Croissant
-                  </div>
-                  <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                  >
-                    <span>$160</span> - <span>$170</span>
-                  </div>
-                  <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                      <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <?php
+                // Query để lấy tất cả products
+                $args = array(
+                    'post_type'      => 'product',
+                    'posts_per_page' => -1,
+                    'post_status'    => 'publish',
+                    'orderby'        => 'date',
+                    'order'          => 'DESC'
+                );
+
+                $seller_products = new WP_Query( $args );
+
+                if ( $seller_products->have_posts() ) :
+                    while ( $seller_products->have_posts() ) : $seller_products->the_post();
+                        global $product;
+
+                        // Lấy categories của product
+                        $categories = get_the_terms( get_the_ID(), 'product_cat' );
+                        $category_name = '';
+                        $category_slugs = array();
+
+                        if ( $categories && ! is_wp_error( $categories ) ) {
+                            foreach ( $categories as $cat ) {
+                                if ( $cat->slug !== 'uncategorized' ) {
+                                    if ( empty( $category_name ) ) {
+                                        $category_name = $cat->name;
+                                    }
+                                    $category_slugs[] = $cat->slug;
+                                }
+                            }
+                        }
+
+                        // Kiểm tra tồn kho
+                        $is_in_stock = $product->is_in_stock();
+
+                        // Lấy hình ảnh
+                        $image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+                        if ( ! $image_url ) {
+                            $image_url = wc_placeholder_img_src();
+                        }
+
+                        // Lấy giá
+                        $regular_price = $product->get_regular_price();
+                        $sale_price = $product->get_sale_price();
+
+                        if ( $sale_price ) {
+                            $price_display = '<span>$' . intval( $sale_price ) . '</span> - <span>$' . intval( $regular_price ) . '</span>';
+                        } else {
+                            $price_display = '<span>$' . intval( $regular_price ) . '</span>';
+                        }
+
+                        // Tạo data-category attribute
+                        $data_categories = implode( ' ', $category_slugs );
+                        ?>
+                        <a
+                          href="<?php the_permalink(); ?>"
+                          class="home_seller_silder_item swiper-slide"
+                          data-categories="<?php echo esc_attr( $data_categories ); ?>"
+                        >
+                          <div class="home_seller_silder_item_top">
+                            <div class="home_seller_silder_item_top_type txt_uppercase txt_12">
+                              <?php echo esc_html( $category_name ); ?>
+                            </div>
+                            <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 <?php echo ! $is_in_stock ? 'active' : ''; ?>">
+                              SOLD OUT
+                            </div>
+                          </div>
+                          <div class="home_seller_silder_item_img img_full">
+                            <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" />
+                          </div>
+                          <div class="home_seller_silder_item_info">
+                            <div class="home_seller_silder_item_info_title txt_16">
+                              <?php the_title(); ?>
+                            </div>
+                            <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                              <?php echo $price_display; ?>
+                            </div>
+                            <div class="home_seller_silder_item_info_cart_wrap">
+                              <div class="home_seller_silder_item_info_cart img_full">
+                                <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <?php
+                    endwhile;
+                    wp_reset_postdata();
+                else :
+                    echo '<p>No products found.</p>';
+                endif;
+              ?>
             </div>
             <div class="swiper-pagination home_seller_pagination"></div>
           </div>
@@ -419,13 +264,19 @@
               <?php foreach ($intro as $item): ?>
               <div class="home_cookies_bg_item">
                 <div class="home_cookies_bg_item_inner img_fullfill">
-                  <img src="<?= esc_url(wp_get_attachment_url($item['image'])) ?>" alt="">
+                <?php
+                $image_url = get_field('image_full_screen', 'product_cat_' . $item->term_id);
+                if ($image_url) : ?>
+                  <img src="<?= esc_url($image_url) ?>" alt="<?= esc_attr($item->name) ?>">
+                <?php else : ?>
+                  <img src="<?= get_template_directory_uri() ?>/images/placeholder.jpg" alt="<?= esc_attr($item->name) ?>">
+                <?php endif; ?>
                 </div>
                 <div class="home_cookies_bg_item_info">
                   <div class="home_cookies_bg_item_info_title_wrap">
-                    <div class="home_cookies_bg_item_info_title txt_48"><?= $item['title'] ?></div>
+                    <div class="home_cookies_bg_item_info_title txt_48"> <?= esc_html($item->name) ?></div>
                   </div>
-                  <a href="<?= $item['link'] ?>" class="home_cookies_bg_item_info_link txt_16 hover_arr">
+                  <a href="<?= esc_url(get_term_link($item)) ?>" class="home_cookies_bg_item_info_link txt_16 hover_arr">
                     Explore
                     <div class="line_arr">
                       <div class="line line_main"></div>
@@ -442,10 +293,13 @@
           <div class="kl_container">
             <div class="home_cookies_content_inner">
               <?php if (!empty($intro)) : ?>
-                <?php foreach ($intro as $item): ?>
+                <?php foreach ($intro as $index => $item): ?>
                 <div class="home_cookies_content_item <?= $index === 0 ? 'active' : '' ?>">
-                  <div class="home_cookies_content_item_label txt_20"><?= $item['num'] ?></div>
-                  <div class="home_cookies_content_item_title txt_48"><?= $item['title'] ?></div>
+
+                  <div class="home_cookies_content_item_label txt_20">
+                  (<?= str_pad($index + 1, 2, '0', STR_PAD_LEFT) ?>)
+                </div>
+                  <div class="home_cookies_content_item_title txt_48" data-category-link="<?= esc_url(get_term_link($item)) ?>"> <?= esc_html($item->name) ?></div>
                 </div>
                 <?php endforeach; ?>
               <?php endif; ?>
@@ -838,11 +692,11 @@
               <?php if ($workshop_query->have_posts()) : ?>
               <?php while ($workshop_query->have_posts()) : $workshop_query->the_post(); 
                   // Lấy ACF fields
-                  $workshop_name = get_field('workshops', get_the_ID());
+                  $workshop_name = get_the_title();
                   $workshop_date = get_field('date', get_the_ID());
                   $workshop_cost = get_field('cost', get_the_ID());
                   $post_thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'full');
-                  $post_excerpt = get_the_excerpt();
+                  $post_excerpt = get_field('short_description', get_the_ID());
               ?>
               <a href="<?php the_permalink(); ?>" class="home_workshop_slide_item swiper-slide">
                 <div class="home_workshop_slide_item_img img_full">
@@ -858,7 +712,7 @@
                   <div class="home_workshop_slide_item_info_item txt_uppercase txt_14 txt_wh_500">Cost: <?php echo esc_html($workshop_cost ?: '$110'); ?></div>
                 </div>
                 <div class="home_workshop_slide_item_title txt_title_color txt_wh_500 txt_24"><?php echo esc_html($workshop_name ?: 'WORKSHOPS'); ?> Workshop</div>
-                <div class="home_workshop_slide_item_des txt_16"><?php echo esc_html($post_excerpt); ?></div>
+                <div class="home_workshop_slide_item_des txt_16"><?php echo wp_kses_post($post_excerpt); ?></div>
               </a>
               <?php endwhile; ?>
               <?php else : ?>
@@ -875,9 +729,14 @@
             <div class="home_cake_slide_wrap swiper-wrapper">
               <?php if (!empty($cake_item)) : ?>
                 <?php foreach ($cake_item as $item): ?>
-                <div class="home_cake_slide_item swiper-slide img_full">
+                <a href="<?= esc_url($item['link_instagram']) ?>" class="home_cake_slide_item swiper-slide img_full">
                   <img src="<?= esc_url(wp_get_attachment_url($item['image'])) ?>" alt="">
-                </div>
+                  <div class="home_cake_slide_item_overlay">
+                    <div class="home_cake_slide_item_overlay_icon img_full">
+                      <img src="<?php echo get_template_directory_uri(); ?>/images/icon_instagram.svg" alt="">
+                    </div>
+                  </div>
+                </a>
                 <?php endforeach; ?>
               <?php endif; ?>
             </div>

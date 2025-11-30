@@ -304,7 +304,7 @@ h1, h2{
 }
 .txt_24{
   font-size: 2.4rem;
-  line-height: 1.725em;
+  line-height: 1.05em;
 }
 .txt_20{
   font-size: 2rem;
@@ -963,6 +963,9 @@ footer{
   }
 }
 @media screen and (max-width:767px){
+  .cursor {
+    display: none;
+  }
   .header_logo_inner {
     width: 4.4rem;
   }

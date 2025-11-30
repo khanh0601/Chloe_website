@@ -82,6 +82,7 @@ add_action('edit_form_after_title', function($post) use($editorSettings) {
         echo beginBox("List Cake",true);
             echo $form->repeater('cake_item')->setLabel("Hình ảnh cake")->setFields([
                 $form->image('image')->setLabel("Hình ảnh"),
+                $form->text('link_instagram')->setLabel("Link Instagram"),
             ]);
         echo endBox();
     }
