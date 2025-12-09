@@ -1,411 +1,367 @@
 <?php
-get_header();
+$pageClass = 'on_dark';
+get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'product_detail-css', get_template_directory_uri() . '/css/product_detail.css');
-wp_enqueue_script( 'product_detail-js', get_template_directory_uri() . '/js/product_detail.js');
+
+// Lấy thông tin product hiện tại
+global $product;
+$product_id = get_the_ID();
+$product_name = get_the_title();
+
+// Lấy category của product
+$categories = get_the_terms( $product_id, 'product_cat' );
+$category_name = '';
+$category_link = '';
+
+if ( $categories && ! is_wp_error( $categories ) ) {
+    foreach ( $categories as $cat ) {
+        if ( $cat->slug !== 'uncategorized' ) {
+            $category_name = $cat->name;
+            $category_link = get_term_link( $cat );
+            break;
+        }
+    }
+}
 
 ?>
-<section class="productdetail_breadcrum">
-    <div class="kl_container">
-        <div class="productdetail_breadcrum_inner">
-            <a href="/" class="productdetail_breadcrum_item border_line  txt_14">
-                <div class="productdetail_breadcrum_item_overlay"></div>
-                Home</a>
-            <a href="#" class="productdetail_breadcrum_item border_line txt_14">
-                <div class="productdetail_breadcrum_item_overlay"></div>
-                Shop</a>
-            <a href="#" class="productdetail_breadcrum_item border_line txt_14">
-                <div class="productdetail_breadcrum_item_overlay"></div>
-                Chantilly cake</a>
-            <div class="productdetail_breadcrum_item current txt_14">Butter croissant</div>
+<div class="main" data-barba-namespace="productDetail">
+    <section class="productdetail_breadcrum">
+        <div class="kl_container">
+            <div class="productdetail_breadcrum_inner">
+                <a href="/" class="productdetail_breadcrum_item border_line  txt_14">
+                    <div class="productdetail_breadcrum_item_overlay"></div>
+                    Home</a>
+                <a href="/shop" class="productdetail_breadcrum_item border_line txt_14">
+                    <div class="productdetail_breadcrum_item_overlay"></div>
+                    Shop</a>
+                <?php if ( $category_name && $category_link ) : ?>
+                <a href="<?php echo esc_url( $category_link ); ?>" class="productdetail_breadcrum_item border_line txt_14">
+                    <div class="productdetail_breadcrum_item_overlay"></div>
+                    <?php echo esc_html( $category_name ); ?></a>
+                <?php endif; ?>
+                <div class="productdetail_breadcrum_item current txt_14"><?php echo esc_html( $product_name ); ?></div>
+            </div>
         </div>
-    </div>
-</section>
-<section class="productdetail_content">
+    </section>
+    <section class="productdetail_content">
     <div class="kl_container">
         <div class="productdetail_content_inner kl_grid">
             <div class="productdetail_img">
-                <div class="productdetail_img_inner img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/product_detail.webp" alt="">
+                <div class="productdetail_img_inner img_fullfill">
+                    <?php 
+                    // Get product ID and object
+                    $product_id = get_the_ID();
+                    $product = wc_get_product($product_id);
+                    
+                    // Check if product exists
+                    if (!$product) {
+                        return;
+                    }
+                    
+                    // Get product image
+                    if (has_post_thumbnail()) {
+                        echo '<img src="' . get_the_post_thumbnail_url($product_id, 'full') . '" alt="' . get_the_title() . '">';
+                    } else {
+                        echo '<img src="' . get_template_directory_uri() . '/images/product_detail.webp" alt="' . get_the_title() . '">';
+                    } ?>
                 </div>
             </div>
             <div class="productdetail_content_info">
                 <div class="productdetail_content_info_head">
-                    <div class="productdetail_content_info_subtitle txt_subtitle block_title">Birthday Cake</div>
-                    <div class="productdetail_content_info_title txt_title">Butter Croissant</div>
+                    <?php 
+                    // Get product categories
+                    $categories = get_the_terms($product_id, 'product_cat');
+                    if ($categories && !is_wp_error($categories)) {
+                        $category_name = $categories[0]->name;
+                        echo '<div class="productdetail_content_info_subtitle txt_subtitle block_title">' . esc_html($category_name) . '</div>';
+                    }
+                    ?>
+                    <div class="productdetail_content_info_title txt_title"><?php echo get_the_title(); ?></div>
                 </div>
                 <div class="productdetail_content_info_detail">
-                    <div class="productdetail_content_info_price">
-                        <div class="productdetail_content_info_price_item txt_24">$160</div>
-                        <div class="productdetail_content_info_price_item price_old txt_16">$170</div>
-                        <div class="productdetail_content_info_price_item price_discount txt_title_color">-30%</div>
-                    </div>
-                    <div class="productdetail_content_info_component txt_16">Mango, Pandan & Cream Cheese</div>
-                    <div class="productdetail_content_info_des txt_16">A refreshing cake made with layers of light mango mousse that brings a sweet, tropical flavor. Secret Garden becomes even more special with the combination of soft pandan sponge cake and fragrant cream cheese layers.</div>
-                </div>
-                <div class="productdetail_content_info_detail">
-                    <div class="productdetail_content_info_sensa_wrap">
-                        <div class="productdetail_content_info_sensa txt_16 txt_title_color">Cake Sensation:</div>
-                        <div class="productdetail_content_info_sensa_txt txt_16">No selection</div>
-                    </div>
-                    <div class="productdetail_content_info_sensa_list">
-                        <div class="productdetail_content_info_sensa_item txt_14 txt_title_color">Fresh</div>
-                        <div class="productdetail_content_info_sensa_item txt_14 txt_title_color">Fragrant</div>
-                        <div class="productdetail_content_info_sensa_item txt_14 txt_title_color">Gently sweet</div>
-                    </div>
-
-                </div>
-                <div class="productdetail_content_info_detail">
-                     <div class="productdetail_content_info_sensa_wrap">
-                        <div class="productdetail_content_info_sensa txt_16 txt_title_color">Cake Size:</div>
-                        <div class="productdetail_content_info_sensa_txt txt_16" id="sizeDisplay">6" + 4" - 2 Tier - 20 servings | $268</div>
-                    </div>
-                    <div class="productdetail_content_info_detail_fill">
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="size" id="size1" value='6" + 4" - 2 Tier - 20 servings | $268 ' checked>
-                            <label for="size1" class="txt_16 txt_title_color">
-                                6" + 4" - 2 Tier - 20 servings | $268
-                            </label>
-                        </div>
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="size" id="size2" value=' 8" + 6" - 2 Tier - 35 servings | $360'>
-                            <label for="size2" class="txt_16 txt_title_color">
-                                8" + 6" - 2 Tier - 35 servings | $360
-                            </label>
-                        </div>
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="size" id="size3" value='8" + 6" + 4" - 3 Tier - 42 Servings | $440'>
-                            <label for="size3" class="txt_16 txt_title_color">
-                                8" + 6" + 4" - 3 Tier - 42 Servings | $440
-                            </label>
-                        </div>
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="size" id="size4" value='6" + 4" - 2 Tier - 20 servings | $268 '>
-                            <label for="size4" class="txt_16 txt_title_color">
-                                6" + 4" - 2 Tier - 20 servings | $268
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="productdetail_content_info_detail">
-                     <div class="productdetail_content_info_sensa_wrap">
-                        <div class="productdetail_content_info_sensa txt_16 txt_title_color">Cake Flavour/Filling:</div>
-                        <div class="productdetail_content_info_sensa_txt txt_16" id="flavorDisplay">Chocolate + Cookies Cream</div>
-                    </div>
-                    <div class="productdetail_content_info_detail_fill">
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="flavor" id="flavor1" value="Chocolate + Cookies Cream" checked>
-                            <label for="flavor1" class="txt_16 txt_title_color">
-                                Chocolate + Cookies Cream
-                            </label>
-                        </div>
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="flavor" id="flavor2" value=" Funfetti + Vanilla">
-                            <label for="flavor2" class="txt_16 txt_title_color">
-                                Funfetti + Vanilla
-                            </label>
-                        </div>
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="flavor" id="flavor3" value="Lemon + Raspberry">
-                            <label for="flavor3" class="txt_16 txt_title_color">
-                                Lemon + Raspberry
-                            </label>
-                        </div>
-                        <div class="productdetail_content_info_detail_fill_item">
-                            <input type="radio" name="flavor" id="flavor4" value=" Red Velvet + Cream Cheese">
-                            <label for="flavor4" class="txt_16 txt_title_color">
-                                Red Velvet + Cream Cheese
-                            </label>
-                        </div>
+                    <div class="productdetail_content_info_price" id="product-price-wrapper">
+                        <?php
+                        // Display default price (will be updated via AJAX)
+                        $price = $product->get_price();
+                        $regular_price = $product->get_regular_price();
+                        $sale_price = $product->get_sale_price();
+                        
+                        if ($sale_price) {
+                            echo '<div class="productdetail_content_info_price_item txt_24">$' . esc_html($sale_price) . '</div>';
+                            echo '<div class="productdetail_content_info_price_item price_old txt_16">$' . esc_html($regular_price) . '</div>';
+                            
+                            if ($regular_price > 0) {
+                                $discount = round((($regular_price - $sale_price) / $regular_price) * 100);
+                                echo '<div class="productdetail_content_info_price_item price_discount txt_title_color">-' . $discount . '%</div>';
+                            }
+                        } else {
+                            echo '<div class="productdetail_content_info_price_item txt_24">$' . esc_html($price) . '</div>';
+                        }
+                        ?>
                     </div>
                     
+                    <?php 
+                    // Get short description
+                    $short_description = $product->get_short_description();
+                    if ($short_description) {
+                        echo '<div class="productdetail_content_info_component txt_16">' . wp_kses_post($short_description) . '</div>';
+                    }
+                    ?>
+                </div>
+
+                <?php
+                // Check if variable product
+                if ($product->is_type('variable')) {
+                    $attributes = $product->get_variation_attributes();
+                    $available_variations = $product->get_available_variations();
+                    
+                    // Store variations data in JSON for JavaScript
+                    ?>
+                    <input type="hidden" id="product_id" value="<?php echo esc_attr($product_id); ?>">
+                    <input type="hidden" id="variations_data" value='<?php echo json_encode($available_variations); ?>'>
+                    
+                    <?php
+                    if (!empty($attributes)) {
+                        foreach ($attributes as $attribute_name => $options) {
+                            if (empty($options)) {
+                                continue;
+                            }
+                            
+                            // Get attribute label
+                            $attribute_label = wc_attribute_label($attribute_name);
+                            $attr_id = sanitize_title($attribute_name);
+                            ?>
+                            <div class="productdetail_content_info_detail">
+                                <div class="productdetail_content_info_sensa_wrap">
+                                    <div class="productdetail_content_info_sensa txt_16 txt_title_color">
+                                        <?php echo esc_html($attribute_label); ?>:
+                                    </div>
+                                    <div class="productdetail_content_info_sensa_txt txt_16" id="<?php echo $attr_id; ?>Display">
+                                        <?php echo esc_html($options[0]); ?>
+                                    </div>
+                                </div>
+                                <div class="productdetail_content_info_detail_fill">
+                                    <?php foreach ($options as $index => $option) : ?>
+                                        <div class="productdetail_content_info_detail_fill_item">
+                                            <input type="radio" 
+                                                   class="variation-selector"
+                                                   name="attribute_<?php echo $attr_id; ?>" 
+                                                   id="<?php echo $attr_id . '_' . ($index + 1); ?>" 
+                                                   value="<?php echo esc_attr($option); ?>"
+                                                   data-attribute-name="attribute_<?php echo sanitize_title($attribute_name); ?>"
+                                                   <?php echo $index === 0 ? 'checked' : ''; ?>>
+                                            <label for="<?php echo $attr_id . '_' . ($index + 1); ?>" 
+                                                   class="txt_16 txt_title_color">
+                                                <?php echo esc_html($option); ?>
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    }
+                } else {
+                    // Simple product - display attributes normally
+                    $attributes = $product->get_attributes();
+                    
+                    if (!empty($attributes)) {
+                        foreach ($attributes as $attribute) {
+                            $attribute_name = $attribute->get_name();
+                            $attribute_label = wc_attribute_label($attribute_name);
+                            
+                            if ($attribute->is_taxonomy()) {
+                                $terms = wc_get_product_terms($product_id, $attribute_name, array('fields' => 'all'));
+                                
+                                if (!empty($terms) && !is_wp_error($terms)) {
+                                    $attr_id = sanitize_title($attribute_name);
+                                    ?>
+                                    <div class="productdetail_content_info_detail">
+                                        <div class="productdetail_content_info_sensa_wrap">
+                                            <div class="productdetail_content_info_sensa txt_16 txt_title_color">
+                                                <?php echo esc_html($attribute_label); ?>:
+                                            </div>
+                                            <div class="productdetail_content_info_sensa_txt txt_16" id="<?php echo $attr_id; ?>Display">
+                                                <?php echo esc_html($terms[0]->name); ?>
+                                            </div>
+                                        </div>
+                                        <div class="productdetail_content_info_detail_fill">
+                                            <?php foreach ($terms as $index => $term) : ?>
+                                                <div class="productdetail_content_info_detail_fill_item">
+                                                    <input type="radio" 
+                                                           name="<?php echo $attr_id; ?>" 
+                                                           id="<?php echo $attr_id . '_' . ($index + 1); ?>" 
+                                                           value="<?php echo esc_attr($term->name); ?>" 
+                                                           <?php echo $index === 0 ? 'checked' : ''; ?>>
+                                                    <label for="<?php echo $attr_id . '_' . ($index + 1); ?>" 
+                                                           class="txt_16 txt_title_color">
+                                                        <?php echo esc_html($term->name); ?>
+                                                    </label>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                            }
+                        }
+                    }
+                }
+                ?>
+            <div class="productdetail_quantity">
+                <div class="productdetail_quantity_title txt_16 txt_title_color">Quantity</div>
+                <div class="productdetail_quantity_inner">
+                    <div class="productdetail_quantity_button">
+                        <button class="productdetail_quantity_button_item">-</button>
+                    </div>
+                    <div class="productdetail_quantity_input">
+                        <input type="hidden" name="quantity" value="1" min="1" max="100">
+                        <span class="productdetail_quantity_input_value txt_16 txt_title_color">1</span>
+                    </div>
+                    <div class="productdetail_quantity_button">
+                        <button class="productdetail_quantity_button_item">-</button>
+                    </div>
                 </div>
             </div>
+            </div>
+
         </div>
     </div>
 </section>
-<section class="home_seller overflow_hidden">
-    <div class="kl_container">
-        <div class="home_seller_inner">
-        <div class="home_seller_content">
-            <div
-            class="home_seller_content_subtitle txt_subtitle txt_uppercase block_title"
-            >
-            Related products
-            </div>
-            <div class="home_seller_content_title txt_title">
-            Related products
-            </div>
-        </div>
-        <div class="home_seller_shop">
-            <a href="#" class="home_seller_shop_link">
-                <div class="home_seller_shop_link_txt txt_16 txt_uppercase txt_wh_500 txt_title_color">Shop now</div>
-                <div class="home_seller_shop_link_icon img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
+
+    <section class=" product_related_silder home_seller overflow_hidden">
+        <div class="kl_container">
+            <div class="home_seller_inner">
+            <div class="home_seller_content">
+                <div
+                class="home_seller_content_subtitle txt_subtitle txt_uppercase block_title"
+                >
+                Related products
                 </div>
-            </a>
-        </div>
-        </div>
-        <div class="home_seller_silder swiper">
-        <div class="home_seller_silder_wrap swiper-wrapper">
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
-                    </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
+                <div class="home_seller_content_title txt_title">
+                Related products
                 </div>
             </div>
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
+            <div class="home_seller_shop">
+                <a data-cursor="txtLink" href="<?php echo esc_url( $category_link ?: '/shop' ); ?>" class="home_seller_shop_link hover-un">
+                    <div class="home_seller_shop_link_txt_wrap">
+                        <div class="home_seller_shop_link_txt txt_16 txt_uppercase txt_wh_500 txt_title_color">Shop now</div>
+                        <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                    </div>    
+                    <div class="home_seller_shop_link_icon img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right.svg" alt="">
                     </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
-                </div>
+                </a>
             </div>
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
-                    </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
-                </div>
             </div>
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
-                    </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
-                </div>
+            <div class="home_seller_silder swiper">
+            <div class="home_seller_silder_wrap swiper-wrapper">
+                <?php
+                // Lấy category slugs để query related products
+                $category_slugs_for_query = array();
+                if ( $categories && ! is_wp_error( $categories ) ) {
+                    foreach ( $categories as $cat ) {
+                        if ( $cat->slug !== 'uncategorized' ) {
+                            $category_slugs_for_query[] = $cat->slug;
+                        }
+                    }
+                }
+
+                // Query related products
+                $related_args = array(
+                    'post_type'      => 'product',
+                    'posts_per_page' => 8,
+                    'post_status'    => 'publish',
+                    'post__not_in'   => array( $product_id ), // Loại trừ product hiện tại
+                    'orderby'        => 'rand',
+                    'order'          => 'DESC'
+                );
+
+                // Nếu có category, query theo category
+                if ( ! empty( $category_slugs_for_query ) ) {
+                    $related_args['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'product_cat',
+                            'field'    => 'slug',
+                            'terms'    => $category_slugs_for_query,
+                        ),
+                    );
+                }
+
+                $related_products = new WP_Query( $related_args );
+
+                if ( $related_products->have_posts() ) :
+                    while ( $related_products->have_posts() ) : $related_products->the_post();
+                        global $product;
+
+                        // Lấy category của product
+                        $rel_categories = get_the_terms( get_the_ID(), 'product_cat' );
+                        $rel_category_name = '';
+                        if ( $rel_categories && ! is_wp_error( $rel_categories ) ) {
+                            foreach ( $rel_categories as $cat ) {
+                                if ( $cat->slug !== 'uncategorized' ) {
+                                    $rel_category_name = $cat->name;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // Kiểm tra tồn kho
+                        $rel_is_in_stock = $product->is_in_stock();
+
+                        // Lấy hình ảnh
+                        $rel_image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+                        if ( ! $rel_image_url ) {
+                            $rel_image_url = wc_placeholder_img_src();
+                        }
+
+                        // Lấy giá
+                        $rel_regular_price = $product->get_regular_price();
+                        $rel_sale_price = $product->get_sale_price();
+
+                        if ( $rel_sale_price ) {
+                            $rel_price_display = '<span>$' . intval( $rel_sale_price ) . '</span> - <span>$' . intval( $rel_regular_price ) . '</span>';
+                        } else {
+                            $rel_price_display = '<span>$' . intval( $rel_regular_price ) . '</span>';
+                        }
+                        ?>
+                        <a href="<?php the_permalink(); ?>" class="home_seller_silder_item swiper-slide">
+                            <div class="home_seller_silder_item_top">
+                                <div class="home_seller_silder_item_top_type txt_uppercase txt_12">
+                                    <?php echo esc_html( $rel_category_name ); ?>
+                                </div>
+                                <div class="home_seller_silder_item_top_soldout txt_uppercase txt_12 <?php echo ! $rel_is_in_stock ? 'active' : ''; ?>">
+                                    SOLD OUT
+                                </div>
+                            </div>
+                            <div class="home_seller_silder_item_img img_full">
+                                <img src="<?php echo esc_url( $rel_image_url ); ?>" alt="<?php the_title_attribute(); ?>" />
+                            </div>
+                            <div class="home_seller_silder_item_info">
+                                <div class="home_seller_silder_item_info_title txt_subtitle">
+                                    <?php the_title(); ?>
+                                </div>
+                                <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
+                                    <?php echo $rel_price_display; ?>
+                                </div>
+                                <div class="home_seller_silder_item_info_cart_wrap">
+                                    <div class="home_seller_silder_item_info_cart img_full">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <?php
+                    endwhile;
+                    wp_reset_postdata();
+                else :
+                    echo '<p>No related products found.</p>';
+                endif;
+                ?>
             </div>
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
-                    </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
-                    </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
-                    </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="home_seller_silder_item swiper-slide">
-                <div class="home_seller_silder_item_top">
-                    <div
-                    class="home_seller_silder_item_top_type txt_uppercase txt_12"
-                    >
-                    Chantilly Cake
-                    </div>
-                    <div
-                    class="home_seller_silder_item_top_soldout txt_uppercase txt_12 active"
-                    >
-                    SOLD OUT
-                    </div>
-                </div>
-                <div class="home_seller_silder_item_img img_full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/image_cake.jpg" alt="" />
-                </div>
-                <div class="home_seller_silder_item_info">
-                    <div class="home_seller_silder_item_info_title txt_subtitle">
-                    Butter Croissant
-                    </div>
-                    <div
-                    class="home_seller_silder_item_info_price txt_14 txt_wh_500"
-                    >
-                    <span>$160</span> - <span>$170</span>
-                    </div>
-                    <div class="home_seller_silder_item_info_cart_wrap">
-                    <div class="home_seller_silder_item_info_cart img_full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
-                    </div>
-                    </div>
-                </div>
+            <div class="swiper-pagination home_seller_pagination"></div>
             </div>
         </div>
-        <!-- <div class="swiper-pagination home_seller_pagination"></div> -->
-        </div>
-    </div>
-</section>
+    </section>
+</div>
 <?php get_footer(); ?>

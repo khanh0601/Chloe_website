@@ -9,6 +9,12 @@
         color: #7F7F7F;
     }
 }
+.productdetail_img_inner {
+    aspect-ratio: 71/85;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .productdetail_breadcrum{
     margin-top: 15.5rem;
     padding-bottom: 4rem;
@@ -148,6 +154,9 @@
     margin-bottom: .8rem;
 
 }
+.home_seller_shop_link_txt_wrap {
+    position: relative;
+}
 .home_seller_shop_link_icon{
     width: 2rem;
 }
@@ -170,6 +179,9 @@
     position: absolute;
     top: 2.5rem;
     left: 2.5rem;
+}
+.home_seller_silder_item_info_title {
+    margin-bottom: .8rem;
 }
 .home_seller_silder_item_info_price{
     span:last-child{
@@ -219,7 +231,7 @@
 }
 .home_seller_pagination{
     top: unset !important;
-    bottom: 0;
+    bottom: -6rem;
     width: 30rem !important;
     left: 50% !important;
     transform: translateX(-50%) !important;

@@ -277,8 +277,8 @@ class FadeSplitText {
       this.animation = gsap.from(this.textSplit[this.breakType], {
           autoAlpha: 0,
           yPercent: 100,
-          stagger: this.breakType == 'chars' ? 0.01 : 0.015,
-          duration: this.breakType == 'chars' ? .8 : this.duration,
+          stagger: this.breakType == 'chars' ? 0.02 : 0.015,
+          duration: this.breakType == 'chars' ? 1 : this.duration,
           ease: 'power2.out',
           onComplete: () => {
               if (!isDisableRevert) {

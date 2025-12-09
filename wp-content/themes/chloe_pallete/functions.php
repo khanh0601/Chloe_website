@@ -391,3 +391,46 @@ add_action( 'woocommerce_before_shop_loop', function() {
     echo 'Is product category: ' . ( is_product_category() ? 'YES' : 'NO' ) . '<br>';
     echo '</div>';
 });
+// AJAX handler for getting variation price
+add_action('wp_ajax_get_variation_price', 'get_variation_price_ajax');
+add_action('wp_ajax_nopriv_get_variation_price', 'get_variation_price_ajax');
+
+function get_variation_price_ajax() {
+    check_ajax_referer('variation_price_nonce', 'nonce');
+    
+    $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+    $attributes = isset($_POST['attributes']) ? $_POST['attributes'] : array();
+    
+    if (!$product_id) {
+        wp_send_json_error('Invalid product ID');
+    }
+    
+    $product = wc_get_product($product_id);
+    
+    if (!$product || !$product->is_type('variable')) {
+        wp_send_json_error('Invalid variable product');
+    }
+    
+    // Find matching variation
+    $data_store = WC_Data_Store::load('product');
+    $variation_id = $data_store->find_matching_product_variation($product, $attributes);
+    
+    if (!$variation_id) {
+        wp_send_json_error('No matching variation found');
+    }
+    
+    $variation = wc_get_product($variation_id);
+    
+    $response = array(
+        'variation_id' => $variation_id,
+        'price' => $variation->get_price(),
+        'regular_price' => $variation->get_regular_price(),
+        'sale_price' => $variation->get_sale_price(),
+        'price_html' => $variation->get_price_html(),
+        'is_on_sale' => $variation->is_on_sale(),
+        'display_price' => wc_get_price_to_display($variation),
+        'display_regular_price' => wc_get_price_to_display($variation, array('price' => $variation->get_regular_price())),
+    );
+    
+    wp_send_json_success($response);
+}

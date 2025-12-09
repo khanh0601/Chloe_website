@@ -276,12 +276,16 @@ h1, h2{
   font-weight: 500;
   color: #1D1D1D;
 }
+.split-line {
+  overflow: hidden;
+}
 .txt_subtitle{
   font-size: 1.6rem;
   line-height: 1em;
   text-transform: uppercase;
   font-weight: 500;
   color: #1D1D1D;
+  margin-bottom: .8rem;
 }
 .txt_bold {
   font-weight: 700;

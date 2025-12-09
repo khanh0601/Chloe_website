@@ -36,6 +36,11 @@
     wp_enqueue_script('lenis', get_template_directory_uri() . '/js/lenis.min.js', [], SITE_VERSION, true);
     wp_enqueue_script('animation', get_template_directory_uri() . '/js/animation.js', [], SITE_VERSION, true);
     wp_enqueue_script('home-js', get_template_directory_uri() . '/js/home.js', [], SITE_VERSION, true);
+
+    // Localize script to pass AJAX URL and nonce to JavaScript
+    wp_localize_script('home-js', 'ajaxurl', admin_url('admin-ajax.php'));
+    wp_localize_script('home-js', 'variationNonce', wp_create_nonce('variation_price_nonce'));
+
     wp_enqueue_script('splitType', get_template_directory_uri() . '/js/split-type.js', [], null, true);
     wp_head();
 

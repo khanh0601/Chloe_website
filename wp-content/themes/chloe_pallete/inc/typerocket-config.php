@@ -24,17 +24,6 @@ add_action('edit_form_after_title', function($post) use($editorSettings) {
             echo $form->text('seller_subtitle')->setLabel("Tiêu đề phụ");
             echo $form->text('seller_title')->setLabel("Tiêu đề");
         echo endBox();
-
-        echo beginBox("Introduce Cake",true);
-            echo $form->repeater('intro')->setLabel("Giới thiệu về các loại cake")->setFields([
-                    $form->text('num')->setLabel("Số thứ tự"),
-                    $form->text('title')->setLabel("Tiêu đề"),
-                    $form->image('image')->setLabel("Hình ảnh"),
-                    $form->text('link')->setLabel("link"),
-            ]);
-        echo endBox();
-        
-
         echo beginBox("About Cake",true);
             echo $form->text('about_subtitle')->setLabel("Tiêu đề phụ");
             echo $form->text('about_title')->setLabel("Tiêu đề");

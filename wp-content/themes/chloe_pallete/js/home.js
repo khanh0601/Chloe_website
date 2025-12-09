@@ -216,6 +216,60 @@ const mainScript = () => {
     }
   }
   let cursor = new Cursor();
+  const isInViewport = (el, orientation = 'vertical') => {
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (orientation == 'horizontal') {
+          return (
+             rect.left <= (window.innerWidth) &&
+             rect.right >= 0
+          );
+    } else {
+          return (
+             rect.top <= (window.innerHeight) &&
+             rect.bottom >= 0
+          );
+    }
+ }
+  class ParallaxImage {
+    constructor({ el, scaleOffset = 0.1 }) {
+       this.el = el;
+       this.elWrap = null;
+       this.scaleOffset = scaleOffset;
+       viewport.w > 991 ? this.init() : null;
+    }
+    init() {
+       this.elWrap = this.el.parentElement;
+       this.elWrapHeight = this.elWrap.offsetHeight;
+       this.setup();
+    }
+    setup() {
+       const scalePercent = 100 + 5 + ((this.scaleOffset - 0.1) * 100);
+       gsap.set(this.el, {
+          width: scalePercent + '%',
+          xPercent: (scalePercent - 100) / 2 * -1,
+          height: $(this.el).hasClass('img-abs') || $(this.el).hasClass('img-fill') ? scalePercent + '%' : 'auto'
+       });
+       this.scrub();
+    }
+    scrub() {
+       let dist = this.el.offsetHeight - this.elWrapHeight;
+       let total = this.elWrapHeight + window.innerHeight;
+       this.updateOnScroll(dist, total);
+       lenis.on('scroll', () => {
+          this.updateOnScroll(dist, total);
+       });
+    }
+    updateOnScroll(dist, total) {
+       if (this.el) {
+          if (isInViewport(this.elWrap) ) {
+             let percent = (this.elWrap.getBoundingClientRect().top + window.innerHeight) / total;
+             gsap.quickSetter(this.el, 'y', 'px')(-dist * (1 - percent) * 1.2);
+             gsap.set(this.el, { scale: 1 + this.scaleOffset - (percent * this.scaleOffset) });
+             }
+          }
+    }
+ }
   class Header extends TriggerSetupHero {
     constructor() {
       super();
@@ -448,8 +502,6 @@ const mainScript = () => {
           },
         },
       });
-      
-      // ✅ Bind 'this' để truy cập được class methods
       $('.home_seller_category_item').on('click', (e) => {
         const selectedCategory = $(e.currentTarget).data('category');
         
@@ -460,7 +512,7 @@ const mainScript = () => {
         // Filter products
         if (selectedCategory === 'all') {
           $('.home_seller_silder_item').each((idx, item) => {
-            this.activeItem(item); // ✅ Hiển thị lại tất cả với animation
+            this.activeItem(item); 
           });
         } else {
           $('.home_seller_silder_item').each((idx, item) => {
@@ -524,10 +576,7 @@ const mainScript = () => {
     
     activeItem(el) {
       $(el).show();
-      
-      // Tạo timeline mới cho animation
       const itemTl = gsap.timeline();
-      
       new MasterTimeline({
         timeline: itemTl,
         tweenArr: [
@@ -705,24 +754,25 @@ const mainScript = () => {
           new FadeSplitText({ el: $('.home_about_content_title').get(0), onMask: true, delay: .1 }),
         ]
       })
+      let tlItem = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.home_about_inner',
+          start: "top+=75% bottom",
+          once: true,
+        }
+      });
       $('.home_about_item').each((i, el) => {
-        let tlItem = new gsap.timeline({
-          scrollTrigger: {
-            trigger: el,
-            start: "top+=75% bottom",
-            once: true,
-          }
-        });
         new MasterTimeline({
           timeline: tlItem,
           tweenArr: [
-            ...($(el).find('.home_about_item_des p').length > 0 ? Array.from($(el).find('.home_about_item_des p')).map((p, idx) => new FadeSplitText({ el: $(p).get(0), delay: idx == 0 ? '<=0' : `<=.05*${idx}` })) : []),
+            ...($(el).find('.home_about_item_des p').length > 0 ? Array.from($(el).find('.home_about_item_des p')).map((p, idx) => new FadeSplitText({ el: $(p).get(0), delay: idx == 0 ? '<=.4' : `<=.05*${idx}` })) : []),
             $(el).find('.home_about_item_inner').length > 0 ? new ScaleInset({ el: $(el).find('.home_about_item_inner').get(0), delay: .1 }) : null,
-            $(el).find('.home_about_item_link').length > 0 ? new FadeIn({ el: $(el).find('.home_about_item_link'), delay: .2 }) : null,
-            $(el).find('.home_about_item_border').length > 0 ? new FadeIn({ el: $(el).find('.home_about_item_border'), delay: .3 }) : null,
+            $(el).find('.home_about_item_link').length > 0 ? new FadeIn({ el: $(el).find('.home_about_item_link'), delay: .8 }) : null,
+            $(el).find('.home_about_item_border').length > 0 ? new FadeIn({ el: $(el).find('.home_about_item_border'), delay: .8 }) : null,
           ].filter(Boolean)
         })
       })
+      // new ParallaxImage({ el: $('.home_about_item_inner img').get(0) });
       $(this.triggerEl).find('.home_about_slide_item').each((i, el) => {
         let tlItem = new gsap.timeline({
           scrollTrigger: {
@@ -832,13 +882,9 @@ const mainScript = () => {
           once: true,
         },
       });
-      new MasterTimeline({
-        timeline: tl,
-        tweenArr: [
-          new FadeSplitText({ el: $('.home_course_info_txt').get(0), onMask: true, breakType: 'chars', isFast: true, isDisableRevert: true }),
-          new FadeIn({ el: $('.home_course .home_hero_des_link'), delay: 1.2 }),
-        ]
-      })
+      tl
+        .fromTo(title.words, { autoAlpha: 0, yPercent: 100 }, { autoAlpha: 1, duration: 0.5, yPercent: 0, stagger: .025, ease: "none" })
+        .fromTo($('.home_course .home_hero_des_link'), { autoAlpha: 0, yPercent: 100 }, { autoAlpha: 1, yPercent: 0, ease: "none", duration: .6 }, '>=.2')
       tlScrub.fromTo('.home_course_info_txt .char', { color: 'rgba(255,255,255, 0.5)' }, { color: 'rgba(255,255,255, 1)', stagger: .03, ease: "none" })
     }
   }
@@ -886,20 +932,20 @@ const mainScript = () => {
           new FadeIn({ el: $('.home_review_left_amount'), delay: .1 }),
         ]
       })
+      let tlListItem = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.home_review_right_slide',
+          start: "top+=75% bottom",
+          once: true,
+        }
+      });
       $('.home_review_right_slide_item').each((i, el) => {
-        let tlItem = new gsap.timeline({
-          scrollTrigger: {
-            trigger: el,
-            start: "top+=75% bottom",
-            once: true,
-          }
-        });
         new MasterTimeline({
-          timeline: tlItem,
+          timeline: tlListItem,
           tweenArr: [
             new FadeIn({ el: $(el).find('.home_review_right_slide_item_icon_wrap') }),
-            new FadeSplitText({ el: $(el).find('.home_review_right_slide_item_content').get(0), onMask: true, delay: .1 }),
-            new FadeSplitText({ el: $(el).find('.home_review_right_slide_item_author').get(0), delay: .4 }),
+            ...Array.from($(el).find('.home_review_right_slide_item_content p')).flatMap((el, idx) => new FadeSplitText({ el: el, onMask: true })),
+            new FadeSplitText({ el: $(el).find('.home_review_right_slide_item_author').get(0) }),
           ]
         })
       })
@@ -1025,18 +1071,19 @@ const mainScript = () => {
       let tlItem = new gsap.timeline({
         scrollTrigger: {
           trigger: '.home_workshop_slide',
-          start: "top+=75% bottom",
+          start: "top+=70% bottom",
           once: true,
         }
       });
       $('.home_workshop_slide_item').each((i, el) => {
         new MasterTimeline({
           timeline: tlItem,
+          stagger: 0,
           tweenArr: [
             new ScaleInset({ el: $(el).find('.home_workshop_slide_item_img').get(0) }),
             new FadeIn({ el: $(el).find('.home_workshop_slide_item_info') }),
-            new FadeSplitText({ el: $(el).find('.home_workshop_slide_item_title').get(0), onMask: true, delay: .4 }),
-            new FadeIn({ el: $(el).find('.home_workshop_slide_item_des'), type: 'bottom', delay: .3 }),
+            new FadeSplitText({ el: $(el).find('.home_workshop_slide_item_title').get(0), onMask: true,}),
+            new FadeIn({ el: $(el).find('.home_workshop_slide_item_des'), type: 'bottom' }),
           ]
         })
       })
@@ -1223,6 +1270,127 @@ const mainScript = () => {
     }
   }
   let ourStoryChoose = new OurStoryChoose('.story_choose');
+  class ProductDetailHero extends TriggerSetupHero {
+    constructor() {
+      super();
+      this.tl = null;
+      this.tlItem = null;
+    }
+    trigger() {
+      this.setup();
+      this.interact();
+      super.init(this.play.bind(this));
+    }
+    setup() {
+      let sellerSwiper = new Swiper(".product_related_silder .home_seller_silder", {
+        slidesPerView: 1.5,
+        spaceBetween: parseRem(10),
+        pagination: {
+          el: ".home_seller_pagination",
+          type: "progressbar",
+        },
+        speed: 400,
+        breakpoints: {
+          768: {
+            slidesPerView: 2.7,
+            spaceBetween: parseRem(15),
+          },
+          991: {
+            slidesPerView: 4.3,
+            spaceBetween: parseRem(20),
+          },
+        },
+      });
+      this.tl = gsap.timeline({
+        paused: true,
+      });
+    }
+    interact() {
+      // $('.productdetail_content_info_sensa_item').on('click', function() {
+      //   $(this).toggleClass('active');
+      // });
+      // document.querySelectorAll('input[name="size"]').forEach(input => {
+      //   input.addEventListener('change', function() {
+      //       document.getElementById('sizeDisplay').textContent = this.value;
+      //     });
+      // });
+      
+      // // Xử lý cho Cake Flavour
+      // document.querySelectorAll('input[name="flavor"]').forEach(input => {
+      //     input.addEventListener('change', function() {
+      //         document.getElementById('flavorDisplay').textContent = this.value;
+      //     });
+      // });
+      $('input[type="radio"]').on('change', function() {
+        var name = $(this).attr('name');
+        var value = $(this).val();
+        var displayId = name.replace('attribute_', '') + 'Display';
+        $('#' + displayId).text(value);
+    });
+
+    // Handle variation price update via AJAX
+    $('.variation-selector').on('change', function() {
+        updateVariationPriceAjax();
+    });
+
+    function updateVariationPriceAjax() {
+        var selectedAttributes = {};
+        
+        $('.variation-selector:checked').each(function() {
+            var attrName = $(this).data('attribute-name');
+            var attrValue = $(this).val();
+            selectedAttributes[attrName] = attrValue;
+        });
+
+        var productId = $('#product_id').val();
+
+        $.ajax({
+            url: ajaxurl || '/wp-admin/admin-ajax.php',
+            type: 'POST',
+            data: {
+                action: 'get_variation_price',
+                nonce: typeof variationNonce !== 'undefined' ? variationNonce : '',
+                product_id: productId,
+                attributes: selectedAttributes
+            },
+            beforeSend: function() {
+                $('#product-price-wrapper').addClass('loading');
+            },
+            success: function(response) {
+                if (response.success) {
+                    var data = response.data;
+                    var priceHtml = '';
+
+                    if (data.is_on_sale && data.regular_price > data.sale_price) {
+                        var discount = Math.round(((data.regular_price - data.sale_price) / data.regular_price) * 100);
+                        
+                        priceHtml += '<div class="productdetail_content_info_price_item txt_24">$' + parseFloat(data.sale_price).toFixed(2) + '</div>';
+                        priceHtml += '<div class="productdetail_content_info_price_item price_old txt_16">$' + parseFloat(data.regular_price).toFixed(2) + '</div>';
+                        priceHtml += '<div class="productdetail_content_info_price_item price_discount txt_title_color">-' + discount + '%</div>';
+                    } else {
+                        priceHtml += '<div class="productdetail_content_info_price_item txt_24">$' + parseFloat(data.price).toFixed(2) + '</div>';
+                    }
+
+                    $('#product-price-wrapper').html(priceHtml);
+                }
+            },
+            complete: function() {
+                $('#product-price-wrapper').removeClass('loading');
+            }
+        });
+    }
+
+    // Trigger initial price update
+    if ($('.variation-selector').length > 0) {
+        updateVariationPriceAjax();
+    }
+
+    }
+    play() {
+      this.tl.play();
+    }
+  }
+  const productDetailHero = new ProductDetailHero('.product_detail_hero');
   const SCRIPT = {
     homeScript: () => {
       homeHero.trigger();
@@ -1246,6 +1414,10 @@ const mainScript = () => {
       homeAbout.trigger();
       ourStoryChoose.trigger();
       homeCourse.trigger();
+      return;
+    },
+    productDetailScript: () => {
+      productDetailHero.trigger();
       return;
     },
   };
