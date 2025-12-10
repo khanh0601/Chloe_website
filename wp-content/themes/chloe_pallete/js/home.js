@@ -285,7 +285,6 @@ const mainScript = () => {
     }
     setup() {
       this.tl = gsap.timeline();
-      let menu_item = new SplitType('.header_menu_item ', { types: 'lines, words', lineClass: 'kv_line' });
     }
     play() {
       this.tl.play();
@@ -348,7 +347,6 @@ const mainScript = () => {
       gsap.fromTo('.header_menu', { clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)' }, {
         duration: 1, clipPath: 'polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)', ease: "circ.inOut"
       });
-      gsap.fromTo('.header_menu_item .word', { autoAlpha: 0, yPercent: 100 }, { duration: .8, autoAlpha: 1, yPercent: 0, stagger: .025 });
     }
     deactiveMenuTablet = () => {
       // lenis.start();
@@ -356,7 +354,6 @@ const mainScript = () => {
       gsap.fromTo('.header_menu', { clipPath: 'polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)' }, {
         duration: 1, clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)', ease: "circ.inOut"
       });
-      gsap.fromTo('.header_menu_item .word', { autoAlpha: 1, yPercent: 0 }, { duration: .6, autoAlpha: 0, yPercent: 100, stagger: .025 });
     }
   }
   const header = new Header();
@@ -1306,21 +1303,7 @@ const mainScript = () => {
       });
     }
     interact() {
-      // $('.productdetail_content_info_sensa_item').on('click', function() {
-      //   $(this).toggleClass('active');
-      // });
-      // document.querySelectorAll('input[name="size"]').forEach(input => {
-      //   input.addEventListener('change', function() {
-      //       document.getElementById('sizeDisplay').textContent = this.value;
-      //     });
-      // });
       
-      // // Xử lý cho Cake Flavour
-      // document.querySelectorAll('input[name="flavor"]').forEach(input => {
-      //     input.addEventListener('change', function() {
-      //         document.getElementById('flavorDisplay').textContent = this.value;
-      //     });
-      // });
       $('input[type="radio"]').on('change', function() {
         var name = $(this).attr('name');
         var value = $(this).val();
@@ -1328,62 +1311,424 @@ const mainScript = () => {
         $('#' + displayId).text(value);
     });
 
-    // Handle variation price update via AJAX
+    // Handle variation price update via AJAX và update display
     $('.variation-selector').on('change', function() {
+        // Update display
+        const attrName = $(this).data('attribute-name') || $(this).attr('data-attribute-name');
+        if (attrName) {
+          const attrId = attrName.replace('attribute_', '');
+          const $displayEl = $('#' + attrId + 'Display');
+          if ($displayEl.length) {
+            $displayEl.text($(this).val());
+          }
+        }
+        // Update price
         updateVariationPriceAjax();
     });
 
+    // Debounce function để tránh gọi quá nhiều lần
+    let priceUpdateTimeout;
     function updateVariationPriceAjax() {
-        var selectedAttributes = {};
+        // Clear timeout trước đó
+        if (priceUpdateTimeout) {
+            clearTimeout(priceUpdateTimeout);
+        }
         
-        $('.variation-selector:checked').each(function() {
-            var attrName = $(this).data('attribute-name');
-            var attrValue = $(this).val();
-            selectedAttributes[attrName] = attrValue;
-        });
+        // Debounce: chỉ gọi sau 300ms khi user ngừng thay đổi
+        priceUpdateTimeout = setTimeout(function() {
+            var selectedAttributes = {};
+            
+            $('.variation-selector:checked').each(function() {
+                var attrName = $(this).data('attribute-name');
+                var attrValue = $(this).val();
+                selectedAttributes[attrName] = attrValue;
+            });
 
-        var productId = $('#product_id').val();
+            var productId = $('#product_id').val();
 
-        $.ajax({
-            url: ajaxurl || '/wp-admin/admin-ajax.php',
-            type: 'POST',
-            data: {
-                action: 'get_variation_price',
-                nonce: typeof variationNonce !== 'undefined' ? variationNonce : '',
-                product_id: productId,
-                attributes: selectedAttributes
-            },
-            beforeSend: function() {
-                $('#product-price-wrapper').addClass('loading');
-            },
-            success: function(response) {
-                if (response.success) {
-                    var data = response.data;
-                    var priceHtml = '';
+            $.ajax({
+                url: ajaxurl || '/wp-admin/admin-ajax.php',
+                type: 'POST',
+                data: {
+                    action: 'get_variation_price',
+                    nonce: typeof variationNonce !== 'undefined' ? variationNonce : '',
+                    product_id: productId,
+                    attributes: selectedAttributes
+                },
+                beforeSend: function() {
+                    $('#product-price-wrapper').addClass('loading');
+                },
+                success: function(response) {
+                    if (response.success) {
+                        var data = response.data;
+                        var priceHtml = '';
 
-                    if (data.is_on_sale && data.regular_price > data.sale_price) {
-                        var discount = Math.round(((data.regular_price - data.sale_price) / data.regular_price) * 100);
-                        
-                        priceHtml += '<div class="productdetail_content_info_price_item txt_24">$' + parseFloat(data.sale_price).toFixed(2) + '</div>';
-                        priceHtml += '<div class="productdetail_content_info_price_item price_old txt_16">$' + parseFloat(data.regular_price).toFixed(2) + '</div>';
-                        priceHtml += '<div class="productdetail_content_info_price_item price_discount txt_title_color">-' + discount + '%</div>';
-                    } else {
-                        priceHtml += '<div class="productdetail_content_info_price_item txt_24">$' + parseFloat(data.price).toFixed(2) + '</div>';
+                        if (data.is_on_sale && data.regular_price > data.sale_price) {
+                            var discount = Math.round(((data.regular_price - data.sale_price) / data.regular_price) * 100);
+                            
+                            priceHtml += '<div class="productdetail_content_info_price_item txt_24">$' + parseFloat(data.sale_price).toFixed(2) + '</div>';
+                            priceHtml += '<div class="productdetail_content_info_price_item price_old txt_16">$' + parseFloat(data.regular_price).toFixed(2) + '</div>';
+                            priceHtml += '<div class="productdetail_content_info_price_item price_discount txt_title_color">-' + discount + '%</div>';
+                        } else {
+                            priceHtml += '<div class="productdetail_content_info_price_item txt_24">$' + parseFloat(data.price).toFixed(2) + '</div>';
+                        }
+
+                        $('#product-price-wrapper').html(priceHtml);
                     }
-
-                    $('#product-price-wrapper').html(priceHtml);
+                },
+                complete: function() {
+                    $('#product-price-wrapper').removeClass('loading');
                 }
-            },
-            complete: function() {
-                $('#product-price-wrapper').removeClass('loading');
-            }
-        });
+            });
+        }, 300); // 300ms debounce
     }
 
-    // Trigger initial price update
     if ($('.variation-selector').length > 0) {
         updateVariationPriceAjax();
+        
+        // Listen for variation changes
+        $(document).on('change', '.variation-selector', function() {
+            updateVariationPriceAjax();
+        });
     }
+
+    $('input[name="size"]').on('change', function () {
+      const $displayEl = $('#sizeDisplay');
+      if ($displayEl.length) {
+        $displayEl.text($(this).val());
+      }
+    });
+
+    // Xử lý cho Cake Flavour
+    $('input[name="flavor"]').on('change', function () {
+      const $displayEl = $('#flavorDisplay');
+      if ($displayEl.length) {
+        $displayEl.text($(this).val());
+      }
+    });
+
+
+    // Xử lý quantity buttons
+    const $quantityInput = $('.productdetail_quantity_input_value');
+    const $quantityHidden = $('input[name="quantity"]');
+    const $minusBtn = $('.productdetail_quantity_button.minus');
+    const $plusBtn = $('.productdetail_quantity_button.plus');
+
+    if ($minusBtn.length && $plusBtn.length && $quantityInput.length && $quantityHidden.length) {
+      let currentQuantity = parseInt($quantityInput.text()) || 1;
+      const minQty = parseInt($quantityHidden.attr('min')) || 1;
+      const maxQty = parseInt($quantityHidden.attr('max')) || 100;
+
+      $minusBtn.on('click', function (e) {
+        e.preventDefault();
+        if (currentQuantity > minQty) {
+          currentQuantity--;
+          $quantityInput.text(currentQuantity);
+          $quantityHidden.val(currentQuantity);
+        }
+      });
+
+      $plusBtn.on('click', function (e) {
+        e.preventDefault();
+        if (currentQuantity < maxQty) {
+          currentQuantity++;
+          $quantityInput.text(currentQuantity);
+          $quantityHidden.val(currentQuantity);
+        }
+      });
+    }
+
+    // Hàm tìm variation ID dựa trên các attributes đã chọn
+    const findVariationId = (selectedAttributes, variationsData) => {
+      if (!variationsData || variationsData.length === 0) {
+        return 0;
+      }
+
+      // Tìm variation khớp với các attributes đã chọn
+      for (let i = 0; i < variationsData.length; i++) {
+        const variation = variationsData[i];
+        let match = true;
+        const variationAttr = variation.attributes || {};
+
+        // Kiểm tra số lượng attributes phải khớp (ít nhất bằng nhau)
+        const selectedAttrCount = Object.keys(selectedAttributes).length;
+        const variationAttrCount = Object.keys(variationAttr).length;
+
+        // Variation có thể có nhiều attributes hơn (nhưng phải có ít nhất các attributes đã chọn)
+        if (selectedAttrCount === 0 || variationAttrCount === 0) {
+          continue;
+        }
+
+        // Kiểm tra từng attribute đã chọn
+        let matchedCount = 0;
+        for (const attrName in selectedAttributes) {
+          const selectedValue = selectedAttributes[attrName];
+
+          // Kiểm tra xem variation có attribute này không
+          if (!variationAttr.hasOwnProperty(attrName)) {
+            match = false;
+            break;
+          }
+
+          // So sánh giá trị (case-insensitive và trim whitespace)
+          const variationValue = String(variationAttr[attrName] || '').trim();
+          const selectedValueTrimmed = String(selectedValue || '').trim();
+
+          // So sánh chính xác hoặc case-insensitive
+          if (variationValue === selectedValueTrimmed ||
+            variationValue.toLowerCase() === selectedValueTrimmed.toLowerCase()) {
+            matchedCount++;
+          } else {
+            match = false;
+            break;
+          }
+        }
+
+        // Phải khớp tất cả các attributes đã chọn
+        if (match && matchedCount === selectedAttrCount) {
+          return variation.variation_id;
+        }
+      }
+
+      return 0;
+    };
+
+    // Hàm lấy các attributes đã chọn
+    const getSelectedAttributes = () => {
+      const attributes = {};
+      const $variationSelectors = $('.variation-selector:checked');
+
+      $variationSelectors.each(function () {
+        const attrName = $(this).data('attribute-name') || $(this).attr('data-attribute-name');
+        if (attrName) {
+          attributes[attrName] = $(this).val();
+        }
+      });
+
+      return attributes;
+    };
+
+    // Hàm tìm variation ID từ map (nhanh hơn)
+    const findVariationIdFromMap = (selectedAttributes, variationMap) => {
+      if (!variationMap || Object.keys(variationMap).length === 0) {
+        return 0;
+      }
+
+      // Tạo key từ selected attributes
+      const keys = Object.keys(selectedAttributes).sort();
+      let mapKey = '';
+      keys.forEach(key => {
+        mapKey += key + ':' + selectedAttributes[key] + '|';
+      });
+      mapKey = mapKey.slice(0, -1); // Remove last |
+
+      // Tìm trong map
+      if (variationMap[mapKey]) {
+        return variationMap[mapKey];
+      }
+
+      return 0;
+    };
+
+    // Xử lý Add to Cart
+    $('.productdetail_cart_button').on('click', function (e) {
+      e.preventDefault();
+
+      const $button = $(this);
+      const productId = $('#product_id').val();
+      const quantity = parseInt($('input[name="quantity"]').val()) || 1;
+      const variationsData = $('#variations_data').val();
+
+      // Kiểm tra product ID
+      if (!productId) {
+        alert('Product ID not found');
+        return;
+      }
+
+      // Disable button để tránh double click
+      $button.addClass('loading disabled');
+
+      let data = {
+        product_id: productId,
+        quantity: quantity
+      };
+
+      // Nếu là variable product, tìm variation ID
+      if (variationsData && variationsData.trim() !== '') {
+        try {
+          const selectedAttributes = getSelectedAttributes();
+
+          // Kiểm tra nếu có variation selectors thì phải chọn đủ
+          const $variationSelectors = $('.variation-selector');
+          if ($variationSelectors.length > 0) {
+            if (Object.keys(selectedAttributes).length === 0) {
+              alert('Please select product options');
+              $button.removeClass('loading disabled');
+              return;
+            }
+
+            let variationId = 0;
+
+            // Thử tìm từ variation map trước (nhanh nhất)
+            const variationMapData = $('#variation_map').val();
+            if (variationMapData && variationMapData.trim() !== '') {
+              try {
+                const variationMap = JSON.parse(variationMapData);
+                variationId = findVariationIdFromMap(selectedAttributes, variationMap);
+              } catch (e) {
+                // Silent fail
+              }
+            }
+
+            // Nếu không tìm được từ map, thử tìm từ variations data
+            if (variationId === 0) {
+              try {
+                const variations = JSON.parse(variationsData);
+                variationId = findVariationId(selectedAttributes, variations);
+              } catch (e) {
+                // Silent fail
+              }
+            }
+
+            // Nếu vẫn không tìm được, bỏ qua - sẽ để server xử lý
+            // Không dùng async: false vì nó block browser
+            if (variationId === 0) {
+              console.warn('Variation ID not found client-side, server will try to find it');
+            }
+
+            // Phải có variation_id cho variable product
+            if (variationId > 0) {
+              data.variation_id = variationId;
+              data.variation = selectedAttributes;
+            } else {
+              // Nếu không tìm được, vẫn gửi attributes để server tìm
+              data.variation = selectedAttributes;
+              // Server sẽ tự tìm variation_id từ attributes
+            }
+          }
+        } catch (e) {
+          console.error('Error parsing variations data:', e);
+          // Nếu lỗi parse, vẫn cho phép add simple product
+        }
+      }
+
+      // Kiểm tra wc_add_to_cart_params
+      if (typeof wc_add_to_cart_params === 'undefined') {
+        alert('WooCommerce is not properly configured');
+        $button.removeClass('loading disabled');
+        return;
+      }
+
+      // Add nonce for security
+      data.action = 'custom_add_to_cart';
+      data.nonce = wc_add_to_cart_params.custom_add_to_cart_nonce || '';
+
+      // Gửi AJAX request to custom handler
+      const ajaxUrl = wc_add_to_cart_params.ajax_url;
+
+      $.ajax({
+        type: 'POST',
+        url: ajaxUrl,
+        data: data,
+        beforeSend: function () {
+          $button.find('.productdetail_cart_button_txt').text('Adding...');
+        },
+        success: function (response) {
+          // Custom handler returns {success: true/false, data: {...}}
+          if (!response.success) {
+            let errorMsg = 'Error: Unable to add product to cart.';
+            if (response.data && response.data.message) {
+              errorMsg += '\n' + response.data.message;
+            }
+            
+            alert(errorMsg);
+            
+            if (response.data && response.data.product_url) {
+              window.location = response.data.product_url;
+              return;
+            } else {
+              $button.find('.productdetail_cart_button_txt').text('Add to cart');
+              $button.removeClass('loading disabled');
+              return;
+            }
+          }
+
+          // Cập nhật cart UI với fragments
+          if (response.data && response.data.fragments) {
+            // Use the updateCartUI function from initCartInteractions
+            if (typeof updateCartUI === 'function') {
+              updateCartUI(response.data.fragments, response.data.cart_hash);
+            } else {
+              // Fallback: update manually
+              if (response.data.fragments['.header_icon_item_num .cart-count']) {
+                $('.header_icon_item_num .cart-count').html(response.data.fragments['.header_icon_item_num .cart-count']);
+              }
+              if (response.data.fragments['.menu_cart_title']) {
+                $('.menu_cart_title').html(response.data.fragments['.menu_cart_title']);
+              }
+              if (response.data.fragments['.menu_cart_content']) {
+                $('.menu_cart_content').html(response.data.fragments['.menu_cart_content']);
+              }
+              if (response.data.fragments['.menu_cart_button_total_txt']) {
+                $('.menu_cart_button_total_txt').html(response.data.fragments['.menu_cart_button_total_txt']);
+              }
+              if (response.data.fragments['.menu_cart_button_total_price']) {
+                $('.menu_cart_button_total_price').html(response.data.fragments['.menu_cart_button_total_price']);
+              }
+              if (response.data.fragments['.menu_cart_button_check']) {
+                const $checkoutBtn = $('.menu_cart_button_check');
+                if ($checkoutBtn.length === 0) {
+                  $('.menu_cart_button_total').after(response.data.fragments['.menu_cart_button_check']);
+                }
+              }
+            }
+            
+            // Trigger WooCommerce event
+            $(document.body).trigger('added_to_cart', [
+              response.data.fragments, 
+              response.data.cart_hash || '', 
+              $button
+            ]);
+          }
+
+          // Hiển thị thông báo thành công
+          $button.find('.productdetail_cart_button_txt').text('Added!');
+
+          // Reset button sau 500ms (nhanh hơn)
+          setTimeout(function () {
+            $button.find('.productdetail_cart_button_txt').text('Add to cart');
+            $button.removeClass('loading disabled');
+          }, 500);
+
+          // Reload chỉ khi cần thiết (nếu có redirect setting)
+          if (wc_add_to_cart_params.cart_redirect_after_add === 'yes') {
+            window.location = wc_add_to_cart_params.cart_url;
+          } else {
+            // Không reload, chỉ cập nhật UI
+            // Cart đã được cập nhật qua fragments
+          }
+        },
+        error: function (xhr, status, error) {
+          // Thử parse response nếu có
+          let errorMsg = 'Error adding product to cart. Please try again.';
+          try {
+            const errorResponse = JSON.parse(xhr.responseText);
+            if (errorResponse.message) {
+              errorMsg = errorResponse.message;
+            } else if (errorResponse.data && errorResponse.data.message) {
+              errorMsg = errorResponse.data.message;
+            }
+          } catch (e) {
+            // Use default error message
+          }
+          
+          alert(errorMsg);
+          $button.find('.productdetail_cart_button_txt').text('Add to cart');
+          $button.removeClass('loading disabled');
+        },
+        dataType: 'json'
+      });
+    });
 
     }
     play() {
@@ -1421,10 +1766,180 @@ const mainScript = () => {
       return;
     },
   };
+  // Helper function to update cart UI (global scope để có thể dùng từ add to cart)
+  function updateCartUI(fragments, cartHash) {
+      if (!fragments) return;
+
+      // Update cart count in header
+      if (fragments['.header_icon_item_num .cart-count']) {
+        $('.header_icon_item_num .cart-count').html(fragments['.header_icon_item_num .cart-count']);
+      }
+
+      // Update cart title
+      if (fragments['.menu_cart_title']) {
+        $('.menu_cart_title').html(fragments['.menu_cart_title']);
+      }
+
+      // Update cart total text
+      if (fragments['.menu_cart_button_total_txt']) {
+        $('.menu_cart_button_total_txt').html(fragments['.menu_cart_button_total_txt']);
+      }
+
+      // Update cart total price
+      if (fragments['.menu_cart_button_total_price']) {
+        $('.menu_cart_button_total_price').html(fragments['.menu_cart_button_total_price']);
+      }
+
+      // Update cart content (for remove item)
+      if (fragments['.menu_cart_content']) {
+        $('.menu_cart_content').html(fragments['.menu_cart_content']);
+      }
+
+      // Update checkout button visibility
+      if (fragments['.menu_cart_button_check']) {
+        const $checkoutBtn = $('.menu_cart_button_check');
+        if (fragments['.menu_cart_button_check'] === '') {
+          $checkoutBtn.remove();
+        } else {
+          if ($checkoutBtn.length === 0) {
+            $('.menu_cart_button_total').after(fragments['.menu_cart_button_check']);
+          }
+        }
+      }
+    }
+
+  // Cart interactions
+  function initCartInteractions() {
+    // Update quantity
+    $(document).on('click', '.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate', function(e) {
+      e.preventDefault();
+      const $button = $(this);
+      const $cartItem = $button.closest('.menu_cart_content_item');
+      const cartItemKey = $button.data('cart-item-key');
+      const action = $button.data('action');
+      const $quantityEl = $cartItem.find('.menu_cart_content_item_info_amount_txt');
+      let currentQty = parseInt($quantityEl.data('quantity')) || parseInt($quantityEl.text()) || 1;
+      
+      if (action === 'increase') {
+        currentQty++;
+      } else if (action === 'decrease' && currentQty > 1) {
+        currentQty--;
+      } else {
+        return;
+      }
+
+      // Disable buttons during update
+      $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').addClass('disabled');
+
+      // Update via AJAX
+      if (typeof wc_add_to_cart_params !== 'undefined') {
+        $.ajax({
+          type: 'POST',
+          url: wc_add_to_cart_params.ajax_url,
+          data: {
+            action: 'custom_update_cart_quantity',
+            cart_item_key: cartItemKey,
+            quantity: currentQty
+          },
+          success: function(response) {
+            if (response.success && response.data) {
+              // Update quantity in UI immediately
+              $quantityEl.text(currentQty).attr('data-quantity', currentQty);
+              
+              // Update cart UI
+              if (response.data.fragments) {
+                updateCartUI(response.data.fragments, response.data.cart_hash);
+              }
+              
+              // Update cart count in header
+              if (response.data.cart_count !== undefined) {
+                $('.header_icon_item_num .cart-count').text(response.data.cart_count);
+              }
+              
+              // Trigger event
+              if (response.data.fragments) {
+                $(document.body).trigger('updated_cart_totals', [response.data.fragments, response.data.cart_hash, $button]);
+              }
+            } else {
+              alert(response.data?.message || 'Error updating quantity. Please try again.');
+            }
+            
+            // Re-enable buttons
+            $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').removeClass('disabled');
+          },
+          error: function() {
+            alert('Error updating quantity. Please try again.');
+            $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').removeClass('disabled');
+          },
+          dataType: 'json'
+        });
+      } else {
+        // Fallback: reload page
+        location.reload();
+      }
+    });
+
+    // Remove item
+    $(document).on('click', '.menu_cart_content_item_remove', function(e) {
+      e.preventDefault();
+      const $button = $(this);
+      const $cartItem = $button.closest('.menu_cart_content_item');
+      const cartItemKey = $button.data('cart-item-key');
+      
+      if (!confirm('Are you sure you want to remove this item from cart?')) {
+        return;
+      }
+
+      $button.addClass('disabled');
+      $cartItem.addClass('removing');
+
+      if (typeof wc_add_to_cart_params !== 'undefined') {
+        $.ajax({
+          type: 'POST',
+          url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'remove_from_cart'),
+          data: {
+            cart_item_key: cartItemKey
+          },
+          success: function(response) {
+            if (response.fragments) {
+              // Update cart UI
+              updateCartUI(response.fragments, response.cart_hash);
+              
+              // Trigger event
+              $(document.body).trigger('removed_from_cart', [response.fragments, response.cart_hash, $button]);
+              
+              // If cart is empty, show empty message
+              if (response.cart_count === 0) {
+                $('.menu_cart_content').html('<div class="menu_cart_content_empty txt_16 txt_title_color">Your cart is empty.</div>');
+              }
+            }
+          },
+          error: function() {
+            alert('Error removing item. Please try again.');
+            $button.removeClass('disabled');
+            $cartItem.removeClass('removing');
+          },
+          dataType: 'json'
+        });
+      } else {
+        // Fallback: reload page
+        location.reload();
+      }
+    });
+
+    // Listen for cart updates from WooCommerce (no reload)
+    $(document.body).on('added_to_cart updated_cart_totals removed_from_cart', function(event, fragments, cart_hash) {
+      if (fragments) {
+        updateCartUI(fragments, cart_hash);
+      }
+    });
+  }
+
   function animationGlobal() {
     cursor.init();
     header.trigger();
     footer.trigger();
+    initCartInteractions();
     const pageName = $(".main").attr("data-barba-namespace");
     if (pageName) {
       SCRIPT[`${pageName}Script`]();

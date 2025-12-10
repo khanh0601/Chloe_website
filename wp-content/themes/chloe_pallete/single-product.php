@@ -3,6 +3,32 @@ $pageClass = 'on_dark';
 get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'product_detail-css', get_template_directory_uri() . '/css/product_detail.css');
 
+// Enqueue WooCommerce add to cart script
+if (function_exists('wc_get_template')) {
+    wp_enqueue_script('wc-add-to-cart');
+}
+
+// Localize script with WooCommerce AJAX URL for home.js
+$wc_ajax_url = '';
+if (class_exists('WC_AJAX')) {
+    $wc_ajax_url = WC_AJAX::get_endpoint('%%endpoint%%');
+} else {
+    // Fallback: construct WC AJAX URL manually
+    $wc_ajax_url = add_query_arg('wc-ajax', '%%endpoint%%', home_url('/', 'relative'));
+}
+
+// Create nonce for custom add to cart
+$custom_add_to_cart_nonce = wp_create_nonce('custom_add_to_cart_nonce');
+
+// Localize for home-js since add to cart code is in home.js
+wp_localize_script('home-js', 'wc_add_to_cart_params', array(
+    'ajax_url' => admin_url('admin-ajax.php'),
+    'wc_ajax_url' => $wc_ajax_url,
+    'cart_url' => function_exists('wc_get_cart_url') ? wc_get_cart_url() : '',
+    'cart_redirect_after_add' => get_option('woocommerce_cart_redirect_after_add', 'no'),
+    'custom_add_to_cart_nonce' => $custom_add_to_cart_nonce
+));
+
 // Lấy thông tin product hiện tại
 global $product;
 $product_id = get_the_ID();
@@ -44,8 +70,8 @@ if ( $categories && ! is_wp_error( $categories ) ) {
         </div>
     </section>
     <section class="productdetail_content">
-    <div class="kl_container">
-        <div class="productdetail_content_inner kl_grid">
+        <div class="kl_container">
+            <div class="productdetail_content_inner kl_grid">
             <div class="productdetail_img">
                 <div class="productdetail_img_inner img_fullfill">
                     <?php 
@@ -110,6 +136,11 @@ if ( $categories && ! is_wp_error( $categories ) ) {
                 </div>
 
                 <?php
+                // Store product ID for JavaScript (always needed)
+                ?>
+                <input type="hidden" id="product_id" value="<?php echo esc_attr($product_id); ?>">
+                <?php
+                
                 // Check if variable product
                 if ($product->is_type('variable')) {
                     $attributes = $product->get_variation_attributes();
@@ -117,11 +148,60 @@ if ( $categories && ! is_wp_error( $categories ) ) {
                     
                     // Store variations data in JSON for JavaScript
                     ?>
-                    <input type="hidden" id="product_id" value="<?php echo esc_attr($product_id); ?>">
                     <input type="hidden" id="variations_data" value='<?php echo json_encode($available_variations); ?>'>
                     
                     <?php
+                    // Tạo map variation IDs dựa trên attributes
+                    $variation_map = array();
+                    foreach ($available_variations as $variation) {
+                        $variation_id = $variation['variation_id'];
+                        $variation_attrs = $variation['attributes'];
+                        
+                        // Tạo key từ attributes
+                        $map_key = '';
+                        foreach ($variation_attrs as $attr_key => $attr_value) {
+                            $map_key .= $attr_key . ':' . $attr_value . '|';
+                        }
+                        $map_key = rtrim($map_key, '|');
+                        
+                        if ($map_key) {
+                            $variation_map[$map_key] = $variation_id;
+                        }
+                    }
+                    ?>
+                    <input type="hidden" id="variation_map" value='<?php echo json_encode($variation_map); ?>'>
+                    
+                    <?php
                     if (!empty($attributes)) {
+                        // Build a map of attribute names to slugs from actual variation data
+                        $attribute_slug_map = array();
+                        foreach ($available_variations as $variation) {
+                            if (isset($variation['attributes']) && is_array($variation['attributes'])) {
+                                foreach ($variation['attributes'] as $attr_key => $attr_value) {
+                                    // Remove 'attribute_' prefix to get the base attribute name
+                                    $base_attr_name = str_replace('attribute_', '', $attr_key);
+                                    // Remove 'pa_' prefix if present
+                                    $base_attr_name = str_replace('pa_', '', $base_attr_name);
+                                    
+                                    if (!isset($attribute_slug_map[$base_attr_name])) {
+                                        $attribute_slug_map[$base_attr_name] = array();
+                                    }
+                                    
+                                    // Get the term name from slug for taxonomy attributes
+                                    $taxonomy_name = 'pa_' . $base_attr_name;
+                                    if (taxonomy_exists($taxonomy_name) && !empty($attr_value)) {
+                                        $term = get_term_by('slug', $attr_value, $taxonomy_name);
+                                        if ($term && !is_wp_error($term)) {
+                                            $attribute_slug_map[$base_attr_name][$term->name] = $attr_value;
+                                        }
+                                    } else if (!empty($attr_value)) {
+                                        // Custom attribute - slug is the value itself
+                                        $attribute_slug_map[$base_attr_name][$attr_value] = $attr_value;
+                                    }
+                                }
+                            }
+                        }
+                        
                         foreach ($attributes as $attribute_name => $options) {
                             if (empty($options)) {
                                 continue;
@@ -130,6 +210,15 @@ if ( $categories && ! is_wp_error( $categories ) ) {
                             // Get attribute label
                             $attribute_label = wc_attribute_label($attribute_name);
                             $attr_id = sanitize_title($attribute_name);
+                            
+                            // WooCommerce uses wc_variation_attribute_name() to get the proper format
+                            // This handles both taxonomy (pa_size) and custom attributes
+                            $woo_attr_name = wc_variation_attribute_name($attribute_name);
+                            
+                            // Get slug map for this attribute
+                            $option_slug_map = isset($attribute_slug_map[$attribute_name]) 
+                                ? $attribute_slug_map[$attribute_name] 
+                                : array();
                             ?>
                             <div class="productdetail_content_info_detail">
                                 <div class="productdetail_content_info_sensa_wrap">
@@ -141,17 +230,23 @@ if ( $categories && ! is_wp_error( $categories ) ) {
                                     </div>
                                 </div>
                                 <div class="productdetail_content_info_detail_fill">
-                                    <?php foreach ($options as $index => $option) : ?>
-                                        <div class="productdetail_content_info_detail_fill_item">
+                                    <?php foreach ($options as $index => $option) : 
+                                        // Use slug from map if available, otherwise use option name
+                                        $option_value = isset($option_slug_map[$option]) 
+                                            ? $option_slug_map[$option] 
+                                            : $option;
+                                    ?>
+                                        <div class="productdetail_content_info_detail_fill_item" data-cursor="hidden">
                                             <input type="radio" 
-                                                   class="variation-selector"
-                                                   name="attribute_<?php echo $attr_id; ?>" 
-                                                   id="<?php echo $attr_id . '_' . ($index + 1); ?>" 
-                                                   value="<?php echo esc_attr($option); ?>"
-                                                   data-attribute-name="attribute_<?php echo sanitize_title($attribute_name); ?>"
-                                                   <?php echo $index === 0 ? 'checked' : ''; ?>>
+                                                    class="variation-selector"
+                                                    name="attribute_<?php echo $attr_id; ?>" 
+                                                    id="<?php echo $attr_id . '_' . ($index + 1); ?>" 
+                                                    value="<?php echo esc_attr($option_value); ?>"
+                                                    data-attribute-name="<?php echo esc_attr($woo_attr_name); ?>"
+                                                    data-option-name="<?php echo esc_attr($option); ?>"
+                                                    <?php echo $index === 0 ? 'checked' : ''; ?>>
                                             <label for="<?php echo $attr_id . '_' . ($index + 1); ?>" 
-                                                   class="txt_16 txt_title_color">
+                                                    class="txt_16 txt_title_color">
                                                 <?php echo esc_html($option); ?>
                                             </label>
                                         </div>
@@ -162,6 +257,11 @@ if ( $categories && ! is_wp_error( $categories ) ) {
                         }
                     }
                 } else {
+                    // Simple product - no variations data needed
+                    ?>
+                    <input type="hidden" id="variations_data" value="">
+                    <?php
+                    
                     // Simple product - display attributes normally
                     $attributes = $product->get_attributes();
                     
@@ -187,14 +287,14 @@ if ( $categories && ! is_wp_error( $categories ) ) {
                                         </div>
                                         <div class="productdetail_content_info_detail_fill">
                                             <?php foreach ($terms as $index => $term) : ?>
-                                                <div class="productdetail_content_info_detail_fill_item">
+                                                <div class="productdetail_content_info_detail_fill_item" data-cursor="hidden">
                                                     <input type="radio" 
-                                                           name="<?php echo $attr_id; ?>" 
-                                                           id="<?php echo $attr_id . '_' . ($index + 1); ?>" 
-                                                           value="<?php echo esc_attr($term->name); ?>" 
-                                                           <?php echo $index === 0 ? 'checked' : ''; ?>>
+                                                            name="<?php echo $attr_id; ?>" 
+                                                            id="<?php echo $attr_id . '_' . ($index + 1); ?>" 
+                                                            value="<?php echo esc_attr($term->name); ?>" 
+                                                            <?php echo $index === 0 ? 'checked' : ''; ?>>
                                                     <label for="<?php echo $attr_id . '_' . ($index + 1); ?>" 
-                                                           class="txt_16 txt_title_color">
+                                                            class="txt_16 txt_title_color">
                                                         <?php echo esc_html($term->name); ?>
                                                     </label>
                                                 </div>
@@ -211,23 +311,35 @@ if ( $categories && ! is_wp_error( $categories ) ) {
             <div class="productdetail_quantity">
                 <div class="productdetail_quantity_title txt_16 txt_title_color">Quantity</div>
                 <div class="productdetail_quantity_inner">
-                    <div class="productdetail_quantity_button">
-                        <button class="productdetail_quantity_button_item">-</button>
+                    <div class="productdetail_quantity_button minus img_full" data-cursor="hidden">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/tru.svg" alt="">
                     </div>
                     <div class="productdetail_quantity_input">
                         <input type="hidden" name="quantity" value="1" min="1" max="100">
                         <span class="productdetail_quantity_input_value txt_16 txt_title_color">1</span>
                     </div>
-                    <div class="productdetail_quantity_button">
-                        <button class="productdetail_quantity_button_item">-</button>
+                    <div class="productdetail_quantity_button plus img_full" data-cursor="hidden">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/plus.svg" alt="">
                     </div>
                 </div>
             </div>
+            <a href="#" data-cursor="hidden" class="productdetail_cart_button btn">
+                <div class="btn_txt_wrap">
+                    <div class="btn_txt productdetail_cart_button_txt txt_16">Add to cart</div>
+                    <div class="btn_txt productdetail_cart_button_txt txt_16">Add to cart</div>
+                </div>
+                <div class="btn_ic_wrap">
+                    <div class="btn_ic productdetail_cart_button_ic img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="" />
+                    </div>
+                    <div class="btn_ic productdetail_cart_button_ic img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="" />
+                    </div>
+                </div>
+            </a>
             </div>
-
         </div>
-    </div>
-</section>
+    </section>
 
     <section class=" product_related_silder home_seller overflow_hidden">
         <div class="kl_container">

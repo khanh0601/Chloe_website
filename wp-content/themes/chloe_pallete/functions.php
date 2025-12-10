@@ -434,3 +434,364 @@ function get_variation_price_ajax() {
     
     wp_send_json_success($response);
 }
+
+// Custom AJAX handler for adding product to cart
+add_action('wp_ajax_custom_add_to_cart', 'custom_add_to_cart_ajax');
+add_action('wp_ajax_nopriv_custom_add_to_cart', 'custom_add_to_cart_ajax');
+
+function custom_add_to_cart_ajax() {
+    // Check nonce for security
+    if (!check_ajax_referer('custom_add_to_cart_nonce', 'nonce', false)) {
+        wp_send_json_error(array(
+            'message' => 'Security check failed. Please refresh the page and try again.'
+        ));
+        return;
+    }
+    
+    // Get and validate product ID
+    $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+    if (!$product_id) {
+        wp_send_json_error(array(
+            'message' => 'Invalid product ID.'
+        ));
+        return;
+    }
+    
+    // Get product
+    $product = wc_get_product($product_id);
+    if (!$product) {
+        wp_send_json_error(array(
+            'message' => 'Product not found.'
+        ));
+        return;
+    }
+    
+    // Get quantity
+    $quantity = isset($_POST['quantity']) ? absint($_POST['quantity']) : 1;
+    if ($quantity < 1) {
+        $quantity = 1;
+    }
+    
+    // Initialize cart if not already done
+    if (!WC()->cart) {
+        wc_load_cart();
+    }
+    
+    $variation_id = 0;
+    $variation = array();
+    
+    // Handle variable products
+    if ($product->is_type('variable')) {
+        // Get variation ID
+        $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
+        
+        // Get variation attributes
+        $posted_variation = isset($_POST['variation']) ? $_POST['variation'] : array();
+        
+        // If no variation_id provided, try to find it from attributes
+        if (!$variation_id && !empty($posted_variation)) {
+            $data_store = WC_Data_Store::load('product');
+            $variation_id = $data_store->find_matching_product_variation($product, $posted_variation);
+        }
+        
+        // Validate variation ID
+        if (!$variation_id) {
+            wp_send_json_error(array(
+                'message' => 'Please select all product options.',
+                'product_url' => $product->get_permalink()
+            ));
+            return;
+        }
+        
+        // Get variation product
+        $variation_product = wc_get_product($variation_id);
+        if (!$variation_product || $variation_product->get_parent_id() != $product_id) {
+            wp_send_json_error(array(
+                'message' => 'Invalid variation selected.',
+                'product_url' => $product->get_permalink()
+            ));
+            return;
+        }
+        
+        // Check if variation is purchasable
+        if (!$variation_product->is_purchasable()) {
+            wp_send_json_error(array(
+                'message' => 'This variation is not available for purchase.',
+                'product_url' => $product->get_permalink()
+            ));
+            return;
+        }
+        
+        // Check stock
+        if (!$variation_product->is_in_stock()) {
+            wp_send_json_error(array(
+                'message' => 'This variation is out of stock.',
+                'product_url' => $product->get_permalink()
+            ));
+            return;
+        }
+        
+        // Format variation attributes properly
+        $variation = array();
+        if (!empty($posted_variation)) {
+            foreach ($posted_variation as $key => $value) {
+                // Ensure attribute_ prefix
+                $attr_key = strpos($key, 'attribute_') === 0 ? $key : 'attribute_' . $key;
+                $variation[$attr_key] = sanitize_text_field($value);
+            }
+        }
+        
+        // If variation attributes are empty, get them from variation product
+        if (empty($variation)) {
+            $variation_attributes = $variation_product->get_variation_attributes();
+            foreach ($variation_attributes as $key => $value) {
+                $variation[$key] = $value;
+            }
+        }
+    } else if ($product->is_type('simple')) {
+        // Simple product - check if purchasable
+        if (!$product->is_purchasable()) {
+            wp_send_json_error(array(
+                'message' => 'This product is not available for purchase.',
+                'product_url' => $product->get_permalink()
+            ));
+            return;
+        }
+        
+        // Check stock
+        if (!$product->is_in_stock()) {
+            wp_send_json_error(array(
+                'message' => 'This product is out of stock.',
+                'product_url' => $product->get_permalink()
+            ));
+            return;
+        }
+    } else {
+        wp_send_json_error(array(
+            'message' => 'This product type is not supported.',
+            'product_url' => $product->get_permalink()
+        ));
+        return;
+    }
+    
+    // Try to add to cart
+    try {
+        $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation);
+        
+        if ($cart_item_key) {
+            // Calculate totals
+            WC()->cart->calculate_totals();
+            
+            // Get cart fragments for response
+            $fragments = apply_filters('woocommerce_add_to_cart_fragments', array());
+            $cart_hash = WC()->cart->get_cart_hash();
+            $cart_count = WC()->cart->get_cart_contents_count();
+            
+            // Add custom fragments for cart menu
+            ob_start();
+            echo esc_html($cart_count);
+            $fragments['.header_icon_item_num .cart-count'] = ob_get_clean();
+            
+            ob_start();
+            $items_text = $cart_count == 1 ? 'item' : 'items';
+            echo 'Cart (' . esc_html($cart_count) . ')';
+            $fragments['.menu_cart_title'] = ob_get_clean();
+            
+            ob_start();
+            echo 'Subtotal (' . esc_html($cart_count) . ' ' . $items_text . ')';
+            $fragments['.menu_cart_button_total_txt'] = ob_get_clean();
+            
+            ob_start();
+            echo WC()->cart->get_cart_subtotal();
+            $fragments['.menu_cart_button_total_price'] = ob_get_clean();
+            
+            // Generate cart content HTML
+            ob_start();
+            if (!WC()->cart->is_empty()) {
+                foreach (WC()->cart->get_cart() as $cart_item_key_loop => $cart_item) {
+                    $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key_loop);
+                    $product_id_loop = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key_loop);
+                    
+                    if ($_product && $_product->exists() && $cart_item['quantity'] > 0) {
+                        $product_name = $_product->get_name();
+                        $product_image = $_product->get_image('thumbnail');
+                        $product_price = $_product->get_price();
+                        $product_regular_price = $_product->get_regular_price();
+                        $product_sale_price = $_product->get_sale_price();
+                        $quantity = $cart_item['quantity'];
+                        
+                        $categories = get_the_terms($product_id_loop, 'product_cat');
+                        $category_name = '';
+                        if ($categories && !is_wp_error($categories)) {
+                            foreach ($categories as $cat) {
+                                if ($cat->slug !== 'uncategorized') {
+                                    $category_name = $cat->name;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        $variation_attributes = '';
+                        if (isset($cart_item['variation']) && !empty($cart_item['variation'])) {
+                            $variation_attributes = wc_get_formatted_variation($cart_item['variation'], true);
+                        }
+                        ?>
+                        <div class="menu_cart_content_item" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>">
+                            <div class="menu_cart_content_item_img img_abs">
+                                <div class="menu_cart_content_item_img_overlay"></div>
+                                <?php 
+                                $thumbnail = $_product->get_image('thumbnail');
+                                if ($thumbnail) {
+                                    echo $thumbnail;
+                                } else {
+                                    echo '<img src="' . get_template_directory_uri() . '/images/img_cart.webp" alt="">';
+                                }
+                                ?>
+                            </div>
+                            <div class="menu_cart_content_item_info">
+                                <?php if ($category_name) : ?>
+                                    <div class="menu_cart_content_item_info_cate txt_12"><?php echo esc_html($category_name); ?></div>
+                                <?php endif; ?>
+                                <div class="menu_cart_content_item_info_name txt_title_color txt_wh_500 txt_16">
+                                    <?php echo esc_html($product_name); ?>
+                                    <?php if ($variation_attributes) : ?>
+                                        <div class="menu_cart_content_item_info_variation txt_12"><?php echo $variation_attributes; ?></div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="menu_cart_content_item_info_price txt_14">
+                                    <?php if ($product_sale_price && $product_sale_price < $product_regular_price) : ?>
+                                        <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_sale_price); ?></div>
+                                        -
+                                        <div class="menu_cart_content_item_info_price_old txt_14"><?php echo wc_price($product_regular_price); ?></div>
+                                    <?php else : ?>
+                                        <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_price); ?></div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="menu_cart_content_item_info_amount txt_14">
+                                    <div class="menu_cart_content_item_info_amount_reduce img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="decrease">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/tru.svg" alt="">
+                                    </div>
+                                    <div class="menu_cart_content_item_info_amount_txt txt_14" data-quantity="<?php echo esc_attr($quantity); ?>"><?php echo esc_html($quantity); ?></div>
+                                    <div class="menu_cart_content_item_info_amount_increate img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="increase">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/images/plus.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="menu_cart_content_item_remove txt_14 hover-un" data-cursor="txtLink" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="remove">
+                                Remove
+                                <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+            } else {
+                ?>
+                <div class="menu_cart_content_empty txt_16 txt_title_color">
+                    Your cart is empty.
+                </div>
+                <?php
+            }
+            $fragments['.menu_cart_content'] = ob_get_clean();
+            
+            // Checkout button
+            ob_start();
+            if (!WC()->cart->is_empty()) {
+                ?>
+                <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="menu_cart_button_check">
+                    <div class="menu_cart_button_check_txt txt_wh_500 color_white txt_16 txt_uppercase">Checkout now</div>
+                    <div class="menu_cart_button_check_icon img_full">
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="">
+                    </div>
+                </a>
+                <?php
+            }
+            $fragments['.menu_cart_button_check'] = ob_get_clean();
+            
+            wp_send_json_success(array(
+                'message' => 'Product added to cart successfully.',
+                'cart_item_key' => $cart_item_key,
+                'fragments' => $fragments,
+                'cart_hash' => $cart_hash,
+                'cart_count' => $cart_count,
+                'cart_total' => WC()->cart->get_cart_total()
+            ));
+        } else {
+            wp_send_json_error(array(
+                'message' => 'Failed to add product to cart. Please try again.',
+                'product_url' => $product->get_permalink()
+            ));
+        }
+    } catch (Exception $e) {
+        wp_send_json_error(array(
+            'message' => $e->getMessage() ? $e->getMessage() : 'An error occurred while adding the product to cart.',
+            'product_url' => $product->get_permalink()
+        ));
+    }
+}
+
+// Custom AJAX handler for updating cart quantity
+add_action('wp_ajax_custom_update_cart_quantity', 'custom_update_cart_quantity_ajax');
+add_action('wp_ajax_nopriv_custom_update_cart_quantity', 'custom_update_cart_quantity_ajax');
+
+function custom_update_cart_quantity_ajax() {
+    // Initialize cart if not already done
+    if (!WC()->cart) {
+        wc_load_cart();
+    }
+    
+    $cart_item_key = isset($_POST['cart_item_key']) ? sanitize_text_field($_POST['cart_item_key']) : '';
+    $quantity = isset($_POST['quantity']) ? absint($_POST['quantity']) : 0;
+    
+    if (empty($cart_item_key)) {
+        wp_send_json_error(array('message' => 'Invalid cart item key.'));
+        return;
+    }
+    
+    if ($quantity < 1) {
+        wp_send_json_error(array('message' => 'Quantity must be at least 1.'));
+        return;
+    }
+    
+    // Update cart item quantity
+    $updated = WC()->cart->set_quantity($cart_item_key, $quantity);
+    
+    if ($updated) {
+        // Calculate totals
+        WC()->cart->calculate_totals();
+        
+        // Get refreshed fragments
+        $fragments = apply_filters('woocommerce_add_to_cart_fragments', array());
+        $cart_hash = WC()->cart->get_cart_hash();
+        
+        // Add custom fragments for cart menu
+        ob_start();
+        $cart_count = WC()->cart->get_cart_contents_count();
+        echo esc_html($cart_count);
+        $fragments['.header_icon_item_num .cart-count'] = ob_get_clean();
+        
+        ob_start();
+        $items_text = $cart_count == 1 ? 'item' : 'items';
+        echo 'Cart (' . esc_html($cart_count) . ')';
+        $fragments['.menu_cart_title'] = ob_get_clean();
+        
+        ob_start();
+        echo 'Subtotal (' . esc_html($cart_count) . ' ' . $items_text . ')';
+        $fragments['.menu_cart_button_total_txt'] = ob_get_clean();
+        
+        ob_start();
+        echo WC()->cart->get_cart_subtotal();
+        $fragments['.menu_cart_button_total_price'] = ob_get_clean();
+        
+        wp_send_json_success(array(
+            'message' => 'Cart updated successfully.',
+            'fragments' => $fragments,
+            'cart_hash' => $cart_hash,
+            'cart_count' => $cart_count,
+            'cart_total' => WC()->cart->get_cart_subtotal(),
+            'cart_total_formatted' => WC()->cart->get_cart_subtotal()
+        ));
+    } else {
+        wp_send_json_error(array('message' => 'Failed to update cart. Please try again.'));
+    }
+}
