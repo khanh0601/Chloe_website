@@ -9,8 +9,9 @@
  * @subpackage chloe_pallete
  * @since chloe_pallete 1.0
  */
+$pageClass = 'on_dark';
 
-get_header();
+get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'workshop-css', get_template_directory_uri() . '/css/workshop.css');
 wp_enqueue_script( 'workshop-js', get_template_directory_uri() . '/js/workshop.js');
 

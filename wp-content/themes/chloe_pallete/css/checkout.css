@@ -1,19 +1,25 @@
 .checkout{
     display: flex;
     gap: 12rem;
+    padding-top: 11rem;
+    position: relative;
     .menu_cart_inner{
         width: 65rem;
         background-color: #fff;
         transform: translateX(0);
-        height: 100vh;
+        height: calc(100vh - 11rem);
         z-index: 1;
         transition: none;
+        position: sticky;
+        top: 11rem;
     }
     .menu_cart_button{
         background-color: #fff;
+        height: auto;
+        bottom: 0;
     }
     .menu_cart_content{
-        height: 78vh;
+        height: 72vh;
     }
 }
 .checkout_deli_title{
@@ -71,11 +77,19 @@
     margin-top: 1.5rem;
     display: flex;
     gap: 1.2rem;
-    align-items: baseline;
+    align-items: center;
     input{
+        cursor: pointer;
         margin: 0;
         accent-color: #000;
     }
+    label {
+        line-height: 1;
+        cursor: pointer;
+    }
+}
+.checkout_deli_bank_content{
+    display: none;
 }
 .payment{
     flex-direction: row;
@@ -83,13 +97,17 @@
 .checkout_deli_info_form_check{
     width: 50%;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: .8rem;
     label{
         font-size: 1.6rem;
+        line-height: 1;
+        cursor: pointer;
     }
     input{
+        cursor: pointer;
         accent-color: #000;
+        margin-top: 0;
     }
 }
 .checkout_deli_des{
@@ -118,6 +136,9 @@
     align-items: center;
 }
 .checkout_deli_bank_button{
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
     margin-left: auto;
     margin-right: 5rem;
     width: 9rem;
@@ -127,6 +148,12 @@
     height: 4rem;
     background-color: #1B1B1B;
     color: #fff;
+    cursor: pointer;
+    &.active {
+        opacity: 1;
+    }
+}
+.message_transfer {
     cursor: pointer;
 }
 .checkout_deli_bank_note{

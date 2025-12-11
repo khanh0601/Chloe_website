@@ -1,5 +1,7 @@
 <?php
-get_header();
+    $pageClass = 'on_dark';
+
+    get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'workshop-css', get_template_directory_uri() . '/css/workshop.css');
 wp_enqueue_script( 'workshop-js', get_template_directory_uri() . '/js/workshop.js');
 $pageID = get_queried_object_id();

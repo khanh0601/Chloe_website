@@ -1,4 +1,125 @@
 
+// Popup Notification System (Global)
+window.Popup = {
+  show: function(type, title, message, options = {}) {
+    const { confirmText = 'OK', cancelText = 'Cancel', onConfirm, onCancel, autoClose } = options;
+    const isConfirm = type === 'confirm';
+    
+    // Remove existing popup if any
+    $('.popup-overlay').remove();
+    
+    // Create popup HTML
+    const iconMap = {
+      success: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/></svg>',
+      error: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/></svg>',
+      warning: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="currentColor"/></svg>',
+      confirm: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/></svg>'
+    };
+    
+    const buttonsHtml = isConfirm 
+      ? `
+        <button class="popup-button secondary" data-action="cancel">${cancelText}</button>
+        <button class="popup-button primary" data-action="confirm">${confirmText}</button>
+      `
+      : `<button class="popup-button primary" data-action="close">${confirmText}</button>`;
+    
+    const popupHtml = `
+      <div class="popup-overlay">
+        <div class="popup-container">
+          <div class="popup-icon ${type}">${iconMap[type] || iconMap.warning}</div>
+          <div class="popup-title">${title}</div>
+          <div class="popup-message">${message}</div>
+          <div class="popup-buttons">${buttonsHtml}</div>
+        </div>
+      </div>
+    `;
+    
+    $('body').append(popupHtml);
+    const $popup = $('.popup-overlay');
+    
+    // Show popup
+    setTimeout(() => $popup.addClass('show'), 10);
+    
+    // Handle button clicks
+    $popup.on('click', '.popup-button[data-action="confirm"]', function() {
+      window.Popup.hide();
+      if (onConfirm) onConfirm();
+    });
+    
+    $popup.on('click', '.popup-button[data-action="cancel"]', function() {
+      window.Popup.hide();
+      if (onCancel) onCancel();
+    });
+    
+    $popup.on('click', '.popup-button[data-action="close"]', function() {
+      window.Popup.hide();
+      if (onConfirm) onConfirm();
+    });
+    
+    // Close on overlay click (not on container click)
+    $popup.on('click', function(e) {
+      if ($(e.target).hasClass('popup-overlay')) {
+        window.Popup.hide();
+        if (onCancel) onCancel();
+      }
+    });
+    
+    // Auto close for success/error if specified
+    if (autoClose && !isConfirm) {
+      setTimeout(() => {
+        window.Popup.hide();
+        if (onConfirm) onConfirm();
+      }, autoClose);
+    }
+    
+    // Return promise for async/await usage
+    return new Promise((resolve) => {
+      const originalOnConfirm = onConfirm;
+      const originalOnCancel = onCancel;
+      
+      $popup.off('click', '.popup-button[data-action="confirm"]').on('click', '.popup-button[data-action="confirm"]', function() {
+        window.Popup.hide();
+        if (originalOnConfirm) originalOnConfirm();
+        resolve(true);
+      });
+      
+      $popup.off('click', '.popup-button[data-action="cancel"]').on('click', '.popup-button[data-action="cancel"]', function() {
+        window.Popup.hide();
+        if (originalOnCancel) originalOnCancel();
+        resolve(false);
+      });
+      
+      $popup.off('click', '.popup-button[data-action="close"]').on('click', '.popup-button[data-action="close"]', function() {
+        window.Popup.hide();
+        if (originalOnConfirm) originalOnConfirm();
+        resolve(true);
+      });
+    });
+  },
+  
+  hide: function() {
+    const $popup = $('.popup-overlay');
+    $popup.removeClass('show');
+    setTimeout(() => $popup.remove(), 300);
+  },
+  
+  success: function(title, message, options = {}) {
+    return this.show('success', title, message, { ...options, autoClose: options.autoClose || 3000 });
+  },
+  
+  error: function(title, message, options = {}) {
+    return this.show('error', title, message, options);
+  },
+  
+  warning: function(title, message, options = {}) {
+    return this.show('warning', title, message, options);
+  },
+  
+  confirm: function(title, message, options = {}) {
+    return this.show('confirm', title, message, options);
+  }
+};
+
 const mainScript = () => {
   gsap.registerPlugin(ScrollTrigger);
   $("html").css("scroll-behavior", "auto");
@@ -1541,7 +1662,7 @@ const mainScript = () => {
 
       // Kiểm tra product ID
       if (!productId) {
-        alert('Product ID not found');
+        window.Popup.error('Error', 'Product ID not found');
         return;
       }
 
@@ -1562,7 +1683,7 @@ const mainScript = () => {
           const $variationSelectors = $('.variation-selector');
           if ($variationSelectors.length > 0) {
             if (Object.keys(selectedAttributes).length === 0) {
-              alert('Please select product options');
+              window.Popup.warning('Selection Required', 'Please select product options');
               $button.removeClass('loading disabled');
               return;
             }
@@ -1614,7 +1735,7 @@ const mainScript = () => {
 
       // Kiểm tra wc_add_to_cart_params
       if (typeof wc_add_to_cart_params === 'undefined') {
-        alert('WooCommerce is not properly configured');
+        window.Popup.error('Configuration Error', 'WooCommerce is not properly configured');
         $button.removeClass('loading disabled');
         return;
       }
@@ -1636,12 +1757,12 @@ const mainScript = () => {
         success: function (response) {
           // Custom handler returns {success: true/false, data: {...}}
           if (!response.success) {
-            let errorMsg = 'Error: Unable to add product to cart.';
+            let errorMsg = 'Unable to add product to cart.';
             if (response.data && response.data.message) {
-              errorMsg += '\n' + response.data.message;
+              errorMsg = response.data.message;
             }
             
-            alert(errorMsg);
+            window.Popup.error('Error', errorMsg);
             
             if (response.data && response.data.product_url) {
               window.location = response.data.product_url;
@@ -1722,7 +1843,7 @@ const mainScript = () => {
             // Use default error message
           }
           
-          alert(errorMsg);
+          Popup.error('Error', errorMsg);
           $button.find('.productdetail_cart_button_txt').text('Add to cart');
           $button.removeClass('loading disabled');
         },
@@ -1736,6 +1857,47 @@ const mainScript = () => {
     }
   }
   const productDetailHero = new ProductDetailHero('.product_detail_hero');
+  class CheckoutHero extends TriggerSetupHero {
+    constructor() {
+      super();
+      this.tl = null;
+      this.tlItem = null;
+    }
+    trigger() {
+      this.setup();
+      this.interact();
+      super.init(this.play.bind(this));
+    }
+    setup() {
+      this.tl = gsap.timeline({
+        paused: true,
+      });
+    }
+    interact() {
+      $('.message_transfer').on('click', function() {
+        // copy text to clipboard
+        navigator.clipboard.writeText($('.message_transfer').text());
+        $('.checkout_deli_bank_button').toggleClass('active');
+        setTimeout(() => {
+          $('.checkout_deli_bank_button').removeClass('active');
+        }, 1000);
+      });
+      // check name input payment_method change 
+      $('input[name="payment_method"]').on('change', function() {
+        const paymentMethod = $(this).val();
+        if(paymentMethod === 'bank') {
+          $('.checkout_deli_bank_content').slideDown();
+        } else {
+          $('.checkout_deli_bank_content').slideUp();
+        }
+
+      });
+    }
+    play() {
+      this.tl.play();
+    }
+  }
+  const checkoutHero = new CheckoutHero();
   const SCRIPT = {
     homeScript: () => {
       homeHero.trigger();
@@ -1765,6 +1927,10 @@ const mainScript = () => {
       productDetailHero.trigger();
       return;
     },
+    checkoutScript: () => {
+      checkoutHero.trigger();
+      return;
+    },
   };
   // Helper function to update cart UI (global scope để có thể dùng từ add to cart)
   function updateCartUI(fragments, cartHash) {
@@ -1775,27 +1941,18 @@ const mainScript = () => {
         $('.header_icon_item_num .cart-count').html(fragments['.header_icon_item_num .cart-count']);
       }
 
-      // Update cart title
       if (fragments['.menu_cart_title']) {
         $('.menu_cart_title').html(fragments['.menu_cart_title']);
       }
-
-      // Update cart total text
       if (fragments['.menu_cart_button_total_txt']) {
         $('.menu_cart_button_total_txt').html(fragments['.menu_cart_button_total_txt']);
       }
-
-      // Update cart total price
       if (fragments['.menu_cart_button_total_price']) {
         $('.menu_cart_button_total_price').html(fragments['.menu_cart_button_total_price']);
       }
-
-      // Update cart content (for remove item)
       if (fragments['.menu_cart_content']) {
         $('.menu_cart_content').html(fragments['.menu_cart_content']);
       }
-
-      // Update checkout button visibility
       if (fragments['.menu_cart_button_check']) {
         const $checkoutBtn = $('.menu_cart_button_check');
         if (fragments['.menu_cart_button_check'] === '') {
@@ -1810,6 +1967,26 @@ const mainScript = () => {
 
   // Cart interactions
   function initCartInteractions() {
+    // Debounce timers and pending quantities for each cart item
+    const debounceTimers = {};
+    const pendingQuantities = {}; // Store the latest pending quantity for each item
+    const initialQuantities = {}; // Store initial quantity before any changes
+    const isAjaxRunning = {}; // Track if AJAX request is currently running
+    
+    // Debounce helper function - chỉ debounce AJAX, không debounce UI update
+    function debounceAjaxCall(cartItemKey, ajaxFn, delay = 300) {
+      // Clear existing timer for this cart item
+      if (debounceTimers[cartItemKey]) {
+        clearTimeout(debounceTimers[cartItemKey]);
+      }
+      
+      // Set new timer - chỉ gọi AJAX sau khi delay
+      debounceTimers[cartItemKey] = setTimeout(() => {
+        delete debounceTimers[cartItemKey];
+        ajaxFn();
+      }, delay);
+    }
+    
     // Update quantity
     $(document).on('click', '.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate', function(e) {
       e.preventDefault();
@@ -1818,65 +1995,110 @@ const mainScript = () => {
       const cartItemKey = $button.data('cart-item-key');
       const action = $button.data('action');
       const $quantityEl = $cartItem.find('.menu_cart_content_item_info_amount_txt');
-      let currentQty = parseInt($quantityEl.data('quantity')) || parseInt($quantityEl.text()) || 1;
       
+      // Prevent action nếu AJAX đang chạy (không phải đang debounce)
+      if (isAjaxRunning[cartItemKey]) {
+        return;
+      }
+      
+      // Get current quantity - ưu tiên lấy từ pending quantity (đã update trong lần click trước)
+      // Nếu không có, lấy từ DOM
+      let currentQty;
+      if (pendingQuantities[cartItemKey] !== undefined) {
+        currentQty = pendingQuantities[cartItemKey];
+      } else {
+        currentQty = parseInt($quantityEl.attr('data-quantity')) || parseInt($quantityEl.text().trim()) || 1;
+        initialQuantities[cartItemKey] = currentQty; // Lưu giá trị ban đầu cho lần click đầu tiên
+      }
+      
+      // Calculate new quantity
       if (action === 'increase') {
         currentQty++;
       } else if (action === 'decrease' && currentQty > 1) {
         currentQty--;
       } else {
-        return;
+        return; // Không thể giảm xuống dưới 1
       }
 
-      // Disable buttons during update
-      $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').addClass('disabled');
+      // Lưu pending quantity (giá trị mới nhất sẽ được gửi lên server)
+      pendingQuantities[cartItemKey] = currentQty;
+      
+      // UI UPDATE NGAY LẬP TỨC - không cần chờ
+      $quantityEl.text(currentQty).attr('data-quantity', currentQty);
 
-      // Update via AJAX
-      if (typeof wc_add_to_cart_params !== 'undefined') {
-        $.ajax({
-          type: 'POST',
-          url: wc_add_to_cart_params.ajax_url,
-          data: {
-            action: 'custom_update_cart_quantity',
-            cart_item_key: cartItemKey,
-            quantity: currentQty
-          },
-          success: function(response) {
-            if (response.success && response.data) {
-              // Update quantity in UI immediately
-              $quantityEl.text(currentQty).attr('data-quantity', currentQty);
+      // Debounce AJAX call - chỉ gửi request sau 300ms không có click mới
+      debounceAjaxCall(cartItemKey, function() {
+        const finalQty = pendingQuantities[cartItemKey] || currentQty;
+        const originalQty = initialQuantities[cartItemKey] || finalQty;
+        
+        // Mark AJAX as running
+        isAjaxRunning[cartItemKey] = true;
+        
+        // Disable buttons khi AJAX đang chạy
+        $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').addClass('disabled');
+        
+        // Update via AJAX
+        if (typeof wc_add_to_cart_params !== 'undefined') {
+          $.ajax({
+            type: 'POST',
+            url: wc_add_to_cart_params.ajax_url,
+            data: {
+              action: 'custom_update_cart_quantity',
+              cart_item_key: cartItemKey,
+              quantity: finalQty
+            },
+            success: function(response) {
+              // Mark AJAX as done
+              isAjaxRunning[cartItemKey] = false;
               
-              // Update cart UI
-              if (response.data.fragments) {
-                updateCartUI(response.data.fragments, response.data.cart_hash);
+              if (response.success && response.data) {
+                // Update cart UI from fragments (total, count, etc.)
+                if (response.data.fragments) {
+                  updateCartUI(response.data.fragments, response.data.cart_hash);
+                }
+                
+                // Update cart count in header if fragments don't include it
+                if (response.data.cart_count !== undefined && !response.data.fragments?.['.header_icon_item_num .cart-count']) {
+                  $('.header_icon_item_num .cart-count').text(response.data.cart_count);
+                }
+                
+                // Trigger event
+                if (response.data.fragments) {
+                  $(document.body).trigger('updated_cart_totals', [response.data.fragments, response.data.cart_hash, $button]);
+                }
+                
+                // Update initial quantity for next operation
+                initialQuantities[cartItemKey] = finalQty;
+                delete pendingQuantities[cartItemKey];
+              } else {
+                // On error, restore original quantity
+                $quantityEl.text(originalQty).attr('data-quantity', originalQty);
+                window.Popup.error('Error', response.data?.message || 'Error updating quantity. Please try again.');
+                initialQuantities[cartItemKey] = originalQty;
+                delete pendingQuantities[cartItemKey];
               }
               
-              // Update cart count in header
-              if (response.data.cart_count !== undefined) {
-                $('.header_icon_item_num .cart-count').text(response.data.cart_count);
-              }
+              // Re-enable buttons
+              $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').removeClass('disabled');
+            },
+            error: function() {
+              // Mark AJAX as done
+              isAjaxRunning[cartItemKey] = false;
               
-              // Trigger event
-              if (response.data.fragments) {
-                $(document.body).trigger('updated_cart_totals', [response.data.fragments, response.data.cart_hash, $button]);
-              }
-            } else {
-              alert(response.data?.message || 'Error updating quantity. Please try again.');
-            }
-            
-            // Re-enable buttons
-            $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').removeClass('disabled');
-          },
-          error: function() {
-            alert('Error updating quantity. Please try again.');
-            $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').removeClass('disabled');
-          },
-          dataType: 'json'
-        });
-      } else {
-        // Fallback: reload page
-        location.reload();
-      }
+              // On error, restore original quantity
+              $quantityEl.text(originalQty).attr('data-quantity', originalQty);
+              window.Popup.error('Error', 'Error updating quantity. Please try again.');
+              $cartItem.find('.menu_cart_content_item_info_amount_reduce, .menu_cart_content_item_info_amount_increate').removeClass('disabled');
+              initialQuantities[cartItemKey] = originalQty;
+              delete pendingQuantities[cartItemKey];
+            },
+            dataType: 'json'
+          });
+        } else {
+          // Fallback: reload page
+          location.reload();
+        }
+      }, 300); // 300ms debounce delay cho AJAX
     });
 
     // Remove item
@@ -1886,45 +2108,74 @@ const mainScript = () => {
       const $cartItem = $button.closest('.menu_cart_content_item');
       const cartItemKey = $button.data('cart-item-key');
       
-      if (!confirm('Are you sure you want to remove this item from cart?')) {
-        return;
-      }
+      // Show confirm popup
+      window.Popup.confirm(
+        'Remove Item',
+        'Are you sure you want to remove this item from cart?',
+        {
+          confirmText: 'Remove',
+          cancelText: 'Cancel',
+          onConfirm: function() {
+            $button.addClass('disabled');
+            
+            // Animate item removal
+            $cartItem.addClass('removing');
+            $cartItem.css({
+              'opacity': '0',
+              'transform': 'translateX(100px)',
+              'transition': 'all 0.3s ease'
+            });
 
-      $button.addClass('disabled');
-      $cartItem.addClass('removing');
-
-      if (typeof wc_add_to_cart_params !== 'undefined') {
-        $.ajax({
-          type: 'POST',
-          url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'remove_from_cart'),
-          data: {
-            cart_item_key: cartItemKey
-          },
-          success: function(response) {
-            if (response.fragments) {
-              // Update cart UI
-              updateCartUI(response.fragments, response.cart_hash);
-              
-              // Trigger event
-              $(document.body).trigger('removed_from_cart', [response.fragments, response.cart_hash, $button]);
-              
-              // If cart is empty, show empty message
-              if (response.cart_count === 0) {
-                $('.menu_cart_content').html('<div class="menu_cart_content_empty txt_16 txt_title_color">Your cart is empty.</div>');
-              }
+            if (typeof wc_add_to_cart_params !== 'undefined') {
+              $.ajax({
+                type: 'POST',
+                url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'remove_from_cart'),
+                data: {
+                  cart_item_key: cartItemKey
+                },
+                success: function(response) {
+                  // Remove element from DOM immediately after animation
+                  setTimeout(() => {
+                    $cartItem.remove();
+                    
+                    // Update cart UI
+                    if (response.fragments) {
+                      updateCartUI(response.fragments, response.cart_hash);
+                    }
+                    
+                    // Trigger event
+                    $(document.body).trigger('removed_from_cart', [response.fragments, response.cart_hash, $button]);
+                    
+                    // If cart is empty, show empty message
+                    if (response.cart_count === 0) {
+                      $('.menu_cart_content').html('<div class="menu_cart_content_empty txt_16 txt_title_color">Your cart is empty.</div>');
+                    }
+                    
+                    // Show success message
+                    window.Popup.success('Success', 'Item removed from cart', { autoClose: 2000 });
+                  }, 300);
+                },
+                error: function() {
+                  // Restore item on error
+                  $cartItem.css({
+                    'opacity': '1',
+                    'transform': 'translateX(0)'
+                  }).removeClass('removing');
+                  $button.removeClass('disabled');
+                  window.Popup.error('Error', 'Error removing item. Please try again.');
+                },
+                dataType: 'json'
+              });
+            } else {
+              // Fallback: reload page
+              location.reload();
             }
           },
-          error: function() {
-            alert('Error removing item. Please try again.');
-            $button.removeClass('disabled');
-            $cartItem.removeClass('removing');
-          },
-          dataType: 'json'
-        });
-      } else {
-        // Fallback: reload page
-        location.reload();
-      }
+          onCancel: function() {
+            // Do nothing on cancel
+          }
+        }
+      );
     });
 
     // Listen for cart updates from WooCommerce (no reload)

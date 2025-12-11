@@ -10,7 +10,9 @@
  * @since chloe_pallete 1.0
  */
 
-get_header();
+$pageClass = 'on_dark';
+
+get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'contact-css', get_template_directory_uri() . '/css/contact.css');
 wp_enqueue_script( 'contact-js', get_template_directory_uri() . '/js/contact.js');
 

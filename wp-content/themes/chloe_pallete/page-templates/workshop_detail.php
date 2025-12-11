@@ -10,7 +10,9 @@
  * @since chloe_pallete 1.0
  */
 
-get_header();
+$pageClass = 'on_dark';
+
+get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'workshop_detail-css', get_template_directory_uri() . '/css/workshop_detail.css');
 wp_enqueue_script( 'workshop_detail-js', get_template_directory_uri() . '/js/workshop_detail.js');
 

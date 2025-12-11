@@ -131,7 +131,11 @@
 
     // Kiểm tra product ID
     if (!productId) {
-      alert('Product ID not found');
+      if (window.Popup) {
+        window.Popup.error('Error', 'Product ID not found');
+      } else {
+        alert('Product ID not found');
+      }
       return;
     }
 
@@ -153,7 +157,11 @@
         const $variationSelectors = $('.variation-selector');
         if ($variationSelectors.length > 0) {
           if (Object.keys(selectedAttributes).length === 0) {
-            alert('Please select product options');
+            if (window.Popup) {
+              window.Popup.warning('Selection Required', 'Please select product options');
+            } else {
+              alert('Please select product options');
+            }
             $button.prop('disabled', false).removeClass('loading');
             return;
           }
@@ -164,7 +172,11 @@
             data.variation_id = variationId;
             data.variation = selectedAttributes;
           } else {
-            alert('Please select all product options. The selected combination may not be available.');
+            if (window.Popup) {
+              window.Popup.warning('Selection Required', 'Please select all product options. The selected combination may not be available.');
+            } else {
+              alert('Please select all product options. The selected combination may not be available.');
+            }
             $button.prop('disabled', false).removeClass('loading');
             return;
           }
@@ -177,7 +189,11 @@
 
     // Kiểm tra wc_add_to_cart_params
     if (typeof wc_add_to_cart_params === 'undefined') {
-      alert('WooCommerce is not properly configured');
+      if (window.Popup) {
+        window.Popup.error('Configuration Error', 'WooCommerce is not properly configured');
+      } else {
+        alert('WooCommerce is not properly configured');
+      }
       $button.prop('disabled', false).removeClass('loading');
       return;
     }
@@ -215,7 +231,11 @@
         }
       },
       error: function () {
-        alert('Error adding product to cart. Please try again.');
+        if (window.Popup) {
+          window.Popup.error('Error', 'Error adding product to cart. Please try again.');
+        } else {
+          alert('Error adding product to cart. Please try again.');
+        }
         $button.find('.productdetail_cart_button_txt').text('Add to cart');
         $button.prop('disabled', false).removeClass('loading');
       },
