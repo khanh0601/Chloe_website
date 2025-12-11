@@ -147,8 +147,8 @@ wp_enqueue_style( 'contact-css', get_template_directory_uri() . '/css/checkout.c
                 <input type="text" id="name" name="name" placeholder="Name *" required>
               </div>
               <div class="checkout_deli_info_form_row2">
-                <input type="tel" id="phone" placeholder="Phone number" name="phone">
-                <input type="email" id="email" placeholder="Email" name="email">
+                <input type="tel" id="phone" placeholder="Phone number *" name="phone" required>
+                <input type="email" id="email" placeholder="Email *" name="email" required>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@ wp_enqueue_style( 'contact-css', get_template_directory_uri() . '/css/checkout.c
             <div class="checkout_deli_info_title txt_20 ">Address</div>
             <div class="checkout_deli_info_form">
               <div class="checkout_deli_info_form_row">
-                <input type="text" id="address" placeholder="Address" name="address">
+                <input type="text" id="address" placeholder="Address *" name="address" required>
               </div>
               <div class="checkout_deli_info_form_row">
                 <textarea id="note" name="note" placeholder="Note (Optional)" rows="4"></textarea>

@@ -795,3 +795,386 @@ function custom_update_cart_quantity_ajax() {
         wp_send_json_error(array('message' => 'Failed to update cart. Please try again.'));
     }
 }
+
+// Custom checkout - Create order from cart
+add_action('wp_ajax_custom_create_order', 'custom_create_order_ajax');
+add_action('wp_ajax_nopriv_custom_create_order', 'custom_create_order_ajax');
+
+// Search products AJAX
+add_action('wp_ajax_custom_search_products', 'custom_search_products_ajax');
+add_action('wp_ajax_nopriv_custom_search_products', 'custom_search_products_ajax');
+
+function custom_create_order_ajax() {
+    // Check if cart is empty
+    if (!WC()->cart || WC()->cart->is_empty()) {
+        wp_send_json_error(array('message' => 'Cart is empty.'));
+        return;
+    }
+    
+    // Get and sanitize form data
+    $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+    $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $address = isset($_POST['address']) ? sanitize_textarea_field($_POST['address']) : '';
+    $note = isset($_POST['note']) ? sanitize_textarea_field($_POST['note']) : '';
+    $office_hours = isset($_POST['office_hours']) ? sanitize_text_field($_POST['office_hours']) : '';
+    $payment_method = isset($_POST['payment_method']) ? sanitize_text_field($_POST['payment_method']) : 'cod';
+    
+    // Validate required fields
+    if (empty($name)) {
+        wp_send_json_error(array('message' => 'Name is required.'));
+        return;
+    }
+    
+    if (empty($phone)) {
+        wp_send_json_error(array('message' => 'Phone number is required.'));
+        return;
+    }
+    
+    if (empty($email)) {
+        wp_send_json_error(array('message' => 'Email is required.'));
+        return;
+    }
+    
+    // Validate email format
+    if (!is_email($email)) {
+        wp_send_json_error(array('message' => 'Invalid email address.'));
+        return;
+    }
+    
+    if (empty($address)) {
+        wp_send_json_error(array('message' => 'Address is required.'));
+        return;
+    }
+    
+    try {
+        // Create order
+        $order = wc_create_order(array(
+            'status' => 'pending',
+            'created_via' => 'custom-checkout'
+        ));
+        
+        if (is_wp_error($order)) {
+            wp_send_json_error(array('message' => 'Failed to create order: ' . $order->get_error_message()));
+            return;
+        }
+        
+        // Add products from cart to order
+        foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            $product = $cart_item['data'];
+            $quantity = $cart_item['quantity'];
+            
+            $order->add_product(
+                $product,
+                $quantity,
+                array(
+                    'variation' => isset($cart_item['variation']) ? $cart_item['variation'] : array(),
+                    'totals' => array(
+                        'subtotal' => $cart_item['line_subtotal'],
+                        'total' => $cart_item['line_total'],
+                    )
+                )
+            );
+        }
+        
+        // Set billing information
+        $order->set_billing_first_name($name);
+        $order->set_billing_last_name('');
+        $order->set_billing_email($email);
+        $order->set_billing_phone($phone);
+        $order->set_billing_address_1($address);
+        $order->set_billing_address_2('');
+        $order->set_billing_city('');
+        $order->set_billing_state('');
+        $order->set_billing_postcode('');
+        $order->set_billing_country('VN');
+        
+        // Set shipping information (same as billing)
+        $order->set_shipping_first_name($name);
+        $order->set_shipping_last_name('');
+        $order->set_shipping_address_1($address);
+        $order->set_shipping_address_2('');
+        $order->set_shipping_city('');
+        $order->set_shipping_state('');
+        $order->set_shipping_postcode('');
+        $order->set_shipping_country('VN');
+        
+        // Set payment method
+        $order->set_payment_method($payment_method);
+        $order->set_payment_method_title($payment_method === 'bank' ? 'Bank Transfer' : 'Cash on Delivery');
+        
+        // Add order notes
+        $order_notes = array();
+        if (!empty($note)) {
+            $order_notes[] = 'Note: ' . $note;
+        }
+        if (!empty($office_hours)) {
+            $order_notes[] = 'Office hours only: Yes';
+        }
+        if (!empty($order_notes)) {
+            $order->set_customer_note(implode("\n", $order_notes));
+        }
+        
+        // Calculate totals
+        $order->calculate_totals();
+        
+        // Save order
+        $order->save();
+        
+        // Get order ID
+        $order_id = $order->get_id();
+        
+        // Allow customization via hook
+        do_action('custom_order_created', $order_id, array(
+            'name' => $name,
+            'phone' => $phone,
+            'email' => $email,
+            'address' => $address,
+            'note' => $note,
+            'office_hours' => $office_hours,
+            'payment_method' => $payment_method
+        ));
+        
+        // Get thank you page URL using WooCommerce method
+        $thank_you_url = $order->get_checkout_order_received_url();
+        
+        // Clear cart
+        WC()->cart->empty_cart();
+        
+        wp_send_json_success(array(
+            'message' => 'Order created successfully.',
+            'order_id' => $order_id,
+            'redirect_url' => $thank_you_url
+        ));
+        
+    } catch (Exception $e) {
+        wp_send_json_error(array('message' => 'Error creating order: ' . $e->getMessage()));
+    }
+}
+
+function custom_search_products_ajax() {
+    $search_term = isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '';
+    $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
+    $products_per_page = isset($_POST['per_page']) ? intval($_POST['per_page']) : 12;
+    $orderby = isset($_POST['orderby']) ? sanitize_text_field($_POST['orderby']) : 'newest';
+    $categories = isset($_POST['categories']) && is_array($_POST['categories']) ? array_map('sanitize_text_field', $_POST['categories']) : array();
+    
+    // Set default orderby and order
+    $orderby_param = 'date';
+    $order = 'DESC';
+    
+    // Map sort values to WooCommerce orderby/order
+    $args = array(
+        'post_type'      => 'product',
+        'posts_per_page' => $products_per_page,
+        'paged'          => $paged,
+        'post_status'    => 'publish',
+        's'              => $search_term
+    );
+    
+    // Add category filter using tax_query
+    if (!empty($categories)) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $categories,
+                'operator' => 'IN'
+            )
+        );
+    }
+    
+    switch ($orderby) {
+        case 'popular':
+            // Sort by total sales (popularity)
+            $args['meta_key'] = 'total_sales';
+            $args['orderby'] = 'meta_value_num';
+            $args['order'] = 'DESC';
+            break;
+        case 'newest':
+            $args['orderby'] = 'date';
+            $args['order'] = 'DESC';
+            break;
+        case 'price-low':
+            // Sort by price ascending
+            $args['meta_key'] = '_price';
+            $args['orderby'] = 'meta_value_num';
+            $args['order'] = 'ASC';
+            break;
+        case 'price-high':
+            // Sort by price descending
+            $args['meta_key'] = '_price';
+            $args['orderby'] = 'meta_value_num';
+            $args['order'] = 'DESC';
+            break;
+        case 'name':
+            $args['orderby'] = 'title';
+            $args['order'] = 'ASC';
+            break;
+        default:
+            $args['orderby'] = 'date';
+            $args['order'] = 'DESC';
+            break;
+    }
+    
+    $products_query = new WP_Query($args);
+    
+    ob_start();
+    
+    if ($products_query->have_posts()) :
+        while ($products_query->have_posts()) : $products_query->the_post();
+            global $product;
+            
+            // Get product categories
+            $categories = get_the_terms(get_the_ID(), 'product_cat');
+            $category_name = '';
+            if ($categories && !is_wp_error($categories)) {
+                foreach ($categories as $cat) {
+                    if ($cat->slug !== 'uncategorized') {
+                        $category_name = $cat->name;
+                        break;
+                    }
+                }
+            }
+            
+            // Check if product is in stock
+            $is_in_stock = $product->is_in_stock();
+            
+            // Get product image
+            $image_id = $product->get_image_id();
+            $image_url = '';
+            if ($image_id) {
+                $image_url = wp_get_attachment_image_url($image_id, 'full');
+            }
+            if (!$image_url) {
+                $image_url = wc_placeholder_img_src();
+            }
+            
+            // Get product price
+            $regular_price = $product->get_regular_price();
+            $sale_price = $product->get_sale_price();
+            
+            // Format price display
+            if ($product->is_type('variable')) {
+                $min_price = $product->get_variation_price('min');
+                $max_price = $product->get_variation_price('max');
+                if ($min_price == $max_price) {
+                    $price_display = '<span>' . wc_price($min_price) . '</span>';
+                } else {
+                    $price_display = '<span>' . wc_price($min_price) . '</span> - <span>' . wc_price($max_price) . '</span>';
+                }
+            } else {
+                if ($sale_price && $sale_price < $regular_price) {
+                    $price_display = '<span>' . wc_price($sale_price) . '</span> - <span>' . wc_price($regular_price) . '</span>';
+                } else {
+                    $price_display = '<span>' . wc_price($regular_price) . '</span>';
+                }
+            }
+            ?>
+            <a href="<?php the_permalink(); ?>" class="shop_content_list_card_item">
+                <div class="shop_content_list_card_item_top">
+                    <?php if ($category_name) : ?>
+                        <div class="shop_content_list_card_item_top_type txt_uppercase txt_12">
+                            <?php echo esc_html($category_name); ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="shop_content_list_card_item_top_soldout txt_uppercase txt_12 <?php echo !$is_in_stock ? 'active' : ''; ?>">
+                        SOLD OUT
+                    </div>
+                </div>
+                <div class="shop_content_list_card_item_img img_full">
+                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php the_title_attribute(); ?>" />
+                </div>
+                <div class="shop_content_list_card_item_info">
+                    <div class="shop_content_list_card_item_info_title txt_subtitle">
+                        <?php the_title(); ?>
+                    </div>
+                    <div class="shop_content_list_card_item_info_price txt_14 txt_wh_500">
+                        <?php echo $price_display; ?>
+                    </div>
+                    <div class="shop_content_list_card_item_info_cart_wrap">
+                        <div class="shop_content_list_card_item_info_cart img_full">
+                            <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <?php
+        endwhile;
+        wp_reset_postdata();
+    else :
+        ?>
+        <div class="shop_content_list_card_empty txt_16">
+            No products found.
+        </div>
+        <?php
+    endif;
+    
+    $products_html = ob_get_clean();
+    
+    // Generate pagination HTML
+    ob_start();
+    if ($products_query->max_num_pages > 1) {
+        $current_page = max(1, $paged);
+        $total_pages = $products_query->max_num_pages;
+        
+        echo '<div class="shop_content_list_paging">';
+        
+        // Prev link
+        if ($current_page > 1) {
+            $prev_url = get_pagenum_link($current_page - 1);
+            echo '<a href="' . esc_url($prev_url) . '" class="shop_content_list_paging_prev txt_16 txt_title_color">Prev</a>';
+        } else {
+            echo '<span class="shop_content_list_paging_prev txt_16 txt_title_color" style="opacity: 0.5; pointer-events: none;">Prev</span>';
+        }
+        
+        // Page numbers
+        echo '<div class="shop_content_list_paging_num">';
+        
+        // Always show first page
+        if ($current_page > 3) {
+            echo '<a href="' . esc_url(get_pagenum_link(1)) . '" class="shop_content_list_paging_num_txt txt_16">1</a>';
+            if ($current_page > 4) {
+                echo '<span class="shop_content_list_paging_num_txt txt_16">...</span>';
+            }
+        }
+        
+        // Show pages around current page
+        $start = max(1, $current_page - 2);
+        $end = min($total_pages, $current_page + 2);
+        
+        for ($i = $start; $i <= $end; $i++) {
+            $url = get_pagenum_link($i);
+            $active_class = ($i == $current_page) ? ' active' : '';
+            echo '<a href="' . esc_url($url) . '" class="shop_content_list_paging_num_txt txt_16' . $active_class . '">' . $i . '</a>';
+        }
+        
+        // Always show last page
+        if ($current_page < $total_pages - 2) {
+            if ($current_page < $total_pages - 3) {
+                echo '<span class="shop_content_list_paging_num_txt txt_16">...</span>';
+            }
+            echo '<a href="' . esc_url(get_pagenum_link($total_pages)) . '" class="shop_content_list_paging_num_txt txt_16">' . $total_pages . '</a>';
+        }
+        
+        echo '</div>';
+        
+        // Next link
+        if ($current_page < $total_pages) {
+            $next_url = get_pagenum_link($current_page + 1);
+            echo '<a href="' . esc_url($next_url) . '" class="shop_content_list_paging_prev txt_16 txt_title_color">Next</a>';
+        } else {
+            echo '<span class="shop_content_list_paging_prev txt_16 txt_title_color" style="opacity: 0.5; pointer-events: none;">Next</span>';
+        }
+        
+        echo '</div>';
+    }
+    $pagination_html = ob_get_clean();
+    
+    wp_send_json_success(array(
+        'products_html' => $products_html,
+        'pagination_html' => $pagination_html,
+        'total_pages' => $products_query->max_num_pages,
+        'found_posts' => $products_query->found_posts
+    ));
+}

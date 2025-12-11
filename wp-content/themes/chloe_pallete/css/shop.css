@@ -120,7 +120,7 @@
   padding: 1.0rem;
   box-shadow: 0 .4rem 1.2rem rgba(0, 0, 0, 0.1);
   display: none;
-  z-index: 10;
+  z-index: 100;
 }
 
 .filter-dropdown.active {
@@ -220,7 +220,7 @@
     z-index: 10;
 }
 .shop_content_list_card_item_info_price{
-    span:last-child{
+    & > span:last-child{
         text-decoration: line-through;
         color: #7F7F7F;
     }

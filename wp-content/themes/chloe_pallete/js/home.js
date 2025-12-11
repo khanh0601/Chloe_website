@@ -1263,6 +1263,7 @@ const mainScript = () => {
     }
     trigger() {
       this.setup();
+      this.interact();
       super.init(this.play.bind(this));
     }
     setup() {
@@ -1318,6 +1319,267 @@ const mainScript = () => {
           ]
         })
       })
+    }
+    interact() {
+      const self = this;
+      
+      // Filter toggle
+      $('.filter-toggle').on('click', function(e) {
+        e.stopPropagation();
+        $(this).toggleClass('active');
+        $(this).next('.filter-dropdown').toggleClass('active');
+      
+        $('.filter-toggle').not(this).removeClass('active');
+        $('.filter-dropdown').not($(this).next()).removeClass('active');
+      });
+      
+      $('.filter-dropdown').on('click', function(e) {
+        e.stopPropagation();
+      });
+      
+      $(document).on('click', function(e) {
+        if (!$(e.target).closest('.shop_content_list_search_left, .shop_content_list_search_right_sortby').length) {
+          $('.filter-toggle').removeClass('active');
+          $('.filter-dropdown').removeClass('active');
+        }
+      });
+      
+      // Category filter functionality
+      let selectedCategories = []; // Array to store selected category slugs
+      
+      // Load saved categories from localStorage
+      const savedCategories = localStorage.getItem('shop_categories');
+      if (savedCategories) {
+        try {
+          selectedCategories = JSON.parse(savedCategories);
+          // Check saved categories in checkboxes
+          selectedCategories.forEach(function(slug) {
+            $(`.shop_category input[type="checkbox"][value="${slug}"]`).prop('checked', true).parent('label').addClass('active');
+          });
+        } catch (e) {
+          console.error('Error parsing saved categories:', e);
+        }
+      }
+      
+      $('.shop_category input[type="checkbox"]').on('change', function() {
+        const $checkbox = $(this);
+        const categorySlug = $checkbox.val();
+        
+        // Update button text based on selected categories
+        const checkedCount = $('.shop_category input[type="checkbox"]:checked').length;
+        const $buttonText = $('.shop_content_list_search_left .filter-toggle span:first');
+        
+        if (checkedCount === 0) {
+          $buttonText.text('Cake categories');
+        } else if (checkedCount === 1) {
+          const categoryName = $('.shop_category input[type="checkbox"]:checked').parent('label').text().trim();
+          $buttonText.text(categoryName);
+        } else {
+          $buttonText.text(checkedCount + ' categories');
+        }
+        
+        $checkbox.parent('label').toggleClass('active', $checkbox.is(':checked'));
+        if ($checkbox.is(':checked')) {
+          if (selectedCategories.indexOf(categorySlug) === -1) {
+            selectedCategories.push(categorySlug);
+          }
+        } else {
+          selectedCategories = selectedCategories.filter(function(slug) {
+            return slug !== categorySlug;
+          });
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('shop_categories', JSON.stringify(selectedCategories));
+        
+        // Trigger search/filter with current categories
+        performSearch($searchInput.val().trim(), currentOrderby, selectedCategories);
+      });
+      
+      // Sort functionality
+      let currentOrderby = 'newest'; // Default sort
+      const $sortRadios = $('input[name="sort"]');
+      
+      // Load saved sort preference or set default
+      const savedSort = localStorage.getItem('shop_sort') || 'newest';
+      if ($sortRadios.filter(`[value="${savedSort}"]`).length) {
+        $sortRadios.filter(`[value="${savedSort}"]`).prop('checked', true);
+        currentOrderby = savedSort;
+      } else {
+        $sortRadios.first().prop('checked', true);
+      }
+      
+      $sortRadios.on('change', function() {
+        const selectedSort = $(this).val();
+        $('.shop_content_list_search_right_sortby button span').text(selectedSort);
+        currentOrderby = selectedSort;
+        localStorage.setItem('shop_sort', selectedSort);
+        
+        // Close dropdown
+        $('.filter-toggle').removeClass('active');
+        $('.filter-dropdown').removeClass('active');
+        
+        // Trigger search/sort
+        performSearch($searchInput.val().trim(), currentOrderby, selectedCategories);
+      });
+      
+      // Search functionality with debounce
+      let searchTimeout = null;
+      const $searchInput = $('.search-input');
+      const $productsContainer = $('.shop_content_list_card');
+      const $paginationContainer = $('.shop_content_list_paging');
+      
+      function performSearch(searchTerm, orderby = currentOrderby, categories = selectedCategories) {
+        // Show loading state
+        $productsContainer.html('<div class="shop_content_list_card_loading txt_16" style="text-align: center; padding: 2rem;">Loading...</div>');
+        
+        $.ajax({
+          url: typeof ajaxurl !== 'undefined' ? ajaxurl : '/wp-admin/admin-ajax.php',
+          type: 'POST',
+          data: {
+            action: 'custom_search_products',
+            search: searchTerm,
+            orderby: orderby,
+            categories: categories,
+            paged: 1,
+            per_page: 12
+          },
+          success: function(response) {
+            if (response.success) {
+              // Update products
+              $productsContainer.html(response.data.products_html);
+              
+              // Update pagination
+              if (response.data.pagination_html) {
+                $paginationContainer.html(response.data.pagination_html);
+              } else {
+                $paginationContainer.empty();
+              }
+              
+              // Re-initialize animations for new items
+              self.setupProductsAnimation();
+            } else {
+              $productsContainer.html('<div class="shop_content_list_card_empty txt_16">Error loading products.</div>');
+            }
+          },
+          error: function() {
+            $productsContainer.html('<div class="shop_content_list_card_empty txt_16">Error loading products.</div>');
+          }
+        });
+      }
+      
+      $searchInput.on('input', function() {
+        const searchTerm = $(this).val().trim();
+        
+        // Clear previous timeout
+        if (searchTimeout) {
+          clearTimeout(searchTimeout);
+        }
+        
+        // Debounce: wait 500ms after user stops typing
+        searchTimeout = setTimeout(function() {
+          if (searchTerm.length >= 2 || searchTerm.length === 0) {
+            performSearch(searchTerm, currentOrderby, selectedCategories);
+          }
+        }, 500);
+      });
+      
+      // Handle pagination clicks (for AJAX pagination)
+      $(document).on('click', '.shop_content_list_paging a', function(e) {
+        e.preventDefault();
+        const $link = $(this);
+        
+        if ($link.hasClass('disabled') || $link.css('pointer-events') === 'none') {
+          return;
+        }
+        
+        // Extract page number from link text or href
+        let paged = 1;
+        const href = $link.attr('href');
+        const linkText = $link.text().trim();
+        
+        if (href && href !== '#') {
+          try {
+            const urlParams = new URLSearchParams(href.split('?')[1] || '');
+            paged = parseInt(urlParams.get('paged')) || parseInt(urlParams.get('page')) || 1;
+          } catch (e) {
+            // Try to extract from link text if it's a number
+            if (!isNaN(linkText)) {
+              paged = parseInt(linkText);
+            }
+          }
+        } else if (!isNaN(linkText)) {
+          paged = parseInt(linkText);
+        }
+        
+        const searchTerm = $searchInput.val().trim();
+        
+        // Show loading
+        $productsContainer.html('<div class="shop_content_list_card_loading txt_16" style="text-align: center; padding: 2rem;">Loading...</div>');
+        
+        $.ajax({
+          url: typeof ajaxurl !== 'undefined' ? ajaxurl : '/wp-admin/admin-ajax.php',
+          type: 'POST',
+          data: {
+            action: 'custom_search_products',
+            search: searchTerm,
+            orderby: currentOrderby,
+            categories: selectedCategories,
+            paged: paged,
+            per_page: 12
+          },
+          success: function(response) {
+            if (response.success) {
+              $productsContainer.html(response.data.products_html);
+              if (response.data.pagination_html) {
+                $paginationContainer.html(response.data.pagination_html);
+              } else {
+                $paginationContainer.empty();
+              }
+              self.setupProductsAnimation();
+              
+              // Scroll to top of products
+              $('html, body').animate({
+                scrollTop: $productsContainer.offset().top - 100
+              }, 300);
+            }
+          },
+          error: function() {
+            $productsContainer.html('<div class="shop_content_list_card_empty txt_16">Error loading products.</div>');
+          }
+        });
+      });
+    }
+    
+    setupProductsAnimation() {
+      // Re-setup animations for product items
+      this.tlItem = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.shop_content_list_card',
+          start: "top+=45% bottom",
+          once: true,
+        },
+        paused: true,
+      });
+      
+      $(".shop_content_list_card_item").each((i, el) => {
+        new MasterTimeline({
+          timeline: this.tlItem,
+          triggerInit: this.triggerEl,
+          tweenArr: [
+            new FadeIn({ el: el, type: 'bottom' }),
+            new ScaleInset({ el: $(el).find('.shop_content_list_card_item_img').get(0) }),
+            ...Array.from($(el).find('.shop_content_list_card_item_top .txt_12')).flatMap((el, idx) => new FadeIn({ el: el, delay: '<=.1', type: 'bottom' })),
+            new FadeIn({ el: $(el).find('.shop_content_list_card_item_info'), type: 'bottom' }),
+            new FadeSplitText({ el: $(el).find('.shop_content_list_card_item_info_title').get(0), onMask: true, delay: .1 }),
+            new FadeIn({ el: $(el).find('.shop_content_list_card_item_info_price'), delay: .1, type: 'bottom' }),
+          ].filter(Boolean)
+        })
+      });
+      
+      if (this.tlItem) {
+        this.tlItem.play();
+      }
     }
     play() {
       console.log('play')
@@ -1874,15 +2136,16 @@ const mainScript = () => {
       });
     }
     interact() {
+      // Copy transfer message to clipboard
       $('.message_transfer').on('click', function() {
-        // copy text to clipboard
         navigator.clipboard.writeText($('.message_transfer').text());
         $('.checkout_deli_bank_button').toggleClass('active');
         setTimeout(() => {
           $('.checkout_deli_bank_button').removeClass('active');
         }, 1000);
       });
-      // check name input payment_method change 
+      
+      // Show/hide bank transfer info based on payment method
       $('input[name="payment_method"]').on('change', function() {
         const paymentMethod = $(this).val();
         if(paymentMethod === 'bank') {
@@ -1890,7 +2153,172 @@ const mainScript = () => {
         } else {
           $('.checkout_deli_bank_content').slideUp();
         }
-
+      });
+      
+      // Handle form submission
+      $('.checkout_deli form').on('submit', function(e) {
+        e.preventDefault();
+        
+        const $form = $(this);
+        const $submitBtn = $form.find('button[type="submit"]');
+        
+        // Get form values
+        const name = $('#name').val().trim();
+        const phone = $('#phone').val().trim();
+        const email = $('#email').val().trim();
+        const address = $('#address').val().trim();
+        const note = $('#note').val().trim();
+        const office_hours = $('#office_hours').is(':checked') ? 'yes' : '';
+        const payment_method = $('input[name="payment_method"]:checked').val();
+        
+        // Validate form - all fields are required
+        if (!name) {
+          if (window.Popup) {
+            window.Popup.error('Validation Error', 'Name is required.');
+          } else {
+            alert('Name is required.');
+          }
+          $('#name').focus();
+          return;
+        }
+        
+        if (!phone) {
+          if (window.Popup) {
+            window.Popup.error('Validation Error', 'Phone number is required.');
+          } else {
+            alert('Phone number is required.');
+          }
+          $('#phone').focus();
+          return;
+        }
+        
+        if (!email) {
+          if (window.Popup) {
+            window.Popup.error('Validation Error', 'Email is required.');
+          } else {
+            alert('Email is required.');
+          }
+          $('#email').focus();
+          return;
+        }
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          if (window.Popup) {
+            window.Popup.error('Validation Error', 'Please enter a valid email address.');
+          } else {
+            alert('Please enter a valid email address.');
+          }
+          $('#email').focus();
+          return;
+        }
+        
+        if (!address) {
+          if (window.Popup) {
+            window.Popup.error('Validation Error', 'Address is required.');
+          } else {
+            alert('Address is required.');
+          }
+          $('#address').focus();
+          return;
+        }
+        
+        // Validate cart is not empty
+        if (typeof wc_add_to_cart_params === 'undefined' || !wc_add_to_cart_params.ajax_url) {
+          if (window.Popup) {
+            window.Popup.error('Error', 'WooCommerce is not properly configured.');
+          } else {
+            alert('WooCommerce is not properly configured.');
+          }
+          return;
+        }
+        
+        // Disable submit button
+        $submitBtn.prop('disabled', true).addClass('loading');
+        const originalText = $submitBtn.find('.btn_txt').first().text();
+        $submitBtn.find('.btn_txt').text('Processing...');
+        
+        // Submit order via AJAX
+        $.ajax({
+          type: 'POST',
+          url: wc_add_to_cart_params.ajax_url,
+          data: {
+            action: 'custom_create_order',
+            name: name,
+            phone: phone,
+            email: email,
+            address: address,
+            note: note,
+            office_hours: office_hours,
+            payment_method: payment_method
+          },
+          success: function(response) {
+            if (response.success && response.data) {
+              // Show success message
+              if (window.Popup) {
+                window.Popup.success('Success', 'Order created successfully! Redirecting...', {
+                  autoClose: 1500,
+                  onConfirm: function() {
+                    // Redirect to thank you page
+                    if (response.data.redirect_url) {
+                      window.location.href = response.data.redirect_url;
+                    } else {
+                      window.location.href = wc_add_to_cart_params.cart_url || home_url;
+                    }
+                  }
+                });
+                // Auto redirect after popup closes
+                setTimeout(() => {
+                  if (response.data.redirect_url) {
+                    window.location.href = response.data.redirect_url;
+                  } else {
+                    window.location.href = wc_add_to_cart_params.cart_url || home_url;
+                  }
+                }, 2000);
+              } else {
+                alert('Order created successfully!');
+                if (response.data.redirect_url) {
+                  window.location.href = response.data.redirect_url;
+                }
+              }
+            } else {
+              // Show error message
+              const errorMsg = response.data?.message || 'Failed to create order. Please try again.';
+              if (window.Popup) {
+                window.Popup.error('Error', errorMsg);
+              } else {
+                alert(errorMsg);
+              }
+              
+              // Re-enable submit button
+              $submitBtn.prop('disabled', false).removeClass('loading');
+              $submitBtn.find('.btn_txt').text(originalText);
+            }
+          },
+          error: function(xhr, status, error) {
+            let errorMsg = 'Error creating order. Please try again.';
+            try {
+              const errorResponse = JSON.parse(xhr.responseText);
+              if (errorResponse.data && errorResponse.data.message) {
+                errorMsg = errorResponse.data.message;
+              }
+            } catch (e) {
+              // Use default error message
+            }
+            
+            if (window.Popup) {
+              window.Popup.error('Error', errorMsg);
+            } else {
+              alert(errorMsg);
+            }
+            
+            // Re-enable submit button
+            $submitBtn.prop('disabled', false).removeClass('loading');
+            $submitBtn.find('.btn_txt').text(originalText);
+          },
+          dataType: 'json'
+        });
       });
     }
     play() {
