@@ -1094,6 +1094,10 @@ footer{
 .menu_cart_content_item_img{
   width: 8.7rem;
 }
+.menu_cart_content{
+  overflow-y: auto;
+  height: 76.5vh;
+}
 .menu_cart_content_item{
   padding-block: 3.2rem;
   display: flex;
@@ -1113,6 +1117,7 @@ footer{
 
 }
 .menu_cart_head{
+  height: 4.6vh;
   display: flex;
   justify-content: space-between;
   align-items:flex-start;
@@ -1121,7 +1126,7 @@ footer{
   overflow-y: auto;
   width: 59.6rem;
   background-color: #F7FCEF;
-  padding: 3.2rem;
+  padding: 4vh;
   position: relative;
   z-index: 1000000;
   transform: translateX(100%);
@@ -1183,8 +1188,9 @@ footer{
   width: 2rem;
 }
 .menu_cart_button{
+  height: 11.1vh;
   position: absolute;
-  bottom: 3.2rem;
+  bottom: 4vh;
   background-color: #F7FCEF;
   border-top: 1px solid #ccc;
   left: 3.2rem;

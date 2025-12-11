@@ -1,0 +1,153 @@
+.checkout{
+    display: flex;
+    gap: 12rem;
+    .menu_cart_inner{
+        width: 65rem;
+        background-color: #fff;
+        transform: translateX(0);
+        height: 100vh;
+        z-index: 1;
+        transition: none;
+    }
+    .menu_cart_button{
+        background-color: #fff;
+    }
+    .menu_cart_content{
+        height: 78vh;
+    }
+}
+.checkout_deli_title{
+    color: #1b1b1b;
+    font-weight: 500;
+    margin-bottom: 6.5rem;
+}
+.checkout_deli{
+    padding-block: 6.5rem;
+    width: 59rem;
+}
+.checkout_deli_info_title{
+    color: #000;
+    line-height: 1.7;
+    margin-bottom: 3.2rem;
+}
+.checkout_deli_info{
+    margin-bottom: 4rem;
+}
+.checkout_deli_info_form_row{
+    input, textarea{
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 1.6rem;
+        padding: 2rem 1.2rem 2rem 1.6rem;
+        &::placeholder{
+            color: #7F7F7F;
+        }
+    }
+    textarea{
+        height: 10rem;
+    }
+}
+.checkout_deli_info_form_row2{
+    display: flex;
+    gap: .4rem;
+    input{
+        width: calc(50% - .2rem);
+        border: none;
+        outline: none;
+        font-size: 1.6rem;
+        padding: 2rem 1.2rem 2rem 1.6rem;
+        &::placeholder{
+            color: #7F7F7F;
+        }
+    }
+}
+.checkout_deli_info_form{
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+.checkout_deli_info_check{
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: baseline;
+    input{
+        margin: 0;
+        accent-color: #000;
+    }
+}
+.payment{
+    flex-direction: row;
+}
+.checkout_deli_info_form_check{
+    width: 50%;
+    display: flex;
+    align-items: baseline;
+    gap: .8rem;
+    label{
+        font-size: 1.6rem;
+    }
+    input{
+        accent-color: #000;
+    }
+}
+.checkout_deli_des{
+    color: #00000099;
+}
+.checkout_deli_bank{
+    margin-bottom: 11.7rem;
+}
+.checkout_deli_bank_account_img{
+    width: 14rem;
+    background-color: #ECECEC;
+}
+.checkout_deli_bank_account_info{
+    width: 15.7rem;
+}
+.checkout_deli_bank_account_info_num{
+    color: #1B1B1B;
+}
+.checkout_deli_bank_account_info_bank{
+    margin-bottom: 1.6rem;
+    font-weight: 500;
+}
+.checkout_deli_bank_account{
+    display: flex;
+    gap: 2.4rem;
+    align-items: center;
+}
+.checkout_deli_bank_button{
+    margin-left: auto;
+    margin-right: 5rem;
+    width: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    background-color: #1B1B1B;
+    color: #fff;
+    cursor: pointer;
+}
+.checkout_deli_bank_note{
+    color: #00000099;
+    strong{
+        color: #1B1B1B;
+    }
+}
+.checkout_deli_des{
+    margin-bottom: 3.2rem;
+}
+@media screen and (max-width:991px) {
+    .checkout{
+        display: flex;
+        gap: 0;
+        flex-direction: column;
+        .menu_cart_inner, .checkout_deli{
+            width: 100%;
+        }
+        .checkout_deli{
+            padding-inline: 2rem;
+        }
+    }
+}
