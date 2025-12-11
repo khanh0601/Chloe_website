@@ -594,7 +594,7 @@ function custom_add_to_cart_ajax() {
             
             ob_start();
             $items_text = $cart_count == 1 ? 'item' : 'items';
-            echo 'Cart (' . esc_html($cart_count) . ')';
+            echo '<div class="menu_cart_title txt_32">Cart (' . esc_html($cart_count) . ')</div>';
             $fragments['.menu_cart_title'] = ob_get_clean();
             
             ob_start();
