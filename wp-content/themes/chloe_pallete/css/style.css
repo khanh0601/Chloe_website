@@ -661,6 +661,18 @@ h1, h2{
 .header_menu_item {
   color: currentColor;
 }
+.header_menu_item_wrap.parent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  &:hover {
+    .header_menu_submenu {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}
 @media screen and (max-width:991px) {
   .header_menu_item  {
     font-size: 2rem !important;
@@ -1193,10 +1205,54 @@ footer{
 .menu_cart_button_check_icon{
   width: 2rem;
 }
+.header_menu_item.active .line-anim-inner.line-anim-inner-hover {
+  transform: scaleX(1);
+}
+.header_menu_submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  min-width: 18rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .6s ease;
+  padding-top: 1.6rem;
+}
+.header_menu_submenu_inner{
+  background-color: #fff;
+  width: 100%;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.1);
+  padding: .8rem 2rem;
+  
+}
+.header_menu_submenu_item {
+  width:100%;
+  padding-block: .8rem;
+  position: relative;
+  &.active:after{
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: .6rem;
+    height: .6rem;
+    background-color: #0F2A1D;
+
+  }
+}
+.header_menu_ic{
+  width: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .menu_cart_button{
   height: 11.1vh;
   position: absolute;
-  bottom: 4vh;
+  bottom: 2vh;
   background-color: #F7FCEF;
   border-top: 1px solid #ccc;
   left: 3.2rem;
@@ -1214,7 +1270,7 @@ footer{
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999999;
+  z-index: 9999999999999999999;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;

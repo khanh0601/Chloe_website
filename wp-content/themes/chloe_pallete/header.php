@@ -40,6 +40,20 @@
     // Localize script to pass AJAX URL and nonce to JavaScript
     wp_localize_script('home-js', 'ajaxurl', admin_url('admin-ajax.php'));
     wp_localize_script('home-js', 'variationNonce', wp_create_nonce('variation_price_nonce'));
+    
+    // Add WooCommerce add to cart params globally (for homepage and other pages)
+    if (function_exists('WC')) {
+        $custom_add_to_cart_nonce = wp_create_nonce('custom_add_to_cart_nonce');
+        $wc_ajax_url = function_exists('WC_AJAX') ? WC_AJAX::get_endpoint('%%endpoint%%') : '';
+        
+        wp_localize_script('home-js', 'wc_add_to_cart_params', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'wc_ajax_url' => $wc_ajax_url,
+            'cart_url' => function_exists('wc_get_cart_url') ? wc_get_cart_url() : '',
+            'cart_redirect_after_add' => get_option('woocommerce_cart_redirect_after_add', 'no'),
+            'custom_add_to_cart_nonce' => $custom_add_to_cart_nonce
+        ));
+    }
 
     wp_enqueue_script('splitType', get_template_directory_uri() . '/js/split-type.js', [], null, true);
     wp_head();
@@ -129,16 +143,42 @@
                               }
                           }
 
-                          $is_active    = $is_parent_active || $has_active_child;
+                          $is_active    = $is_parent_active;
                           $active_class = $is_active ? 'active' : '';
+                          $parent_class = $has_children ? 'parent' : '';
                       ?>
-                                    <a
-                                      href="<?php echo esc_url($parent->url)?> " data-cursor="txtLink"
-                                      class="header_menu_item txt_uppercase txt_16 hover-un txt_wh_500 <?php echo $active_class?>"
-                                      ><?php echo esc_html($parent->title)?>
-                                      <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                                      </a
-                                    >
+                                    <div class="header_menu_item_wrap <?php echo $parent_class; ?>">
+                                      <a
+                                        href="<?php echo esc_url($parent->url)?> " data-cursor="txtLink"
+                                        class="header_menu_item txt_uppercase txt_16 hover-un txt_wh_500 <?php echo $active_class?>"
+                                        ><?php echo esc_html($parent->title)?>
+                                        <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                                      </a>
+                                      <?php if ($has_children) : ?>
+                                        <div class="header_menu_ic">
+                                        <svg width="100%" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M6 2.25L6 9.75" stroke="currentColor" stroke-width="0.975" stroke-linecap="square" stroke-linejoin="round"/>
+                                          <path d="M0.75 6L11.25 6" stroke="currentColor" stroke-width="0.975" stroke-linecap="square" stroke-linejoin="round"/>
+                                        </svg>
+                                        </div>
+                                        <div class="header_menu_submenu">
+                                        <div class="header_menu_submenu_inner">
+                                          <?php foreach ($menu_children[$parent_id] as $child) : 
+                                              $is_child_active = is_menu_active($child->url, $current_url);
+                                              $child_active_class = $is_child_active ? 'active' : '';
+                                          ?>
+                                            <a
+                                              href="<?php echo esc_url($child->url)?>" data-cursor="txtLink"
+                                              class="header_menu_submenu_item txt_uppercase txt_16 hover-un txt_wh_500 <?php echo $child_active_class?>"
+                                            >
+                                              <?php echo esc_html($child->title)?>
+                                              <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                                            </a>
+                                          <?php endforeach; ?>
+                                        </div>
+                                        </div>
+                                      <?php endif; ?>
+                                    </div>
                                 <?php
                                     }
                                     }
@@ -272,14 +312,14 @@
             </div>
             <div class="header_icon">
               <div class="header_icon_inner">
-                <div class="header_icon_item_wrap">
+                <!-- <div class="header_icon_item_wrap">
                   <div class="header_icon_item img_full">
                   <svg width="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
 
                   </div>
-                </div>
+                </div> -->
 
                 <div class="header_icon_item_wrap cart">
                   <div class="header_icon_item img_full">

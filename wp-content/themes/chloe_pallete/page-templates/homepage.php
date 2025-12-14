@@ -202,22 +202,108 @@
                         }
 
                         // Lấy giá
-                        $regular_price = $product->get_regular_price();
-                        $sale_price = $product->get_sale_price();
-
-                        if ( $sale_price ) {
-                            $price_display = '<span>$' . intval( $sale_price ) . '</span> - <span>$' . intval( $regular_price ) . '</span>';
+                        // Kiểm tra nếu là variable product
+                        if ( $product->is_type( 'variable' ) ) {
+                            // Lấy giá từ variations
+                            $min_regular_price = $product->get_variation_regular_price( 'min' );
+                            $max_regular_price = $product->get_variation_regular_price( 'max' );
+                            $min_sale_price = $product->get_variation_sale_price( 'min' );
+                            $max_sale_price = $product->get_variation_sale_price( 'max' );
+                            
+                            // Kiểm tra nếu có sale price
+                            if ( $min_sale_price && $min_sale_price < $min_regular_price ) {
+                                // Có sale price
+                                if ( $min_sale_price == $max_sale_price && $min_regular_price == $max_regular_price ) {
+                                    // Giá đồng nhất
+                                    $price_display = '<span>$' . intval( $min_sale_price ) . '</span> - <span>$' . intval( $min_regular_price ) . '</span>';
+                                } else {
+                                    // Giá có khoảng
+                                    $price_display = '<span>$' . intval( $min_sale_price ) . '</span> - <span>$' . intval( $max_regular_price ) . '</span>';
+                                }
+                            } else {
+                                // Không có sale price
+                                if ( $min_regular_price == $max_regular_price ) {
+                                    $price_display = '<span>$' . intval( $min_regular_price ) . '</span>';
+                                } else {
+                                    $price_display = '<span>$' . intval( $min_regular_price ) . '</span> - <span>$' . intval( $max_regular_price ) . '</span>';
+                                }
+                            }
                         } else {
-                            $price_display = '<span>$' . intval( $regular_price ) . '</span>';
+                            // Simple product hoặc các loại khác
+                            $regular_price = $product->get_regular_price();
+                            $sale_price = $product->get_sale_price();
+
+                            if ( $sale_price ) {
+                                $price_display = '<span>$' . intval( $sale_price ) . '</span> - <span>$' . intval( $regular_price ) . '</span>';
+                            } else {
+                                $price_display = '<span>$' . intval( $regular_price ) . '</span>';
+                            }
                         }
 
                         // Tạo data-category attribute
                         $data_categories = implode( ' ', $category_slugs );
+                        
+                        // Lấy product type và default variation ID nếu là variable product
+                        $product_type = $product->get_type();
+                        $default_variation_id = 0;
+                        $default_variation_attributes = array();
+                        
+                        if ( $product->is_type( 'variable' ) ) {
+                            // Lấy default attributes
+                            $default_attributes = $product->get_default_attributes();
+                            
+                            if ( ! empty( $default_attributes ) ) {
+                                // Tìm variation ID từ default attributes
+                                $data_store = WC_Data_Store::load( 'product' );
+                                $default_variation_id = $data_store->find_matching_product_variation( $product, $default_attributes );
+                                
+                                if ( $default_variation_id ) {
+                                    // Format variation attributes
+                                    foreach ( $default_attributes as $key => $value ) {
+                                        $attr_key = strpos( $key, 'attribute_' ) === 0 ? $key : 'attribute_' . $key;
+                                        $default_variation_attributes[ $attr_key ] = $value;
+                                    }
+                                }
+                            }
+                            
+                            // Nếu không có default variation, lấy variation đầu tiên có sẵn
+                            if ( ! $default_variation_id ) {
+                                // Lấy tất cả variation IDs
+                                $variation_ids = $product->get_children();
+                                
+                                if ( ! empty( $variation_ids ) ) {
+                                    // Tìm variation đầu tiên có sẵn (in stock, purchasable)
+                                    foreach ( $variation_ids as $variation_id ) {
+                                        $variation = wc_get_product( $variation_id );
+                                        
+                                        if ( $variation && $variation->exists() && $variation->is_purchasable() && $variation->is_in_stock() ) {
+                                            $default_variation_id = $variation_id;
+                                            
+                                            // Lấy attributes từ variation
+                                            $variation_attrs = $variation->get_variation_attributes();
+                                            if ( ! empty( $variation_attrs ) ) {
+                                                foreach ( $variation_attrs as $key => $value ) {
+                                                    $attr_key = strpos( $key, 'attribute_' ) === 0 ? $key : 'attribute_' . $key;
+                                                    $default_variation_attributes[ $attr_key ] = $value;
+                                                }
+                                            }
+                                            break; // Lấy variation đầu tiên tìm được
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         ?>
                         <a
                           href="<?php the_permalink(); ?>"
                           class="home_seller_silder_item swiper-slide"
                           data-categories="<?php echo esc_attr( $data_categories ); ?>"
+                          data-product-id="<?php echo esc_attr( get_the_ID() ); ?>"
+                          data-product-type="<?php echo esc_attr( $product_type ); ?>"
+                          <?php if ( $default_variation_id ) : ?>
+                          data-default-variation-id="<?php echo esc_attr( $default_variation_id ); ?>"
+                          data-default-variation-attributes="<?php echo esc_attr( json_encode( $default_variation_attributes ) ); ?>"
+                          <?php endif; ?>
                         >
                           <div class="home_seller_silder_item_top">
                             <div class="home_seller_silder_item_top_type txt_uppercase txt_12">
@@ -237,7 +323,13 @@
                             <div class="home_seller_silder_item_info_price txt_14 txt_wh_500">
                               <?php echo $price_display; ?>
                             </div>
-                            <div class="home_seller_silder_item_info_cart_wrap">
+                            <div class="home_seller_silder_item_info_cart_wrap" 
+                                 data-product-id="<?php echo esc_attr( get_the_ID() ); ?>"
+                                 data-product-type="<?php echo esc_attr( $product_type ); ?>"
+                                 <?php if ( $default_variation_id ) : ?>
+                                 data-default-variation-id="<?php echo esc_attr( $default_variation_id ); ?>"
+                                 data-default-variation-attributes="<?php echo esc_attr( json_encode( $default_variation_attributes ) ); ?>"
+                                 <?php endif; ?>>
                               <div class="home_seller_silder_item_info_cart img_full">
                                 <img src="<?php echo get_template_directory_uri(); ?>/images/cart.svg" alt="" />
                               </div>

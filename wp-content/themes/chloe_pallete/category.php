@@ -24,6 +24,7 @@ $args = array(
 // THIẾU DÒNG NÀY - QUAN TRỌNG!
 $workshop_query = new WP_Query($args);
 ?>
+<div class="main" data-barba-namespace="workshop">
 <section class="workshop_content">
     <div class="kl_container">
     <div class="workshop_content_title txt_center txt_wh_500"><?php echo esc_html($category_name); ?></div>
@@ -119,5 +120,6 @@ $workshop_query = new WP_Query($args);
     </div>
     </div>
 </section>
+</div>
 
 <?php get_footer(); ?>

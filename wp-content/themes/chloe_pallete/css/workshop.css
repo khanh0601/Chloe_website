@@ -8,13 +8,16 @@
 .workshop_content_list_card{
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap:3.6rem 2rem;
     margin-bottom: 6.5rem;
 
 }
 .workshop_content_list_card_item{
     width: calc(25% - 1.5rem);
     position: relative;
+}
+.workshop_content_list_card_item_title {
+    margin-bottom: 1.6rem;
 }
 .workshop_content_list_card_item_info{
     display: flex;
@@ -80,7 +83,7 @@
         left: 1.5rem;
     }
     .workshop_content_list_card{
-        gap: 1.5rem;
+        gap: 2.4rem;
         margin-bottom: 4.5rem;
     }
     .workshop_content_list_card_item{
@@ -119,7 +122,10 @@
         font-size: 1rem;
     }
     .workshop_content_list_card_item_info{
-        margin-bottom: .5rem;
+        margin-bottom: .8rem;
+    }
+    .workshop_content_list_card_item_title {
+        margin-bottom: .8rem;
     }
 }
 @media screen and (max-width:767px){

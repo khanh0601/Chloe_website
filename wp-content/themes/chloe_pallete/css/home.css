@@ -199,8 +199,26 @@ body{
 .home_seller_silder_item_info_cart_wrap{
     opacity: 0;
     cursor: pointer;
-    pointer-events: none;
     transition: all .4s ease;
+    &.loading,
+    &.disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+.cart-loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+}
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 .home_seller_silder_wrap{
         transition-timing-function: linear;
@@ -264,6 +282,10 @@ body{
     }
     .home_seller_silder_item_info_cart {
         width: 2rem;
+    }
+    .cart-loading-spinner {
+        width: 1.5rem;
+        height: 1.5rem;
     }
     .home_seller{
         padding-block: 6rem;

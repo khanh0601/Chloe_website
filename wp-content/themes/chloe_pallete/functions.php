@@ -439,6 +439,162 @@ function get_variation_price_ajax() {
 add_action('wp_ajax_custom_add_to_cart', 'custom_add_to_cart_ajax');
 add_action('wp_ajax_nopriv_custom_add_to_cart', 'custom_add_to_cart_ajax');
 
+// Custom remove from cart AJAX handler
+add_action('wp_ajax_custom_remove_from_cart', 'custom_remove_from_cart_ajax');
+add_action('wp_ajax_nopriv_custom_remove_from_cart', 'custom_remove_from_cart_ajax');
+
+// AJAX handler để render cart content
+add_action('wp_ajax_get_cart_content', 'get_cart_content_ajax');
+add_action('wp_ajax_nopriv_get_cart_content', 'get_cart_content_ajax');
+
+/**
+ * Function để render cart content HTML
+ * Có thể được gọi từ nhiều nơi (AJAX, fragments, etc.)
+ */
+function render_cart_content() {
+    // Initialize cart if not already done
+    if (!WC()->cart) {
+        wc_load_cart();
+    }
+    
+    ob_start();
+    if (!WC()->cart->is_empty()) {
+        foreach (WC()->cart->get_cart() as $cart_item_key_loop => $cart_item) {
+            $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key_loop);
+            $product_id_loop = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key_loop);
+            
+            if ($_product && $_product->exists() && $cart_item['quantity'] > 0) {
+                $product_name = $_product->get_name();
+                $product_image = $_product->get_image('thumbnail');
+                $product_price = $_product->get_price();
+                $product_regular_price = $_product->get_regular_price();
+                $product_sale_price = $_product->get_sale_price();
+                $quantity = $cart_item['quantity'];
+                
+                $categories = get_the_terms($product_id_loop, 'product_cat');
+                $category_name = '';
+                if ($categories && !is_wp_error($categories)) {
+                    foreach ($categories as $cat) {
+                        if ($cat->slug !== 'uncategorized') {
+                            $category_name = $cat->name;
+                            break;
+                        }
+                    }
+                }
+                
+                $variation_attributes = '';
+                if (isset($cart_item['variation']) && !empty($cart_item['variation'])) {
+                    $variation_attributes = wc_get_formatted_variation($cart_item['variation'], true);
+                }
+                ?>
+                <div class="menu_cart_content_item" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>">
+                    <div class="menu_cart_content_item_img img_abs">
+                        <div class="menu_cart_content_item_img_overlay"></div>
+                        <?php 
+                        $thumbnail = $_product->get_image('thumbnail');
+                        if ($thumbnail) {
+                            echo $thumbnail;
+                        } else {
+                            echo '<img src="' . get_template_directory_uri() . '/images/img_cart.webp" alt="">';
+                        }
+                        ?>
+                    </div>
+                    <div class="menu_cart_content_item_info">
+                        <?php if ($category_name) : ?>
+                            <div class="menu_cart_content_item_info_cate txt_12"><?php echo esc_html($category_name); ?></div>
+                        <?php endif; ?>
+                        <div class="menu_cart_content_item_info_name txt_title_color txt_wh_500 txt_16">
+                            <?php echo esc_html($product_name); ?>
+                            <?php if ($variation_attributes) : ?>
+                                <div class="menu_cart_content_item_info_variation txt_12"><?php echo $variation_attributes; ?></div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="menu_cart_content_item_info_price txt_14">
+                            <?php if ($product_sale_price && $product_sale_price < $product_regular_price) : ?>
+                                <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_sale_price); ?></div>
+                                -
+                                <div class="menu_cart_content_item_info_price_old txt_14"><?php echo wc_price($product_regular_price); ?></div>
+                            <?php else : ?>
+                                <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_price); ?></div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="menu_cart_content_item_info_amount txt_14">
+                            <div class="menu_cart_content_item_info_amount_reduce img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="decrease">
+                                <img src="<?php echo get_template_directory_uri(); ?>/images/tru.svg" alt="">
+                            </div>
+                            <div class="menu_cart_content_item_info_amount_txt txt_14" data-quantity="<?php echo esc_attr($quantity); ?>"><?php echo esc_html($quantity); ?></div>
+                            <div class="menu_cart_content_item_info_amount_increate img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="increase">
+                                <img src="<?php echo get_template_directory_uri(); ?>/images/plus.svg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu_cart_content_item_remove txt_14 hover-un" data-cursor="txtLink" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="remove">
+                        Remove
+                        <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                    </div>
+                </div>
+                <?php
+            }
+        }
+    } else {
+        ?>
+        <div class="menu_cart_content_empty txt_16 txt_title_color">
+            Your cart is empty.
+        </div>
+        <?php
+    }
+    return ob_get_clean();
+}
+
+/**
+ * AJAX handler để lấy cart content
+ */
+function get_cart_content_ajax() {
+    // Initialize cart if not already done
+    if (!WC()->cart) {
+        wc_load_cart();
+    }
+    
+    // Calculate totals
+    WC()->cart->calculate_totals();
+    
+    $cart_count = WC()->cart->get_cart_contents_count();
+    $cart_hash = WC()->cart->get_cart_hash();
+    
+    // Render cart content
+    $cart_content = render_cart_content();
+    
+    // Get cart title
+    $items_text = $cart_count == 1 ? 'item' : 'items';
+    $cart_title = '<div class="menu_cart_title txt_32">Cart (' . esc_html($cart_count) . ')</div>';
+    
+    // Get cart totals
+    $cart_total_txt = '<div class="menu_cart_button_total_txt txt_16 txt_title_color ">Subtotal (' . esc_html($cart_count) . ' ' . $items_text . ')</div>';
+    $cart_total_price = '<div class="menu_cart_button_total_price txt_24 txt_wh_500 txt_title_color ">'.WC()->cart->get_cart_subtotal().'</div>';
+    
+    // Get checkout button
+    $checkout_button = '';
+    if (!WC()->cart->is_empty()) {
+        $checkout_button = '<a href="' . esc_url(wc_get_checkout_url()) . '" class="menu_cart_button_check">
+            <div class="menu_cart_button_check_txt txt_wh_500 color_white txt_16 txt_uppercase">Checkout now</div>
+            <div class="menu_cart_button_check_icon img_full">
+                <img src="' . get_template_directory_uri() . '/images/arrow-up-right-white.svg" alt="">
+            </div>
+        </a>';
+    }
+    
+    wp_send_json_success(array(
+        'cart_content' => $cart_content,
+        'cart_title' => $cart_title,
+        'cart_total_txt' => $cart_total_txt,
+        'cart_total_price' => $cart_total_price,
+        'checkout_button' => $checkout_button,
+        'cart_count' => $cart_count,
+        'cart_hash' => $cart_hash,
+        'cart_count_text' => $cart_count
+    ));
+}
+
 function custom_add_to_cart_ajax() {
     // Check nonce for security
     if (!check_ajax_referer('custom_add_to_cart_nonce', 'nonce', false)) {
@@ -598,101 +754,15 @@ function custom_add_to_cart_ajax() {
             $fragments['.menu_cart_title'] = ob_get_clean();
             
             ob_start();
-            echo 'Subtotal (' . esc_html($cart_count) . ' ' . $items_text . ')';
+            echo '<div class="menu_cart_button_total_txt txt_16 txt_title_color ">Subtotal (' . esc_html($cart_count) . ' ' . $items_text . ')</div>';
             $fragments['.menu_cart_button_total_txt'] = ob_get_clean();
             
             ob_start();
-            echo WC()->cart->get_cart_subtotal();
+            echo '<div class="menu_cart_button_total_price txt_24 txt_wh_500 txt_title_color ">'.WC()->cart->get_cart_subtotal().'</div>';
             $fragments['.menu_cart_button_total_price'] = ob_get_clean();
             
-            // Generate cart content HTML
-            ob_start();
-            if (!WC()->cart->is_empty()) {
-                foreach (WC()->cart->get_cart() as $cart_item_key_loop => $cart_item) {
-                    $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key_loop);
-                    $product_id_loop = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key_loop);
-                    
-                    if ($_product && $_product->exists() && $cart_item['quantity'] > 0) {
-                        $product_name = $_product->get_name();
-                        $product_image = $_product->get_image('thumbnail');
-                        $product_price = $_product->get_price();
-                        $product_regular_price = $_product->get_regular_price();
-                        $product_sale_price = $_product->get_sale_price();
-                        $quantity = $cart_item['quantity'];
-                        
-                        $categories = get_the_terms($product_id_loop, 'product_cat');
-                        $category_name = '';
-                        if ($categories && !is_wp_error($categories)) {
-                            foreach ($categories as $cat) {
-                                if ($cat->slug !== 'uncategorized') {
-                                    $category_name = $cat->name;
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        $variation_attributes = '';
-                        if (isset($cart_item['variation']) && !empty($cart_item['variation'])) {
-                            $variation_attributes = wc_get_formatted_variation($cart_item['variation'], true);
-                        }
-                        ?>
-                        <div class="menu_cart_content_item" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>">
-                            <div class="menu_cart_content_item_img img_abs">
-                                <div class="menu_cart_content_item_img_overlay"></div>
-                                <?php 
-                                $thumbnail = $_product->get_image('thumbnail');
-                                if ($thumbnail) {
-                                    echo $thumbnail;
-                                } else {
-                                    echo '<img src="' . get_template_directory_uri() . '/images/img_cart.webp" alt="">';
-                                }
-                                ?>
-                            </div>
-                            <div class="menu_cart_content_item_info">
-                                <?php if ($category_name) : ?>
-                                    <div class="menu_cart_content_item_info_cate txt_12"><?php echo esc_html($category_name); ?></div>
-                                <?php endif; ?>
-                                <div class="menu_cart_content_item_info_name txt_title_color txt_wh_500 txt_16">
-                                    <?php echo esc_html($product_name); ?>
-                                    <?php if ($variation_attributes) : ?>
-                                        <div class="menu_cart_content_item_info_variation txt_12"><?php echo $variation_attributes; ?></div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="menu_cart_content_item_info_price txt_14">
-                                    <?php if ($product_sale_price && $product_sale_price < $product_regular_price) : ?>
-                                        <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_sale_price); ?></div>
-                                        -
-                                        <div class="menu_cart_content_item_info_price_old txt_14"><?php echo wc_price($product_regular_price); ?></div>
-                                    <?php else : ?>
-                                        <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_price); ?></div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="menu_cart_content_item_info_amount txt_14">
-                                    <div class="menu_cart_content_item_info_amount_reduce img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="decrease">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/images/tru.svg" alt="">
-                                    </div>
-                                    <div class="menu_cart_content_item_info_amount_txt txt_14" data-quantity="<?php echo esc_attr($quantity); ?>"><?php echo esc_html($quantity); ?></div>
-                                    <div class="menu_cart_content_item_info_amount_increate img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="increase">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/images/plus.svg" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="menu_cart_content_item_remove txt_14 hover-un" data-cursor="txtLink" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" data-action="remove">
-                                Remove
-                                <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                }
-            } else {
-                ?>
-                <div class="menu_cart_content_empty txt_16 txt_title_color">
-                    Your cart is empty.
-                </div>
-                <?php
-            }
-            $fragments['.menu_cart_content'] = ob_get_clean();
+            // Generate cart content HTML - sử dụng function render_cart_content()
+            $fragments['.menu_cart_content'] = render_cart_content();
             
             // Checkout button
             ob_start();
@@ -1178,3 +1248,230 @@ function custom_search_products_ajax() {
         'found_posts' => $products_query->found_posts
     ));
 }
+
+// Add custom cart fragments for remove from cart
+add_filter('woocommerce_add_to_cart_fragments', 'custom_cart_fragments', 10, 1);
+function custom_cart_fragments($fragments) {
+    // Initialize cart if not already done
+    if (!WC()->cart) {
+        wc_load_cart();
+    }
+    
+    $cart_count = WC()->cart->get_cart_contents_count();
+    
+    // Add cart count fragment
+    ob_start();
+    echo esc_html($cart_count);
+    $fragments['.header_icon_item_num .cart-count'] = ob_get_clean();
+    
+    // Add cart title fragment
+    ob_start();
+    echo '<div class="menu_cart_title txt_32">Cart (' . esc_html($cart_count) . ')</div>';
+    $fragments['.menu_cart_title'] = ob_get_clean();
+    
+    // Add cart content fragment
+    ob_start();
+    if (!WC()->cart->is_empty()) {
+        foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+            $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
+            
+            if ($_product && $_product->exists() && $cart_item['quantity'] > 0) {
+                $product_name = $_product->get_name();
+                $product_image = $_product->get_image('thumbnail');
+                $product_price = $_product->get_price();
+                $product_regular_price = $_product->get_regular_price();
+                $product_sale_price = $_product->get_sale_price();
+                $quantity = $cart_item['quantity'];
+                
+                $categories = get_the_terms($product_id, 'product_cat');
+                $category_name = '';
+                if ($categories && !is_wp_error($categories)) {
+                    foreach ($categories as $cat) {
+                        if ($cat->slug !== 'uncategorized') {
+                            $category_name = $cat->name;
+                            break;
+                        }
+                    }
+                }
+                
+                $variation_attributes = '';
+                if (isset($cart_item['variation']) && !empty($cart_item['variation'])) {
+                    $variation_attributes = wc_get_formatted_variation($cart_item['variation'], true);
+                }
+                ?>
+                <div class="menu_cart_content_item" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>">
+                    <div class="menu_cart_content_item_img img_abs">
+                        <div class="menu_cart_content_item_img_overlay"></div>
+                        <?php 
+                        $thumbnail = $_product->get_image('thumbnail');
+                        if ($thumbnail) {
+                            echo $thumbnail;
+                        } else {
+                            echo '<img src="' . get_template_directory_uri() . '/images/img_cart.webp" alt="">';
+                        }
+                        ?>
+                    </div>
+                    <div class="menu_cart_content_item_info">
+                        <?php if ($category_name) : ?>
+                            <div class="menu_cart_content_item_info_cate txt_12"><?php echo esc_html($category_name); ?></div>
+                        <?php endif; ?>
+                        <div class="menu_cart_content_item_info_name txt_title_color txt_wh_500 txt_16">
+                            <?php echo esc_html($product_name); ?>
+                            <?php if ($variation_attributes) : ?>
+                                <div class="menu_cart_content_item_info_variation txt_12"><?php echo $variation_attributes; ?></div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="menu_cart_content_item_info_price txt_14">
+                            <?php if ($product_sale_price && $product_sale_price < $product_regular_price) : ?>
+                                <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_sale_price); ?></div>
+                                -
+                                <div class="menu_cart_content_item_info_price_old txt_14"><?php echo wc_price($product_regular_price); ?></div>
+                            <?php else : ?>
+                                <div class="menu_cart_content_item_info_price_new txt_14"><?php echo wc_price($product_price); ?></div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="menu_cart_content_item_info_amount txt_14">
+                            <div class="menu_cart_content_item_info_amount_reduce img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>" data-action="decrease">
+                                <img src="<?php echo get_template_directory_uri(); ?>/images/tru.svg" alt="">
+                            </div>
+                            <div class="menu_cart_content_item_info_amount_txt txt_14" data-quantity="<?php echo esc_attr($quantity); ?>"><?php echo esc_html($quantity); ?></div>
+                            <div class="menu_cart_content_item_info_amount_increate img_full" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>" data-action="increase">
+                                <img src="<?php echo get_template_directory_uri(); ?>/images/plus.svg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu_cart_content_item_remove txt_14 hover-un" data-cursor="txtLink" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>" data-action="remove">
+                        Remove
+                        <div class="line-anim line-anim-hover"><div class="line-anim-inner line-anim-inner-hover"></div></div>
+                    </div>
+                </div>
+                <?php
+            }
+        }
+    } else {
+        ?>
+        <div class="menu_cart_content_empty txt_16 txt_title_color">
+            Your cart is empty.
+        </div>
+        <?php
+    }
+    $fragments['.menu_cart_content'] = ob_get_clean();
+    
+    // Add subtotal text fragment
+    ob_start();
+    $items_text = $cart_count == 1 ? 'item' : 'items';
+    echo 'Subtotal (' . esc_html($cart_count) . ' ' . $items_text . ')';
+    $fragments['.menu_cart_button_total_txt'] = ob_get_clean();
+    
+    // Add subtotal price fragment
+    ob_start();
+    echo WC()->cart->get_cart_subtotal();
+    $fragments['.menu_cart_button_total_price'] = ob_get_clean();
+    
+    // Add checkout button fragment
+    ob_start();
+    if (!WC()->cart->is_empty()) {
+        ?>
+        <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="menu_cart_button_check">
+            <div class="menu_cart_button_check_txt txt_wh_500 color_white txt_16 txt_uppercase">Checkout now</div>
+            <div class="menu_cart_button_check_icon img_full">
+                <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="">
+            </div>
+        </a>
+        <?php
+    } else {
+        echo '';
+    }
+    $fragments['.menu_cart_button_check'] = ob_get_clean();
+    
+    return $fragments;
+}
+
+function custom_remove_from_cart_ajax() {
+    // Get cart item key
+    $cart_item_key = isset($_POST['cart_item_key']) ? wc_clean(wp_unslash($_POST['cart_item_key'])) : '';
+    
+    if (!$cart_item_key) {
+        wp_send_json_error(array(
+            'message' => 'Cart item key is required.'
+        ));
+        return;
+    }
+    
+    // Initialize cart if not already done
+    if (!WC()->cart) {
+        wc_load_cart();
+    }
+    
+    // Remove item from cart
+    $removed = WC()->cart->remove_cart_item($cart_item_key);
+    
+    if ($removed) {
+        // Calculate totals
+        WC()->cart->calculate_totals();
+        
+        // Get cart fragments using our custom filter
+        $fragments = apply_filters('woocommerce_add_to_cart_fragments', array());
+        $cart_hash = WC()->cart->get_cart_hash();
+        $cart_count = WC()->cart->get_cart_contents_count();
+        
+        wp_send_json_success(array(
+            'message' => 'Item removed from cart successfully.',
+            'fragments' => $fragments,
+            'cart_hash' => $cart_hash,
+            'cart_count' => $cart_count,
+            'cart_total' => WC()->cart->get_cart_subtotal()
+        ));
+    } else {
+        wp_send_json_error(array(
+            'message' => 'Failed to remove item from cart. Item may not exist.'
+        ));
+    }
+}
+
+// Contact Form 7: Remove automatic <p> and <span> tags
+add_filter('wpcf7_autop_or_not', '__return_false');
+
+// Contact Form 7: Remove <span> wrapper from form elements
+add_filter('wpcf7_form_elements', function($content) {
+    // Use DOMDocument for more accurate parsing
+    if (class_exists('DOMDocument')) {
+        libxml_use_internal_errors(true);
+        $dom = new DOMDocument();
+        $dom->loadHTML('<?xml encoding="UTF-8">' . $content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        
+        $xpath = new DOMXPath($dom);
+        // Find all span elements with wpcf7-form-control-wrap class
+        $spans = $xpath->query('//span[contains(@class, "wpcf7-form-control-wrap")]');
+        
+        foreach ($spans as $span) {
+            // Move all children of span to its parent
+            $parent = $span->parentNode;
+            if ($parent) {
+                while ($span->firstChild) {
+                    $parent->insertBefore($span->firstChild, $span);
+                }
+                $parent->removeChild($span);
+            }
+        }
+        
+        $content = $dom->saveHTML();
+        // Remove XML declaration if present
+        $content = preg_replace('/^<\?xml[^>]*\?>/', '', $content);
+    } else {
+        // Fallback to regex if DOMDocument is not available
+        // Remove span wrapper with wpcf7-form-control-wrap class (more comprehensive pattern)
+        $content = preg_replace('/<span\s+[^>]*class\s*=\s*["\'][^"\']*wpcf7-form-control-wrap[^"\']*["\'][^>]*>(.*?)<\/span>/is', '$1', $content);
+        
+        // Remove any remaining span tags that might wrap form controls
+        $content = preg_replace('/<span\s+[^>]*data-name\s*=\s*["\'][^"\']*["\'][^>]*>(.*?)<\/span>/is', '$1', $content);
+    }
+    
+    // Remove <br /> tags
+    $content = str_replace('<br />', '', $content);
+    $content = str_replace('<br/>', '', $content);
+    $content = str_replace('<br>', '', $content);
+    
+    return $content;
+});

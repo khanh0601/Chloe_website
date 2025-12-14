@@ -341,6 +341,44 @@ if ( $categories && ! is_wp_error( $categories ) ) {
         </div>
     </section>
 
+    <?php
+    // Lấy category slugs để query related products
+    $category_slugs_for_query = array();
+    if ( $categories && ! is_wp_error( $categories ) ) {
+        foreach ( $categories as $cat ) {
+            if ( $cat->slug !== 'uncategorized' ) {
+                $category_slugs_for_query[] = $cat->slug;
+            }
+        }
+    }
+
+    // Chỉ query related products nếu có category hợp lệ
+    $related_products = null;
+    if ( ! empty( $category_slugs_for_query ) ) {
+        // Query related products - CHỈ lấy products cùng category
+        $related_args = array(
+            'post_type'      => 'product',
+            'posts_per_page' => 8,
+            'post_status'    => 'publish',
+            'post__not_in'   => array( $product_id ), // Loại trừ product hiện tại
+            'orderby'        => 'rand',
+            'order'          => 'DESC',
+            'tax_query'      => array(
+                array(
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'slug',
+                    'terms'    => $category_slugs_for_query,
+                    'operator' => 'IN', // Products phải thuộc ít nhất 1 trong các categories này
+                ),
+            ),
+        );
+
+        $related_products = new WP_Query( $related_args );
+    }
+
+    // Chỉ hiển thị section nếu có products liên quan
+    if ( $related_products->have_posts() ) :
+    ?>
     <section class=" product_related_silder home_seller overflow_hidden">
         <div class="kl_container">
             <div class="home_seller_inner">
@@ -369,39 +407,6 @@ if ( $categories && ! is_wp_error( $categories ) ) {
             <div class="home_seller_silder swiper">
             <div class="home_seller_silder_wrap swiper-wrapper">
                 <?php
-                // Lấy category slugs để query related products
-                $category_slugs_for_query = array();
-                if ( $categories && ! is_wp_error( $categories ) ) {
-                    foreach ( $categories as $cat ) {
-                        if ( $cat->slug !== 'uncategorized' ) {
-                            $category_slugs_for_query[] = $cat->slug;
-                        }
-                    }
-                }
-
-                // Query related products
-                $related_args = array(
-                    'post_type'      => 'product',
-                    'posts_per_page' => 8,
-                    'post_status'    => 'publish',
-                    'post__not_in'   => array( $product_id ), // Loại trừ product hiện tại
-                    'orderby'        => 'rand',
-                    'order'          => 'DESC'
-                );
-
-                // Nếu có category, query theo category
-                if ( ! empty( $category_slugs_for_query ) ) {
-                    $related_args['tax_query'] = array(
-                        array(
-                            'taxonomy' => 'product_cat',
-                            'field'    => 'slug',
-                            'terms'    => $category_slugs_for_query,
-                        ),
-                    );
-                }
-
-                $related_products = new WP_Query( $related_args );
-
                 if ( $related_products->have_posts() ) :
                     while ( $related_products->have_posts() ) : $related_products->the_post();
                         global $product;
@@ -466,8 +471,6 @@ if ( $categories && ! is_wp_error( $categories ) ) {
                         <?php
                     endwhile;
                     wp_reset_postdata();
-                else :
-                    echo '<p>No related products found.</p>';
                 endif;
                 ?>
             </div>
@@ -475,5 +478,6 @@ if ( $categories && ! is_wp_error( $categories ) ) {
             </div>
         </div>
     </section>
+    <?php endif; ?>
 </div>
 <?php get_footer(); ?>

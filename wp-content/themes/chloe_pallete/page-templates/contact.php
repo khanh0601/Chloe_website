@@ -17,7 +17,8 @@ wp_enqueue_style( 'contact-css', get_template_directory_uri() . '/css/contact.cs
 wp_enqueue_script( 'contact-js', get_template_directory_uri() . '/js/contact.js');
 
 ?>
-    <section class="contact_content">
+   <div class="main" data-barba-namespace="contact">
+   <section class="contact_content">
         <div class="kl_container">
             <div class="contact_content_inner">
                 <div class="contact_content_left">
@@ -81,23 +82,12 @@ wp_enqueue_script( 'contact-js', get_template_directory_uri() . '/js/contact.js'
                     <div class="contact_content_right_item about_border_bottom">
                         <div class="contact_content_right_item_form_title txt_subtitle">Send us a message</div>
                         <div class="contact_content_right_item_form">
-                            <div class="contact_content_right_item_form_wrap">
-                                <input type="text" placeholder="Full name">
-                                <input type="email" placeholder="Email" >
-                            </div>
-                            <div class="contact_content_right_item_form_txtarea">
-                                <textarea placeholder="Message or question" rows="6"></textarea>
-                            </div>
-                            <button type="submit" class="contact_content_right_item_form_button">
-                                <div class="contact_content_right_item_form_button_txt txt_subtitle color_white">SEND MESSAGE</div>
-                                <div class="contact_content_right_item_form_button_img img_full">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-up-right-white.svg" alt="">
-                                </div>
-                            </button>
+                            <?php echo do_shortcode('[contact-form-7 id="79bedf9" title="Contact form"]'); ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+   </div>
 <?php get_footer(); ?>

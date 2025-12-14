@@ -597,6 +597,7 @@ const mainScript = () => {
     
     trigger() {
       super.setTrigger(this.setup.bind(this));
+      this.interact();
     }
     
     setup() {
@@ -704,6 +705,257 @@ const mainScript = () => {
           new FadeSplitText({ el: $(el).find('.home_seller_silder_item_info_title').get(0), onMask: true, delay: .1 }),
           new FadeIn({ el: $(el).find('.home_seller_silder_item_info_price'), delay: .1, type: 'bottom' }),
         ].filter(Boolean)
+      });
+    }
+    
+    interact() {
+      // Add to cart functionality
+      $(document).on('click', '.home_seller_silder_item_info_cart_wrap', function(e) {
+        e.preventDefault();
+        e.stopPropagation(); // Prevent link navigation
+        
+        const $cartWrap = $(this);
+        
+        // Chặn click nếu đang loading
+        if ($cartWrap.hasClass('loading') || $cartWrap.hasClass('disabled')) {
+          return false;
+        }
+        
+        console.log('click');
+        const $productItem = $cartWrap.closest('.home_seller_silder_item');
+        const productId = $cartWrap.data('product-id') || $productItem.data('product-id');
+        const productType = $cartWrap.data('product-type') || $productItem.data('product-type') || 'simple';
+        
+        // Parse variation ID - handle both string and number
+        let defaultVariationId = $cartWrap.data('default-variation-id') || $productItem.data('default-variation-id');
+        if (defaultVariationId) {
+          defaultVariationId = parseInt(defaultVariationId, 10) || 0;
+        } else {
+          defaultVariationId = 0;
+        }
+        
+        // Parse variation attributes
+        let defaultVariationAttributes = $cartWrap.data('default-variation-attributes') || $productItem.data('default-variation-attributes') || null;
+        if (defaultVariationAttributes && typeof defaultVariationAttributes === 'string') {
+          try {
+            defaultVariationAttributes = JSON.parse(defaultVariationAttributes);
+          } catch (e) {
+            console.warn('Error parsing variation attributes:', e);
+            defaultVariationAttributes = null;
+          }
+        }
+        
+        // Debug log
+        console.log('Product Type:', productType);
+        console.log('Default Variation ID:', defaultVariationId);
+        console.log('Default Variation Attributes:', defaultVariationAttributes);
+        
+        if (!productId) {
+          window.Popup.error('Error', 'Product ID not found');
+          return;
+        }
+        
+        // Check if product is sold out
+        const isSoldOut = $productItem.find('.home_seller_silder_item_top_soldout.active').length > 0;
+        
+        if (isSoldOut) {
+          window.Popup.warning('Out of Stock', 'This product is currently sold out');
+          return;
+        }
+        
+        // Check if variable product without default variation
+        if (productType === 'variable' && !defaultVariationId) {
+          // Redirect to product page to select variation
+          const productUrl = $productItem.attr('href');
+          if (productUrl) {
+            window.Popup.warning('Selection Required', 'Please select product options on the product page', {
+              autoClose: 2000,
+              onConfirm: function() {
+                window.location.href = productUrl;
+              }
+            });
+            setTimeout(() => {
+              window.location.href = productUrl;
+            }, 2000);
+          } else {
+            window.Popup.warning('Selection Required', 'Please visit the product page to select options');
+          }
+          return;
+        }
+        
+        // Disable button to prevent double click và thêm loading state
+        $cartWrap.addClass('loading disabled');
+        $cartWrap.css('pointer-events', 'none');
+        
+        // Ẩn icon cart và hiện loading spinner
+        const $cartIcon = $cartWrap.find('.home_seller_silder_item_info_cart');
+        $cartIcon.hide();
+        
+        // Tạo loading spinner nếu chưa có
+        if ($cartWrap.find('.cart-loading-spinner').length === 0) {
+          $cartWrap.append('<div class="cart-loading-spinner"></div>');
+        }
+        $cartWrap.find('.cart-loading-spinner').show();
+        
+        // Check if WooCommerce is available
+        if (typeof wc_add_to_cart_params === 'undefined') {
+          window.Popup.error('Configuration Error', 'WooCommerce is not properly configured');
+          // Reset loading state
+          $cartWrap.removeClass('loading disabled');
+          $cartWrap.css('pointer-events', '');
+          $cartWrap.find('.home_seller_silder_item_info_cart').show();
+          $cartWrap.find('.cart-loading-spinner').hide();
+          return;
+        }
+        
+        // Prepare data for AJAX
+        const data = {
+          action: 'custom_add_to_cart',
+          product_id: productId,
+          quantity: 1,
+          nonce: wc_add_to_cart_params.custom_add_to_cart_nonce || ''
+        };
+        
+        // Add variation data if variable product
+        if (productType === 'variable' && defaultVariationId) {
+          data.variation_id = defaultVariationId;
+          
+          // Parse variation attributes if provided
+          if (defaultVariationAttributes) {
+            try {
+              const variationAttrs = typeof defaultVariationAttributes === 'string' 
+                ? JSON.parse(defaultVariationAttributes) 
+                : defaultVariationAttributes;
+              data.variation = variationAttrs;
+            } catch (e) {
+              console.warn('Error parsing variation attributes:', e);
+            }
+          }
+          
+          console.log('Adding variable product with variation_id:', defaultVariationId);
+          console.log('Variation attributes:', data.variation);
+        }
+        
+        // Send AJAX request
+        $.ajax({
+          type: 'POST',
+          url: wc_add_to_cart_params.ajax_url,
+          data: data,
+          beforeSend: function() {
+            // Optional: Add loading state visual
+          },
+          success: function(response) {
+            if (!response.success) {
+              let errorMsg = 'Unable to add product to cart.';
+              if (response.data && response.data.message) {
+                errorMsg = response.data.message;
+              }
+              
+              window.Popup.error('Error', errorMsg);
+              
+              if (response.data && response.data.product_url) {
+                // If product requires options, redirect to product page
+                // Reset loading state trước khi redirect
+                $cartWrap.removeClass('loading disabled');
+                $cartWrap.css('pointer-events', '');
+                $cartWrap.find('.home_seller_silder_item_info_cart').show();
+                $cartWrap.find('.cart-loading-spinner').hide();
+                setTimeout(() => {
+                  window.location = response.data.product_url;
+                }, 1500);
+                return;
+              } else {
+                // Reset loading state
+                $cartWrap.removeClass('loading disabled');
+                $cartWrap.css('pointer-events', '');
+                $cartWrap.find('.home_seller_silder_item_info_cart').show();
+                $cartWrap.find('.cart-loading-spinner').hide();
+                return;
+              }
+            }
+            
+            // Update cart UI - gọi refreshCartContent để đảm bảo cart được render đầy đủ
+            if (typeof window.refreshCartContent === 'function') {
+              // Gọi global function để refresh cart từ server
+              window.refreshCartContent();
+            } else if (response.data && response.data.fragments) {
+              // Fallback: sử dụng fragments nếu refreshCartContent không có
+              if (typeof updateCartUI === 'function') {
+                updateCartUI(response.data.fragments, response.data.cart_hash);
+              } else {
+                // Fallback: update manually
+                if (response.data.fragments['.header_icon_item_num .cart-count']) {
+                  $('.header_icon_item_num .cart-count').text(response.data.fragments['.header_icon_item_num .cart-count']);
+                }
+                if (response.data.fragments['.menu_cart_title']) {
+                  $('.menu_cart_title').html(response.data.fragments['.menu_cart_title']);
+                }
+                if (response.data.fragments['.menu_cart_content']) {
+                  $('.menu_cart_content').html(response.data.fragments['.menu_cart_content']);
+                }
+                if (response.data.fragments['.menu_cart_button_total_txt']) {
+                  $('.menu_cart_button_total_txt').html(response.data.fragments['.menu_cart_button_total_txt']);
+                }
+                if (response.data.fragments['.menu_cart_button_total_price']) {
+                  $('.menu_cart_button_total_price').html(response.data.fragments['.menu_cart_button_total_price']);
+                }
+                if (response.data.fragments['.menu_cart_button_check']) {
+                  const $checkoutBtn = $('.menu_cart_button_check');
+                  if ($checkoutBtn.length === 0) {
+                    $('.menu_cart_button_total').after(response.data.fragments['.menu_cart_button_check']);
+                  }
+                }
+              }
+              
+              // Fallback: Update cart count directly if fragment doesn't work
+              if (response.data.cart_count !== undefined) {
+                const $cartCount = $('.header_icon_item_num .cart-count');
+                if ($cartCount.length) {
+                  $cartCount.text(response.data.cart_count);
+                }
+              }
+              
+              // Trigger WooCommerce event
+              $(document.body).trigger('added_to_cart', [
+                response.data.fragments, 
+                response.data.cart_hash || '', 
+                $cartWrap
+              ]);
+            }
+            
+            // Show success message
+            window.Popup.success('Success', 'Product added to cart!', { autoClose: 2000 });
+            
+            // Reset button after delay
+            setTimeout(function() {
+              $cartWrap.removeClass('loading disabled');
+              $cartWrap.css('pointer-events', '');
+              $cartWrap.find('.home_seller_silder_item_info_cart').show();
+              $cartWrap.find('.cart-loading-spinner').hide();
+            }, 500);
+          },
+          error: function(xhr, status, error) {
+            let errorMsg = 'Error adding product to cart. Please try again.';
+            try {
+              const errorResponse = JSON.parse(xhr.responseText);
+              if (errorResponse.message) {
+                errorMsg = errorResponse.message;
+              } else if (errorResponse.data && errorResponse.data.message) {
+                errorMsg = errorResponse.data.message;
+              }
+            } catch (e) {
+              // Use default error message
+            }
+            
+            window.Popup.error('Error', errorMsg);
+            // Reset loading state
+            $cartWrap.removeClass('loading disabled');
+            $cartWrap.css('pointer-events', '');
+            $cartWrap.find('.home_seller_silder_item_info_cart').show();
+            $cartWrap.find('.cart-loading-spinner').hide();
+          },
+          dataType: 'json'
+        });
       });
     }
   }
@@ -1347,19 +1599,19 @@ const mainScript = () => {
       // Category filter functionality
       let selectedCategories = []; // Array to store selected category slugs
       
-      // Load saved categories from localStorage
-      const savedCategories = localStorage.getItem('shop_categories');
-      if (savedCategories) {
-        try {
-          selectedCategories = JSON.parse(savedCategories);
-          // Check saved categories in checkboxes
-          selectedCategories.forEach(function(slug) {
-            $(`.shop_category input[type="checkbox"][value="${slug}"]`).prop('checked', true).parent('label').addClass('active');
-          });
-        } catch (e) {
-          console.error('Error parsing saved categories:', e);
-        }
-      }
+      // // Load saved categories from localStorage
+      // const savedCategories = localStorage.getItem('shop_categories');
+      // if (savedCategories) {
+      //   try {
+      //     selectedCategories = JSON.parse(savedCategories);
+      //     // Check saved categories in checkboxes
+      //     selectedCategories.forEach(function(slug) {
+      //       $(`.shop_category input[type="checkbox"][value="${slug}"]`).prop('checked', true).parent('label').addClass('active');
+      //     });
+      //   } catch (e) {
+      //     console.error('Error parsing saved categories:', e);
+      //   }
+      // }
       
       $('.shop_category input[type="checkbox"]').on('change', function() {
         const $checkbox = $(this);
@@ -1650,6 +1902,74 @@ const mainScript = () => {
     }
   }
   let ourStoryChoose = new OurStoryChoose('.story_choose');
+  class OurStoryAbout extends TriggerSetup {
+    constructor(triggerEl) {
+      super(triggerEl);
+    }
+    trigger() {
+      super.setTrigger(this.setup.bind(this));
+    }
+    setup() {
+      let tlTitle = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.story_about_title',
+          start: "top+=45% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tlTitle,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          ...Array.from($('.story_about_title *')).flatMap(el => new FadeSplitText({ el: el, onMask: true })),
+        ]
+      })
+      let tlImg = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.story_about_content',
+          start: "top+=45% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tlImg,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          new ScaleInset({ el: $('.story_about_content_img').get(0) }),
+        ]
+      })
+      let tlImg2 = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.story_about_content_item_img',
+          start: "top+=45% bottom",
+          once: true,
+          markers: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tlImg2,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          new ScaleInset({ el: $('.story_about_content_item_img').get(0) }),
+        ]
+      })
+      let tlContent = new gsap.timeline({
+        scrollTrigger: {
+          trigger: '.story_about_content_des',
+          start: "top+=45% bottom",
+          once: true,
+        },
+      });
+      new MasterTimeline({
+        timeline: tlContent,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          ...Array.from($('.story_about_content_des *')).flatMap(el => new FadeSplitText({ el: el, onMask: true })),
+        ]
+      })
+    }
+  }
+  let ourStoryAbout = new OurStoryAbout('.story_about');
   class ProductDetailHero extends TriggerSetupHero {
     constructor() {
       super();
@@ -1662,28 +1982,48 @@ const mainScript = () => {
       super.init(this.play.bind(this));
     }
     setup() {
-      let sellerSwiper = new Swiper(".product_related_silder .home_seller_silder", {
-        slidesPerView: 1.5,
-        spaceBetween: parseRem(10),
-        pagination: {
-          el: ".home_seller_pagination",
-          type: "progressbar",
-        },
-        speed: 400,
-        breakpoints: {
-          768: {
-            slidesPerView: 2.7,
-            spaceBetween: parseRem(15),
+
+      if($('.product_related_silder').length > 0) {
+        let sellerSwiper = new Swiper(".product_related_silder .home_seller_silder", {
+          slidesPerView: 1.5,
+          spaceBetween: parseRem(10),
+          pagination: {
+            el: ".home_seller_pagination",
+            type: "progressbar",
           },
-          991: {
-            slidesPerView: 4.3,
-            spaceBetween: parseRem(20),
+          speed: 400,
+          breakpoints: {
+            768: {
+              slidesPerView: 2.7,
+              spaceBetween: parseRem(15),
+            },
+            991: {
+              slidesPerView: 4.3,
+              spaceBetween: parseRem(20),
+            },
           },
-        },
-      });
+        });
+      }
       this.tl = gsap.timeline({
         paused: true,
       });
+      new MasterTimeline({
+        timeline: this.tl,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          new FadeIn({ el: $('.productdetail_breadcrum_inner').get(0), type: 'bottom' }),
+          new ScaleInset({ el: $('.productdetail_img_inner').get(0) }),
+          new FadeIn({ el: $('.productdetail_content_info_subtitle').get(0), type: 'bottom' }),
+          new FadeSplitText({ el: $('.productdetail_content_info_title').get(0), onMask: true }),
+          ...Array.from($('.productdetail_content_info_detail')).flatMap(el => {
+            return [
+              new FadeIn({ el: $(el).get(0), type: 'bottom' }),
+            ]
+          }),
+          new FadeIn({ el: $('.productdetail_quantity').get(0), type: 'bottom' }),
+          new FadeIn({ el: $('.productdetail_cart_button').get(0), type: 'bottom' }),
+        ]
+      })
     }
     interact() {
       
@@ -2118,7 +2458,348 @@ const mainScript = () => {
       this.tl.play();
     }
   }
-  const productDetailHero = new ProductDetailHero('.product_detail_hero');
+  let productDetailHero = new ProductDetailHero();
+  class CustomCakeHero extends TriggerSetupHero {
+    constructor() {
+      super();
+      this.tl = null;
+      this.tlItem = null;
+    }
+    trigger() {
+      this.setup();
+      this.interact();
+      super.init(this.play.bind(this));
+    }
+    setup() {
+      this.tl = gsap.timeline({
+        paused: true,
+      });
+      new MasterTimeline({
+        timeline: this.tl,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          new ScaleInset({ el: $('.customcake_content_img').get(0) }),
+          new FadeIn({ el: $('.customcake_content_info_subtitle').get(0), type: 'bottom' }),
+          new FadeSplitText({ el: $('.customcake_content_info_title').get(0), onMask: true }),
+          ...Array.from($('.home_contact_form input, .home_contact_form textarea, .home_contact_form select')).flatMap(el => {
+            return [
+              new FadeIn({ el: $(el).get(0), type: 'bottom' }),
+            ]
+          }),
+          new FadeIn({ el: $('.home_contact_form_upload').get(0), type: 'bottom' }),
+          new FadeIn({ el: $('.home_hero_des_link').get(0), type: 'bottom' }),
+        ]
+      })
+    }
+    interact() {
+      // Handle form submission
+      $('.home_hero_des_link').on('click', (e) => {
+        e.preventDefault();
+        
+        const $form = $('.home_contact_form');
+        const $nameInput = $form.find('input[name="name"]');
+        const $emailInput = $form.find('input[name="email"]');
+        const $phoneInput = $form.find('input[name="phone"]');
+        const $dateInput = $form.find('input[name="date"]');
+        const $timeInput = $form.find('input[name="time"]');
+        const $servingsInput = $form.find('input[name="servings"]');
+        const $flavorSelect = $form.find('select[name="flavor"]');
+        const $designTextarea = $form.find('textarea[name="design"]');
+        const $fileInput = $form.find('input[name="file"]');
+        
+        // Get form values
+        const name = $nameInput.val().trim();
+        const email = $emailInput.val().trim();
+        const phone = $phoneInput.val().trim();
+        const date = $dateInput.val().trim();
+        const time = $timeInput.val().trim();
+        const servings = $servingsInput.val().trim();
+        const flavor = $flavorSelect.val();
+        const design = $designTextarea.val().trim();
+        const file = $fileInput[0].files[0];
+        
+        // Remove previous error classes
+        $nameInput.removeClass('error');
+        $emailInput.removeClass('error');
+        $phoneInput.removeClass('error');
+        $dateInput.removeClass('error');
+        $timeInput.removeClass('error');
+        $servingsInput.removeClass('error');
+        $flavorSelect.removeClass('error');
+        $designTextarea.removeClass('error');
+        
+        // Validation - collect all errors
+        const errors = [];
+        let firstErrorField = null;
+        
+        // Validate name
+        if (!name) {
+          errors.push('Name is required.');
+          $nameInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $nameInput;
+        }
+        
+        // Validate email
+        if (!email) {
+          errors.push('Email is required.');
+          $emailInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $emailInput;
+        } else if (!this.isValidEmail(email)) {
+          errors.push('Please enter a valid email address.');
+          $emailInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $emailInput;
+        }
+        
+        // Validate phone
+        if (!phone) {
+          errors.push('Phone is required.');
+          $phoneInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $phoneInput;
+        }
+        
+        // Validate date
+        if (!date) {
+          errors.push('Date Needed is required.');
+          $dateInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $dateInput;
+        }
+        
+        // Validate time
+        if (!time) {
+          errors.push('Time Needed is required.');
+          $timeInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $timeInput;
+        }
+        
+        // Validate servings
+        if (!servings) {
+          errors.push('Number of Servings is required.');
+          $servingsInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $servingsInput;
+        } else if (isNaN(servings) || parseInt(servings) <= 0) {
+          errors.push('Number of Servings must be a positive number.');
+          $servingsInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $servingsInput;
+        }
+        
+        // Validate flavor
+        if (!flavor) {
+          errors.push('Cake Flavour + Filling is required.');
+          $flavorSelect.addClass('error');
+          if (!firstErrorField) firstErrorField = $flavorSelect;
+        }
+        
+        // Validate design
+        if (!design) {
+          errors.push('Cake Design is required.');
+          $designTextarea.addClass('error');
+          if (!firstErrorField) firstErrorField = $designTextarea;
+        }
+        
+        // Validate file if uploaded
+        if (file) {
+          // Check file type
+          const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+          if (!allowedTypes.includes(file.type)) {
+            errors.push('File must be PNG, JPG, or GIF format.');
+          }
+          // Check file size (5MB = 5 * 1024 * 1024 bytes)
+          const maxSize = 5 * 1024 * 1024;
+          if (file.size > maxSize) {
+            errors.push('File size must be less than 5MB.');
+          }
+        }
+        
+        if (errors.length > 0) {
+          // Focus on first error field
+          if (firstErrorField) {
+            firstErrorField.focus();
+          }
+          
+          // Display all errors - format with line breaks
+          const errorMessage = errors.map((error, index) => `${index + 1}. ${error}`).join('\n');
+          if (window.Popup) {
+            window.Popup.error('Validation Error', errorMessage);
+          } else {
+            alert(errorMessage);
+          }
+          return;
+        }
+        
+        // If validation passes, submit the form
+        console.log('Form is valid:', { name, email, phone, date, time, servings, flavor, design, file: file ? file.name : 'none' });
+        
+        // Find the form element and submit
+        const $formElement = $form.closest('form');
+        if ($formElement.length > 0) {
+          $formElement.submit();
+        } else {
+          // If no form wrapper, you might need to handle submission via AJAX
+          console.warn('No form element found. Form submission may need to be handled via AJAX.');
+        }
+      });
+    }
+    isValidEmail(email) {
+      // Email validation regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    play() {
+      this.tl.play();
+    }
+  }
+  let customCakeHero = new CustomCakeHero();
+  class WorkshopHero extends TriggerSetupHero {
+    constructor() {
+      super();
+      this.tl = null;
+      this.tlItem = null;
+    }
+    trigger() {
+      this.setup();
+      super.init(this.play.bind(this));
+    }
+    setup() {
+      console.log('setup khanhs');
+      this.tl = gsap.timeline({
+        paused: true,
+      });
+      new MasterTimeline({
+        timeline: this.tl,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          new FadeSplitText({ el: $('.workshop_content_title').get(0), onMask: true, breakType: 'chars' }),
+          ...Array.from($('.workshop_content_list_card_item')).flatMap(el => {
+            return [
+              new ScaleInset({ el: $(el).find('.workshop_content_list_card_item_img').get(0) }),
+              new FadeIn({ el: $(el).find('.workshop_content_list_card_item_info').get(0), type: 'bottom' }),
+              new FadeSplitText({ el: $(el).find('.workshop_content_list_card_item_title').get(0), onMask: true }),
+              new FadeSplitText({ el: $(el).find('.workshop_content_list_card_item_des').get(0), onMask: true }),
+            ]
+          }),
+        ]
+      })
+    }
+    play() {
+      this.tl.play();
+    }
+  }
+  let workshopHero = new WorkshopHero();
+  class ContactHero extends TriggerSetupHero {
+    constructor() {
+      super();
+      this.tl = null;
+      this.tlItem = null;
+    }
+    trigger() {
+      this.setup();
+      this.interact();
+      super.init(this.play.bind(this));
+    }
+    setup() {
+      this.tl = gsap.timeline({
+        paused: true,
+      });
+      new MasterTimeline({
+        timeline: this.tl,
+        triggerInit: this.triggerEl,
+        tweenArr: [
+          new ScaleInset({ el: $('.contact_content_left').get(0) }),
+          new FadeSplitText({ el: $('.contact_content_right_item_title').get(0), onMask: true }),
+          new FadeSplitText({ el: $('.contact_content_right_item_des').get(0), onMask: true }),
+          ...Array.from($('.contact_content_right_item_card')).flatMap(el => {
+            return [
+              new FadeIn({ el: $(el).find('.contact_content_right_item_card_label').get(0), type: 'bottom' }),
+              new FadeIn({ el: $(el).find('.contact_content_right_item_card_des').get(0), type: 'bottom' }),
+            ]
+          }),
+          new FadeIn({ el: $('.contact_content_right_item_social_label').get(0), type: 'bottom' }),
+          new FadeIn({ el: $('.contact_content_right_item_social_content').get(0), type: 'bottom' }),
+          new FadeIn({ el: $('.contact_content_right_item_work .contact_content_right_item_social_label').get(0), type: 'bottom' }),
+          new FadeIn({ el: $('.contact_content_right_item_work_des').get(0), type: 'bottom' }),
+          new FadeIn({ el: $('.contact_content_right_item:last-child').get(0), type: 'bottom' }),
+        ]
+      })
+    }
+    interact() {
+      // Handle form submission
+      $('.contact_content_right_item_form_button').on('click', (e) => {
+        
+        // Find Contact Form 7 form
+        const $formContainer = $('.contact_content_right_item_form');
+        const $cf7Form = $formContainer.find('form.wpcf7-form');
+        
+        if ($cf7Form.length === 0) {
+          console.error('Contact Form 7 form not found');
+          return;
+        }
+        
+        // Find form inputs (CF7 might use different selectors)
+        const $nameInput = $cf7Form.find('input[name*="name"], input[type="text"]').first();
+        const $emailInput = $cf7Form.find('input[name*="email"], input[type="email"]').first();
+        const $messageTextarea = $cf7Form.find('textarea[name*="message"], textarea').first();
+        
+        // Get form values
+        const name = $nameInput.val().trim();
+        const email = $emailInput.val().trim();
+        const message = $messageTextarea.val().trim();
+        
+        // Remove previous error classes
+        $nameInput.removeClass('error');
+        $emailInput.removeClass('error');
+        $messageTextarea.removeClass('error');
+        
+        // Validation - collect all errors
+        const errors = [];
+        let firstErrorField = null;
+        
+        // Validate name
+        if (!name) {
+          errors.push('Full name is required.');
+          $nameInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $nameInput;
+        }
+        
+        // Validate email
+        if (!email) {
+          errors.push('Email is required.');
+          $emailInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $emailInput;
+        } else if (!this.isValidEmail(email)) {
+          errors.push('Please enter a valid email address.');
+          $emailInput.addClass('error');
+          if (!firstErrorField) firstErrorField = $emailInput;
+        }
+        
+        if (errors.length > 0) {
+          e.preventDefault();
+          
+          // Focus on first error field
+          if (firstErrorField) {
+            firstErrorField.focus();
+          }
+          
+          // Display all errors - format with line breaks
+          const errorMessage = errors.map((error, index) => `${index + 1}. ${error}`).join('\n');
+          if (window.Popup) {
+            window.Popup.error('Validation Error', errorMessage);
+          } else {
+            alert(errorMessage);
+          }
+          return;
+        }
+      });
+    }
+    isValidEmail(email) {
+      // Email validation regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    play() {
+      this.tl.play();
+    }
+  }
+  let contactHero = new ContactHero();
   class CheckoutHero extends TriggerSetupHero {
     constructor() {
       super();
@@ -2264,7 +2945,7 @@ const mainScript = () => {
                     if (response.data.redirect_url) {
                       window.location.href = response.data.redirect_url;
                     } else {
-                      window.location.href = wc_add_to_cart_params.cart_url || home_url;
+                      window.location.href = '/';
                     }
                   }
                 });
@@ -2348,6 +3029,7 @@ const mainScript = () => {
       homeHero.trigger();
       homeAbout.trigger();
       ourStoryChoose.trigger();
+      ourStoryAbout.trigger();
       homeCourse.trigger();
       return;
     },
@@ -2359,14 +3041,160 @@ const mainScript = () => {
       checkoutHero.trigger();
       return;
     },
+    workshopScript: () => {
+      workshopHero.trigger();
+      return;
+    },
+    contactScript: () => {
+      contactHero.trigger();
+      return;
+    },
+    customCakeScript: () => {
+      customCakeHero.trigger();
+      return;
+    },
   };
   // Helper function to update cart UI (global scope để có thể dùng từ add to cart)
+  /**
+   * Global function để refresh cart content từ server
+   * Có thể được gọi từ bất kỳ đâu sau khi add/update/remove cart
+   */
+  window.refreshCartContent = function() {
+    console.log('refreshCartContent called');
+    if (typeof wc_add_to_cart_params === 'undefined') {
+      console.warn('WooCommerce params not available');
+      return;
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: wc_add_to_cart_params.ajax_url,
+      data: {
+        action: 'get_cart_content'
+      },
+      success: function(response) {
+        console.log('Cart refresh response:', response);
+        if (response.success && response.data) {
+          const data = response.data;
+          console.log('Cart data:', {
+            cart_content_length: data.cart_content ? data.cart_content.length : 0,
+            cart_count: data.cart_count,
+            has_cart_content: !!data.cart_content
+          });
+          
+          // Update cart count
+          if (data.cart_count_text !== undefined) {
+            $('.header_icon_item_num .cart-count').text(data.cart_count_text);
+          }
+          
+          // Update cart title
+          if (data.cart_title) {
+            $('.menu_cart_title').html(data.cart_title);
+          }
+          
+          // Update cart content - QUAN TRỌNG NHẤT
+          if (data.cart_content) {
+            const $cartContent = $('.menu_cart_content');
+            if ($cartContent.length) {
+              console.log('Updating cart content with:', data.cart_content.substring(0, 100) + '...');
+              $cartContent.html(data.cart_content);
+              // Trigger event để các handler khác biết cart đã được update
+              $(document.body).trigger('cart_content_refreshed');
+            } else {
+              console.warn('Cart content element not found: .menu_cart_content');
+            }
+          } else {
+            console.warn('No cart_content in response data');
+          }
+          
+          // Update cart totals
+          if (data.cart_total_txt) {
+            $('.menu_cart_button_total_txt').html(data.cart_total_txt);
+          }
+          if (data.cart_total_price) {
+            $('.menu_cart_button_total_price').html(data.cart_total_price);
+          }
+          
+          // Update checkout button
+          if (data.checkout_button) {
+            const $checkoutBtn = $('.menu_cart_button_check');
+            if ($checkoutBtn.length === 0) {
+              $('.menu_cart_button_total').after(data.checkout_button);
+            } else {
+              $checkoutBtn.replaceWith(data.checkout_button);
+            }
+          } else {
+            // Remove checkout button if cart is empty
+            $('.menu_cart_button_check').remove();
+          }
+          
+          // Trigger WooCommerce event
+          $(document.body).trigger('updated_cart_totals', [data]);
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('Error refreshing cart:', error, xhr.responseText);
+      }
+    });
+  };
+
+  // Refresh cart khi mở cart menu
+  $(document).on('click', '.header_icon_item_wrap.cart, .cart', function() {
+    console.log('Cart icon clicked, refreshing cart content...');
+    // Delay một chút để đảm bảo cart menu đã được mở
+    setTimeout(function() {
+      if (typeof window.refreshCartContent === 'function') {
+        window.refreshCartContent();
+      }
+    }, 200);
+  });
+
+  // Observer để detect khi cart menu được mở (khi class active được thêm vào)
+  $(document).ready(function() {
+    if (typeof MutationObserver !== 'undefined') {
+      const $menuCart = $('.menu_cart');
+      if ($menuCart.length) {
+        const cartObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+              const target = mutation.target;
+              if ($(target).hasClass('menu_cart') && $(target).hasClass('active')) {
+                // Chỉ refresh nếu chưa refresh gần đây (tránh refresh nhiều lần)
+                if (!$(target).data('refreshing')) {
+                  $(target).data('refreshing', true);
+                  console.log('Cart menu opened, refreshing content...');
+                  if (typeof window.refreshCartContent === 'function') {
+                    window.refreshCartContent();
+                  }
+                  // Reset flag sau 500ms
+                  setTimeout(function() {
+                    $(target).data('refreshing', false);
+                  }, 500);
+                }
+              }
+            }
+          });
+        });
+
+        cartObserver.observe($menuCart[0], {
+          attributes: true,
+          attributeFilter: ['class']
+        });
+      }
+    }
+  });
+
   function updateCartUI(fragments, cartHash) {
       if (!fragments) return;
 
-      // Update cart count in header
+      // Update cart count in header - use .text() instead of .html() for better reliability
       if (fragments['.header_icon_item_num .cart-count']) {
-        $('.header_icon_item_num .cart-count').html(fragments['.header_icon_item_num .cart-count']);
+        const $cartCount = $('.header_icon_item_num .cart-count');
+        if ($cartCount.length) {
+          // Extract just the number from the fragment (in case it has HTML)
+          const countText = $(fragments['.header_icon_item_num .cart-count']).text() || fragments['.header_icon_item_num .cart-count'];
+          $cartCount.text(countText);
+        }
       }
 
       if (fragments['.menu_cart_title']) {
@@ -2379,7 +3207,21 @@ const mainScript = () => {
         $('.menu_cart_button_total_price').html(fragments['.menu_cart_button_total_price']);
       }
       if (fragments['.menu_cart_content']) {
-        $('.menu_cart_content').html(fragments['.menu_cart_content']);
+        const $cartContent = $('.menu_cart_content');
+        if ($cartContent.length) {
+          // Clear existing content first to ensure clean update
+          $cartContent.empty();
+          // Append new content - fragment contains the HTML for cart items
+          $cartContent.html(fragments['.menu_cart_content']);
+          
+          // Re-initialize cart interactions after content update
+          // This ensures event handlers are attached to new elements
+          if (typeof initCartInteractions === 'function') {
+            // Note: initCartInteractions uses event delegation, so it should work
+            // But we trigger a custom event to ensure any dependent code runs
+            $(document.body).trigger('menu_cart_content_updated');
+          }
+        }
       }
       if (fragments['.menu_cart_button_check']) {
         const $checkoutBtn = $('.menu_cart_button_check');
@@ -2388,6 +3230,9 @@ const mainScript = () => {
         } else {
           if ($checkoutBtn.length === 0) {
             $('.menu_cart_button_total').after(fragments['.menu_cart_button_check']);
+          } else {
+            // Update existing button if it exists
+            $checkoutBtn.replaceWith(fragments['.menu_cart_button_check']);
           }
         }
       }
@@ -2480,19 +3325,12 @@ const mainScript = () => {
               isAjaxRunning[cartItemKey] = false;
               
               if (response.success && response.data) {
-                // Update cart UI from fragments (total, count, etc.)
-                if (response.data.fragments) {
+                // Gọi refreshCartContent để đảm bảo cart được render đầy đủ
+                if (typeof window.refreshCartContent === 'function') {
+                  window.refreshCartContent();
+                } else if (response.data.fragments) {
+                  // Fallback: sử dụng fragments
                   updateCartUI(response.data.fragments, response.data.cart_hash);
-                }
-                
-                // Update cart count in header if fragments don't include it
-                if (response.data.cart_count !== undefined && !response.data.fragments?.['.header_icon_item_num .cart-count']) {
-                  $('.header_icon_item_num .cart-count').text(response.data.cart_count);
-                }
-                
-                // Trigger event
-                if (response.data.fragments) {
-                  $(document.body).trigger('updated_cart_totals', [response.data.fragments, response.data.cart_hash, $button]);
                 }
                 
                 // Update initial quantity for next operation
@@ -2555,42 +3393,116 @@ const mainScript = () => {
             });
 
             if (typeof wc_add_to_cart_params !== 'undefined') {
+              // Use custom AJAX handler instead of WooCommerce endpoint
+              const removeUrl = wc_add_to_cart_params.ajax_url;
+              
+              console.log('Removing cart item:', cartItemKey);
+              console.log('Remove URL:', removeUrl);
+              
               $.ajax({
                 type: 'POST',
-                url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'remove_from_cart'),
+                url: removeUrl,
                 data: {
-                  cart_item_key: cartItemKey
+                  action: 'custom_remove_from_cart',
+                  cart_item_key: cartItemKey,
+                  nonce: wc_add_to_cart_params.custom_add_to_cart_nonce || ''
                 },
                 success: function(response) {
+                  console.log('Remove from cart response:', response);
+                  
+                  // Custom handler returns {success: true/false, data: {fragments: {...}, cart_hash: '...'}}
+                  if (!response.success) {
+                    // Restore item on error
+                    $cartItem.css({
+                      'opacity': '1',
+                      'transform': 'translateX(0)'
+                    }).removeClass('removing');
+                    $button.removeClass('disabled');
+                    
+                    const errorMsg = response.data?.message || 'Failed to remove item from cart. Please try again.';
+                    window.Popup.error('Error', errorMsg);
+                    return;
+                  }
+                  
                   // Remove element from DOM immediately after animation
                   setTimeout(() => {
                     $cartItem.remove();
                     
-                    // Update cart UI
-                    if (response.fragments) {
-                      updateCartUI(response.fragments, response.cart_hash);
+                    // Gọi refreshCartContent để đảm bảo cart được render đầy đủ
+                    if (typeof window.refreshCartContent === 'function') {
+                      window.refreshCartContent();
+                    } else if (response.data && response.data.fragments) {
+                      // Fallback: sử dụng fragments
+                      if (typeof updateCartUI === 'function') {
+                        updateCartUI(response.data.fragments, response.data.cart_hash);
+                      } else {
+                        // Fallback: update manually
+                        if (response.data.fragments['.header_icon_item_num .cart-count']) {
+                          $('.header_icon_item_num .cart-count').text(response.data.fragments['.header_icon_item_num .cart-count']);
+                        }
+                        if (response.data.fragments['.menu_cart_title']) {
+                          $('.menu_cart_title').html(response.data.fragments['.menu_cart_title']);
+                        }
+                        if (response.data.fragments['.menu_cart_content']) {
+                          $('.menu_cart_content').html(response.data.fragments['.menu_cart_content']);
+                        }
+                        if (response.data.fragments['.menu_cart_button_total_txt']) {
+                          $('.menu_cart_button_total_txt').html(response.data.fragments['.menu_cart_button_total_txt']);
+                        }
+                        if (response.data.fragments['.menu_cart_button_total_price']) {
+                          $('.menu_cart_button_total_price').html(response.data.fragments['.menu_cart_button_total_price']);
+                        }
+                        if (response.data.fragments['.menu_cart_button_check']) {
+                          const $checkoutBtn = $('.menu_cart_button_check');
+                          if (response.data.fragments['.menu_cart_button_check'] === '') {
+                            $checkoutBtn.remove();
+                          } else {
+                            if ($checkoutBtn.length === 0) {
+                              $('.menu_cart_button_total').after(response.data.fragments['.menu_cart_button_check']);
+                            } else {
+                              $checkoutBtn.replaceWith(response.data.fragments['.menu_cart_button_check']);
+                            }
+                          }
+                        }
+                      }
+                    }
+                    
+                    // Fallback: Update cart count directly if fragments don't work
+                    if (response.data && response.data.cart_count !== undefined) {
+                      $('.header_icon_item_num .cart-count').text(response.data.cart_count);
                     }
                     
                     // Trigger event
-                    $(document.body).trigger('removed_from_cart', [response.fragments, response.cart_hash, $button]);
-                    
-                    // If cart is empty, show empty message
-                    if (response.cart_count === 0) {
-                      $('.menu_cart_content').html('<div class="menu_cart_content_empty txt_16 txt_title_color">Your cart is empty.</div>');
-                    }
+                    $(document.body).trigger('removed_from_cart', [response.data?.fragments || {}, response.data?.cart_hash || '', $button]);
                     
                     // Show success message
                     window.Popup.success('Success', 'Item removed from cart', { autoClose: 2000 });
                   }, 300);
                 },
-                error: function() {
+                error: function(xhr, status, error) {
+                  console.error('Remove from cart error:', xhr, status, error);
+                  
                   // Restore item on error
                   $cartItem.css({
                     'opacity': '1',
                     'transform': 'translateX(0)'
                   }).removeClass('removing');
                   $button.removeClass('disabled');
-                  window.Popup.error('Error', 'Error removing item. Please try again.');
+                  
+                  // Try to parse error message
+                  let errorMsg = 'Error removing item. Please try again.';
+                  try {
+                    const errorResponse = JSON.parse(xhr.responseText);
+                    if (errorResponse.message) {
+                      errorMsg = errorResponse.message;
+                    } else if (errorResponse.data && errorResponse.data.message) {
+                      errorMsg = errorResponse.data.message;
+                    }
+                  } catch (e) {
+                    // Use default error message
+                  }
+                  
+                  window.Popup.error('Error', errorMsg);
                 },
                 dataType: 'json'
               });

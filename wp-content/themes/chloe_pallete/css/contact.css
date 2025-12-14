@@ -99,12 +99,16 @@
     text-transform: none;
     margin-bottom: 1rem;
 }
+.contact_content_right_item_form_button_txt {
+    margin-bottom: 0 !important;
+}
 .contact_content_right_item_form_button_img{
     width: 2rem;
 }
 .contact_content_right_item_form_button{
     display: flex;
     gap: .8rem;
+    align-items: center;
     width: max-content;
     padding: 1.2rem 2.5rem ;
     background-color: #0F2A1D;

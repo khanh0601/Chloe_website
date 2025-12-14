@@ -9,12 +9,13 @@
  * @subpackage chloe_pallete
  * @since chloe_pallete 1.0
  */
-
-get_header();
+$pageClass = 'on_dark';
+get_header(null, array('pageClass' => $pageClass));
 wp_enqueue_style( 'custom_cake-css', get_template_directory_uri() . '/css/custom_cake.css');
 wp_enqueue_script( 'custom_cake-js', get_template_directory_uri() . '/js/custom_cake.js');
 
 ?>
+<div class="main" data-barba-namespace="customCake">
 <section class="customcake_content">
     <div class="kl_container">
         <div class="customcake_content_inner">
@@ -40,7 +41,7 @@ wp_enqueue_script( 'custom_cake-js', get_template_directory_uri() . '/js/custom_
                     <input type="tel" name="phone" placeholder="Phone *" required />
                     </div>
                     <div class="home_contact_form_info">
-                    <input type="text" name="date" placeholder="Date Needed *" required>
+                    <input type="date" name="date" placeholder="Date Needed *" required>
                     <input type="text" name="time" placeholder="Time Needed *" required>
                     </div>
                     <div class="home_contact_form_info">
@@ -100,4 +101,5 @@ wp_enqueue_script( 'custom_cake-js', get_template_directory_uri() . '/js/custom_
         </div>
     </div>
 </section>
+</div>
 <?php get_footer(); ?>
